@@ -1,0 +1,2186 @@
+// Print
+(function($){function appendContent($el,content){if(!content)return;$el.append(content.jquery?content.clone():content);}
+function appendBody($body,$element,opt){var $content=$element.clone(opt.formValues);if(opt.formValues){copyValues($element,$content,'select, textarea');}
+if(opt.removeScripts){$content.find('script').remove();}
+if(opt.printContainer){$content.appendTo($body);}else{$content.each(function(){$(this).children().appendTo($body);});}}
+function copyValues(origin,clone,elementSelector){var $originalElements=origin.find(elementSelector);clone.find(elementSelector).each(function(index,item){$(item).val($originalElements.eq(index).val());});}
+var opt;$.fn.printThis=function(options){opt=$.extend({},$.fn.printThis.defaults,options);var $element=this instanceof jQuery?this:$(this);var strFrameName="printThis-"+(new Date()).getTime();if(window.location.hostname!==document.domain&&navigator.userAgent.match(/msie/i)){var iframeSrc="javascript:document.write(\"<head><script>document.domain=\\\""+document.domain+"\\\";</s"+"cript></head><body></body>\")";var printI=document.createElement('iframe');printI.name="printIframe";printI.id=strFrameName;printI.className="MSIE";document.body.appendChild(printI);printI.src=iframeSrc;}else{var $frame=$("<iframe id='"+strFrameName+"' name='printIframe' />");$frame.appendTo("body");}
+var $iframe=$("#"+strFrameName);if(!opt.debug)$iframe.css({position:"absolute",width:"0px",height:"0px",left:"-600px",top:"-600px"});setTimeout(function(){function setDocType($iframe,doctype){var win,doc;win=$iframe.get(0);win=win.contentWindow||win.contentDocument||win;doc=win.document||win.contentDocument||win;doc.open();doc.write(doctype);doc.close();}
+if(opt.doctypeString){setDocType($iframe,opt.doctypeString);}
+var $doc=$iframe.contents(),$head=$doc.find("head"),$body=$doc.find("body"),$base=$('base'),baseURL;if(opt.base===!0&&$base.length>0){baseURL=$base.attr('href');}else if(typeof opt.base==='string'){baseURL=opt.base;}else{baseURL=document.location.protocol+'//'+document.location.host;}
+$head.append('<base href="'+baseURL+'">');if(opt.importCSS)$("link[rel=stylesheet]").each(function(){var href=$(this).attr("href");if(href){var media=$(this).attr("media")||"all";$head.append("<link type='text/css' rel='stylesheet' href='"+href+"' media='"+media+"'>");}});if(opt.importStyle)$("style").each(function(){$head.append(this.outerHTML);});if(opt.pageTitle)$head.append("<title>"+opt.pageTitle+"</title>");if(opt.loadCSS){if($.isArray(opt.loadCSS)){jQuery.each(opt.loadCSS,function(index,value){$head.append("<link type='text/css' rel='stylesheet' href='"+this+"'>");});}else{$head.append("<link type='text/css' rel='stylesheet' href='"+opt.loadCSS+"'>");}}
+var tag=opt.copyTagClasses;if(tag){tag=tag===!0?'bh':tag;if(tag.indexOf('b')!==-1){$body.addClass($('body')[0].className);}
+if(tag.indexOf('h')!==-1){$doc.find('html').addClass($('html')[0].className);}}
+appendContent($body,opt.header);if(opt.canvas){var canvasId=0;$element.find('canvas').addBack('canvas').each(function(){$(this).attr('data-printthis',canvasId++);});}
+appendBody($body,$element,opt);if(opt.canvas){$body.find('canvas').each(function(){var cid=$(this).data('printthis'),$src=$('[data-printthis="'+cid+'"]');this.getContext('2d').drawImage($src[0],0,0);$src.removeData('printthis');});}
+if(opt.removeInline){if($.isFunction($.removeAttr)){$doc.find("body *").removeAttr("style");}else{$doc.find("body *").attr("style","");}}
+appendContent($body,opt.footer);setTimeout(function(){if($iframe.hasClass("MSIE")){window.frames.printIframe.focus();$head.append("<script>  window.print(); </s"+"cript>");}else{if(document.queryCommandSupported("print")){$iframe[0].contentWindow.document.execCommand("print",!1,null);}else{$iframe[0].contentWindow.focus();$iframe[0].contentWindow.print();}}
+if(!opt.debug){setTimeout(function(){$iframe.remove();},1000);}},opt.printDelay);},333);};$.fn.printThis.defaults={debug:!1,importCSS:!0,importStyle:!1,printContainer:!0,loadCSS:"",pageTitle:"",removeInline:!1,printDelay:333,header:null,footer:null,formValues:!0,canvas:!1,base:!1,doctypeString:'<!DOCTYPE html>',removeScripts:!1,copyTagClasses:!1};})(jQuery);
+
+// responsive voice
+if("undefined"!=typeof responsiveVoice)console.log("ResponsiveVoice already loaded"),console.log(responsiveVoice);else var ResponsiveVoice=function(){var a=this;a.version="1.5.12",console.log("ResponsiveVoice r"+a.version),a.responsivevoices=[{name:"UK English Female",flag:"gb",gender:"f",lang:"en-GB",voiceIDs:[3,7,171,278,201,5,1,257,286,342,258,287,343,8]},{name:"UK English Male",flag:"gb",gender:"m",lang:"en-GB",voiceIDs:[0,277,202,75,4,2,256,285,341,159,6,7]},{name:"US English Female",flag:"us",gender:"f",lang:"en-US",voiceIDs:[39,40,41,42,383,205,204,43,173,235,283,339,408,44]},{name:"US English Male",flag:"us",gender:"m",lang:"en-US",voiceIDs:[234,282,338,236,284,340,237,382,2,4,0,6,7,75,195,169]},{name:"Arabic Male",flag:"ar",gender:"m",lang:"ar-SA",voiceIDs:[96,95,97,196,388]},{name:"Arabic Female",flag:"ar",gender:"f",lang:"ar-SA",voiceIDs:[98]},{name:"Armenian Male",flag:"hy",gender:"f",lang:"hy-AM",voiceIDs:[99]},{name:"Australian Female",flag:"au",gender:"f",lang:"en-AU",voiceIDs:[276,201,87,5,88]},{name:"Australian Male",flag:"au",gender:"m",lang:"en-AU",voiceIDs:[86,381,386]},{name:"Brazilian Portuguese Female",flag:"br",gender:"f",lang:"pt-BR",voiceIDs:[245,124,123,125,186,223,126]},{name:"Brazilian Portuguese Male",flag:"br",gender:"m",lang:"pt-BR",voiceIDs:[315,332,371,399]},{name:"Chinese Female",flag:"cn",gender:"f",lang:"zh-CN",voiceIDs:[249,58,59,380,281,231,155,60,191,268,297,353,269,298,354,409,61]},{name:"Chinese Male",flag:"cn",gender:"m",lang:"zh-CN",voiceIDs:[317,334,373,389]},{name:"Chinese (Hong Kong) Female",flag:"hk",gender:"f",lang:"zh-HK",voiceIDs:[192,193,232,250,251,270,299,355,409,252]},{name:"Chinese (Hong Kong) Male",flag:"hk",gender:"m",lang:"zh-HK",voiceIDs:[318,335,374,390]},{name:"Chinese Taiwan Female",flag:"tw",gender:"f",lang:"zh-TW",voiceIDs:[194,233,253,254,305,322,361,384,319,336,375,409,255]},{name:"Chinese Taiwan Male",flag:"tw",gender:"m",lang:"zh-TW",voiceIDs:[320,337,376,391]},{name:"Czech Female",flag:"cz",gender:"f",lang:"cs-CZ",voiceIDs:[101,100,102,197,103]},{name:"Czech Male",flag:"cz",gender:"m",lang:"cs-CZ",voiceIDs:[161]},{name:"Danish Female",flag:"dk",gender:"f",lang:"da-DK",voiceIDs:[105,104,106,198,107]},{name:"Danish Male",flag:"da",gender:"m",lang:"da-DK",voiceIDs:[162]},{name:"Deutsch Female",flag:"de",gender:"f",lang:"de-DE",voiceIDs:[27,28,29,30,78,170,275,199,31,261,290,346,262,291,347,32]},{name:"Deutsch Male",flag:"de",gender:"m",lang:"de-DE",voiceIDs:[307,324,363,377,393]},{name:"Dutch Female",flag:"nl",gender:"f",lang:"nl-NL",voiceIDs:[243,219,84,157,158,184,45]},{name:"Dutch Male",flag:"nl",gender:"m",lang:"nl-NL",voiceIDs:[157,220,407]},{name:"Finnish Female",flag:"fi",gender:"f",lang:"fi-FI",voiceIDs:[90,89,91,209,92]},{name:"Finnish Male",flag:"fi",gender:"m",lang:"fi-FI",voiceIDs:[160]},{name:"French Female",flag:"fr",gender:"f",lang:"fr-FR",voiceIDs:[240,21,22,23,77,178,279,210,266,295,351,304,321,360,26]},{name:"French Male",flag:"fr",gender:"m",lang:"fr-FR",voiceIDs:[311,328,367,378,392]},{name:"Greek Female",flag:"gr",gender:"f",lang:"el-GR",voiceIDs:[62,63,80,200,64]},{name:"Greek Male",flag:"gr",gender:"m",lang:"el-GR",voiceIDs:[163]},{name:"Hindi Female",flag:"hi",gender:"f",lang:"hi-IN",voiceIDs:[247,66,154,179,213,259,288,344,67]},{name:"Hindi Male",flag:"hi",gender:"m",lang:"hi-IN",voiceIDs:[394]},{name:"Hungarian Female",flag:"hu",gender:"f",lang:"hu-HU",voiceIDs:[9,10,81,214,11]},{name:"Hungarian Male",flag:"hu",gender:"m",lang:"hu-HU",voiceIDs:[164]},{name:"Indonesian Female",flag:"id",gender:"f",lang:"id-ID",voiceIDs:[241,111,112,180,215,113]},{name:"Indonesian Male",flag:"id",gender:"m",lang:"id-ID",voiceIDs:[395]},{name:"Italian Female",flag:"it",gender:"f",lang:"it-IT",voiceIDs:[242,33,34,35,36,37,79,181,216,271,300,356,38]},{name:"Italian Male",flag:"it",gender:"m",lang:"it-IT",voiceIDs:[312,329,368,406]},{name:"Japanese Female",flag:"jp",gender:"f",lang:"ja-JP",voiceIDs:[248,50,51,280,217,52,153,182,273,302,358,274,303,359,53]},{name:"Japanese Male",flag:"jp",gender:"m",lang:"ja-JP",voiceIDs:[313,330,369,379,396]},{name:"Korean Female",flag:"kr",gender:"f",lang:"ko-KR",voiceIDs:[54,55,56,156,183,218,306,323,362,384,57]},{name:"Korean Male",flag:"kr",gender:"m",lang:"ko-KR",voiceIDs:[397]},{name:"Latin Female",flag:"va",gender:"f",lang:"la",voiceIDs:[114],deprecated:!0},{name:"Latin Male",flag:"va",gender:"m",lang:"la",voiceIDs:[165]},{name:"Norwegian Female",flag:"no",gender:"f",lang:"nb-NO",voiceIDs:[72,73,221,74]},{name:"Norwegian Male",flag:"no",gender:"m",lang:"nb-NO",voiceIDs:[166]},{name:"Polish Female",flag:"pl",gender:"f",lang:"pl-PL",voiceIDs:[244,120,119,121,185,222,267,296,352,122]},{name:"Polish Male",flag:"pl",gender:"m",lang:"pl-PL",voiceIDs:[314,331,370,398]},{name:"Portuguese Female",flag:"br",gender:"f",lang:"pt-BR",voiceIDs:[128,127,129,187,224,272,301,357,130]},{name:"Portuguese Male",flag:"br",gender:"m",lang:"pt-BR",voiceIDs:[400]},{name:"Romanian Female",flag:"ro",gender:"f",lang:"ro-RO",voiceIDs:[151,150,152,225,46]},{name:"Russian Female",flag:"ru",gender:"f",lang:"ru-RU",voiceIDs:[246,47,48,83,188,226,260,289,345,49]},{name:"Russian Male",flag:"ru",gender:"m",lang:"ru-RU",voiceIDs:[316,333,372,387]},{name:"Slovak Female",flag:"sk",gender:"f",lang:"sk-SK",voiceIDs:[133,132,134,227,135]},{name:"Slovak Male",flag:"sk",gender:"m",lang:"sk-SK",voiceIDs:[167],deprecated:!0},{name:"Spanish Female",flag:"es",gender:"f",lang:"es-ES",voiceIDs:[19,238,16,17,18,20,76,174,207,263,292,348,264,293,349,15]},{name:"Spanish Male",flag:"es",gender:"m",lang:"es-ES",voiceIDs:[309,326,365,401]},{name:"Spanish Latin American Female",flag:"es",gender:"f",lang:"es-MX",voiceIDs:[239,137,136,138,175,208,265,294,350,139]},{name:"Spanish Latin American Male",flag:"es",gender:"m",lang:"es-MX",voiceIDs:[136,310,327,366,402]},{name:"Swedish Female",flag:"sv",gender:"f",lang:"sv-SE",voiceIDs:[85,149,228,65]},{name:"Swedish Male",flag:"sv",gender:"m",lang:"sv-SE",voiceIDs:[148,168]},{name:"Tamil Male",flag:"hi",gender:"m",lang:"hi-IN",voiceIDs:[141]},{name:"Thai Female",flag:"th",gender:"f",lang:"th-TH",voiceIDs:[143,142,144,189,229,145]},{name:"Thai Male",flag:"th",gender:"m",lang:"th-TH",voiceIDs:[403]},{name:"Turkish Female",flag:"tr",gender:"f",lang:"tr-TR",voiceIDs:[69,70,82,190,230,71]},{name:"Turkish Male",flag:"tr",gender:"m",lang:"tr-TR",voiceIDs:[404]},{name:"Vietnamese Female",flag:"vi",gender:"f",lang:"vi-VN",voiceIDs:[405]},{name:"Vietnamese Male",flag:"vi",gender:"m",lang:"vi-VN",voiceIDs:[146]},{name:"Afrikaans Male",flag:"af",gender:"m",lang:"af-ZA",voiceIDs:[93]},{name:"Albanian Male",flag:"sq",gender:"m",lang:"sq-AL",voiceIDs:[94]},{name:"Bosnian Male",flag:"bs",gender:"m",lang:"bs",voiceIDs:[14]},{name:"Catalan Male",flag:"catalonia",gender:"m",lang:"ca-ES",voiceIDs:[68]},{name:"Croatian Male",flag:"hr",gender:"m",lang:"hr-HR",voiceIDs:[13]},{name:"Esperanto Male",flag:"eo",gender:"m",lang:"eo",voiceIDs:[108]},{name:"Icelandic Male",flag:"is",gender:"m",lang:"is-IS",voiceIDs:[110]},{name:"Latvian Male",flag:"lv",gender:"m",lang:"lv-LV",voiceIDs:[115]},{name:"Macedonian Male",flag:"mk",gender:"m",lang:"mk-MK",voiceIDs:[116]},{name:"Moldavian Female",flag:"md",gender:"f",lang:"md",voiceIDs:[117]},{name:"Moldavian Male",flag:"md",gender:"m",lang:"md",voiceIDs:[117],deprecated:!0},{name:"Montenegrin Male",flag:"me",gender:"m",lang:"me",voiceIDs:[118]},{name:"Serbian Male",flag:"sr",gender:"m",lang:"sr-RS",voiceIDs:[12]},{name:"Serbo-Croatian Male",flag:"hr",gender:"m",lang:"hr-HR",voiceIDs:[131]},{name:"Swahili Male",flag:"sw",gender:"m",lang:"sw-KE",voiceIDs:[140]},{name:"Welsh Male",flag:"cy",gender:"m",lang:"cy",voiceIDs:[147]},{name:"Fallback UK Female",flag:"gb",gender:"f",lang:"en-GB",voiceIDs:[8]}],a.voicecollection=[{name:"Google UK English Male"},{name:"Agnes"},{name:"Daniel Compact"},{name:"Google UK English Female"},{name:"en-GB",rate:.25,pitch:1},{name:"en-AU",rate:.25,pitch:1},{name:"ingl\xE9s Reino Unido"},{name:"English United Kingdom"},{name:"Fallback en-GB Female",lang:"en-GB",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Eszter Compact"},{name:"hu-HU",rate:.4},{name:"Fallback Hungarian Female",lang:"hu",fallbackvoice:!0,service:"g1"},{name:"Fallback Serbian Male",lang:"sr",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Croatian Male",lang:"hr",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Bosnian Male",lang:"bs",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Spanish Female",lang:"es",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Spanish Spain"},{name:"espa\xF1ol Espa\xF1a"},{name:"Diego Compact",rate:.3},{name:"Google Espa\xF1ol"},{name:"es-ES",rate:.2},{name:"Google Fran\xE7ais"},{name:"French France"},{name:"franc\xE9s Francia"},{name:"Virginie Compact",rate:.5},{name:"fr-FR",rate:.25},{name:"Fallback French Female",lang:"fr",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google Deutsch"},{name:"German Germany"},{name:"alem\xE1n Alemania"},{name:"Yannick Compact",rate:.5},{name:"de-DE",rate:.25},{name:"Fallback Deutsch Female",lang:"de",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google Italiano"},{name:"Italian Italy"},{name:"italiano Italia"},{name:"Paolo Compact",rate:.5},{name:"it-IT",rate:.25},{name:"Fallback Italian Female",lang:"it",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google US English",timerSpeed:1},{name:"English United States"},{name:"ingl\xE9s Estados Unidos"},{name:"Vicki"},{name:"en-US",rate:.2,pitch:1,timerSpeed:1.3},{name:"Fallback US English",lang:"en-US",fallbackvoice:!0,timerSpeed:0,service:"g1",gender:"female"},{name:"Fallback Dutch Female",lang:"nl",fallbackvoice:!0,timerSpeed:0,service:"g1",gender:"female"},{name:"Fallback Romanian",lang:"ro",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Milena Compact"},{name:"ru-RU",rate:.25},{name:"Fallback Russian",lang:"ru",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google \u65E5\u672C\u4EBA",timerSpeed:1},{name:"Kyoko Compact"},{name:"ja-JP",rate:.25},{name:"Fallback Japanese Female",lang:"ja",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google \uD55C\uAD6D\uC758",timerSpeed:1},{name:"Narae Compact"},{name:"ko-KR",rate:.25},{name:"Fallback Korean Female",lang:"ko",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google \u4E2D\u56FD\u7684",timerSpeed:1},{name:"Ting-Ting Compact"},{name:"zh-CN",rate:.25},{name:"Fallback Chinese",lang:"zh-CN",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Alexandros Compact"},{name:"el-GR",rate:.25},{name:"Fallback Greek",lang:"el",fallbackvoice:!0,service:"g2",gender:"female"},{name:"Fallback Swedish",lang:"sv",fallbackvoice:!0,service:"g2",gender:"female"},{name:"hi-IN",rate:.25},{name:"Fallback Hindi Female",lang:"hi",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Catalan",lang:"ca",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Aylin Compact"},{name:"tr-TR",rate:.25},{name:"Fallback Turkish",lang:"tr",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Stine Compact"},{name:"no-NO",rate:.25},{name:"Fallback Norwegian",lang:"no",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Daniel"},{name:"Monica"},{name:"Amelie"},{name:"Anna"},{name:"Alice"},{name:"Melina"},{name:"Mariska"},{name:"Yelda"},{name:"Milena"},{name:"Xander"},{name:"Alva"},{name:"Lee Compact"},{name:"Karen"},{name:"Fallback Australian Female",lang:"en-AU",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Mikko Compact"},{name:"Satu"},{name:"fi-FI",rate:.25},{name:"Fallback Finnish",lang:"fi",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Afrikans",lang:"af",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Albanian",lang:"sq",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Maged Compact"},{name:"Tarik"},{name:"ar-SA",rate:.25},{name:"Fallback Arabic",lang:"ar",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Armenian",lang:"hy",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Zuzana Compact"},{name:"Zuzana"},{name:"cs-CZ",rate:.25},{name:"Fallback Czech",lang:"cs",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Ida Compact"},{name:"Sara"},{name:"da-DK",rate:.25},{name:"Fallback Danish",lang:"da",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Esperanto",lang:"eo",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Haitian Creole",lang:"ht",fallbackvoice:!0},{name:"Fallback Icelandic",lang:"is",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Damayanti"},{name:"id-ID",rate:.25},{name:"Fallback Indonesian Female",lang:"id",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Latin Female",lang:"la",fallbackvoice:!0,service:"g2",gender:"female"},{name:"Fallback Latvian Male",lang:"lv",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Macedonian Male",lang:"mk",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Moldavian Female",lang:"mo",fallbackvoice:!0,service:"g2",gender:"female"},{name:"Fallback Montenegrin Male",lang:"sr-ME",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Agata Compact"},{name:"Zosia"},{name:"pl-PL",rate:.25},{name:"Fallback Polish Female",lang:"pl",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Raquel Compact"},{name:"Luciana"},{name:"pt-BR",rate:.25},{name:"Fallback Brazilian Portuguese Female",lang:"pt-BR",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Joana Compact"},{name:"Joana"},{name:"pt-PT",rate:.25},{name:"Fallback Portuguese",lang:"pt-PT",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Serbo-Croation",lang:"sh",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Laura Compact"},{name:"Laura"},{name:"sk-SK",rate:.25},{name:"Fallback Slovak",lang:"sk",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Javier Compact"},{name:"Paulina"},{name:"es-MX",rate:.25},{name:"Fallback Spanish (Latin American) Female",lang:"es-419",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Swahili",lang:"sw",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Tamil",lang:"ta",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Narisa Compact"},{name:"Kanya"},{name:"th-TH",rate:.25},{name:"Fallback Thai Female",lang:"th",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Vietnamese Male",lang:"vi",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Welsh",lang:"cy",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Oskar Compact"},{name:"sv-SE",rate:.25},{name:"Simona Compact"},{name:"Ioana"},{name:"ro-RO",rate:.25},{name:"Kyoko"},{name:"Lekha"},{name:"Ting-Ting"},{name:"Yuna"},{name:"Xander Compact"},{name:"nl-NL",rate:.25},{name:"Fallback UK English Male",lang:"en-GB",fallbackvoice:!0,service:"g1",voicename:"rjs",gender:"male"},{name:"Finnish Male",lang:"fi",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Czech Male",lang:"cs",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Danish Male",lang:"da",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Greek Male",lang:"el",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Hungarian Male",lang:"hu",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Latin Male",lang:"la",fallbackvoice:!0,service:"g2",voicename:"",gender:"male"},{name:"Norwegian Male",lang:"no",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Slovak Male",lang:"sk",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Swedish Male",lang:"sv",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"Fallback US English Male",lang:"en-US",fallbackvoice:!0,service:"g1",voicename:"",gender:"male"},{name:"German Germany",lang:"de_DE"},{name:"English United Kingdom",lang:"en_GB"},{name:"English India",lang:"en_IN"},{name:"English United States",lang:"en_US"},{name:"Spanish Spain",lang:"es_ES"},{name:"Spanish Mexico",lang:"es_MX"},{name:"Spanish United States",lang:"es_US"},{name:"French Belgium",lang:"fr_BE"},{name:"French France",lang:"fr_FR"},{name:"Hindi India",lang:"hi_IN"},{name:"Indonesian Indonesia",lang:"in_ID"},{name:"Italian Italy",lang:"it_IT"},{name:"Japanese Japan",lang:"ja_JP"},{name:"Korean South Korea",lang:"ko_KR"},{name:"Dutch Netherlands",lang:"nl_NL"},{name:"Polish Poland",lang:"pl_PL"},{name:"Portuguese Brazil",lang:"pt_BR"},{name:"Portuguese Portugal",lang:"pt_PT"},{name:"Russian Russia",lang:"ru_RU"},{name:"Thai Thailand",lang:"th_TH"},{name:"Turkish Turkey",lang:"tr_TR"},{name:"Chinese China",lang:"zh_CN_#Hans"},{name:"Chinese Hong Kong",lang:"zh_HK_#Hans"},{name:"Chinese Hong Kong",lang:"zh_HK_#Hant"},{name:"Chinese Taiwan",lang:"zh_TW_#Hant"},{name:"Alex"},{name:"Maged",lang:"ar-SA"},{name:"Zuzana",lang:"cs-CZ"},{name:"Sara",lang:"da-DK"},{name:"Anna",lang:"de-DE"},{name:"Melina",lang:"el-GR"},{name:"Karen",lang:"en-AU"},{name:"Daniel",lang:"en-GB"},{name:"Moira",lang:"en-IE"},{name:"Samantha (Enhanced)",lang:"en-US"},{name:"Samantha",lang:"en-US"},{name:"Tessa",lang:"en-ZA"},{name:"Monica",lang:"es-ES"},{name:"Paulina",lang:"es-MX"},{name:"Satu",lang:"fi-FI"},{name:"Amelie",lang:"fr-CA"},{name:"Thomas",lang:"fr-FR"},{name:"Carmit",lang:"he-IL"},{name:"Lekha",lang:"hi-IN"},{name:"Mariska",lang:"hu-HU"},{name:"Damayanti",lang:"id-ID"},{name:"Alice",lang:"it-IT"},{name:"Kyoko",lang:"ja-JP"},{name:"Yuna",lang:"ko-KR"},{name:"Ellen",lang:"nl-BE"},{name:"Xander",lang:"nl-NL"},{name:"Nora",lang:"no-NO"},{name:"Zosia",lang:"pl-PL"},{name:"Luciana",lang:"pt-BR"},{name:"Joana",lang:"pt-PT"},{name:"Ioana",lang:"ro-RO"},{name:"Milena",lang:"ru-RU"},{name:"Laura",lang:"sk-SK"},{name:"Alva",lang:"sv-SE"},{name:"Kanya",lang:"th-TH"},{name:"Yelda",lang:"tr-TR"},{name:"Ting-Ting",lang:"zh-CN"},{name:"Sin-Ji",lang:"zh-HK"},{name:"Mei-Jia",lang:"zh-TW"},{name:"Microsoft David Mobile - English (United States)",lang:"en-US"},{name:"Microsoft Zira Mobile - English (United States)",lang:"en-US"},{name:"Microsoft Mark Mobile - English (United States)",lang:"en-US"},{name:"native",lang:""},{name:"Google espa\xF1ol"},{name:"Google espa\xF1ol de Estados Unidos"},{name:"Google fran\xE7ais"},{name:"Google Bahasa Indonesia"},{name:"Google italiano"},{name:"Google Nederlands"},{name:"Google polski"},{name:"Google portugu\xEAs do Brasil"},{name:"Google \u0440\u0443\u0441\u0441\u043A\u0438\u0439"},{name:"Google \u0939\u093F\u0928\u094D\u0926\u0940"},{name:"Google \u65E5\u672C\u8A9E"},{name:"Google \u666E\u901A\u8BDD\uFF08\u4E2D\u56FD\u5927\u9646\uFF09"},{name:"Google \u7CA4\u8A9E\uFF08\u9999\u6E2F\uFF09"},{name:"zh-HK",rate:.25},{name:"Fallback Chinese (Hong Kong) Female",lang:"zh-HK",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Google \u7CA4\u8A9E\uFF08\u9999\u6E2F\uFF09"},{name:"zh-TW",rate:.25},{name:"Fallback Chinese (Taiwan) Female",lang:"zh-TW",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Microsoft George Mobile - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Susan Mobile - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Hazel Mobile - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Heera Mobile - English (India)",lang:"en-In"},{name:"Microsoft Irina Mobile - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Hedda Mobile - German (Germany)",lang:"de-DE"},{name:"Microsoft Katja Mobile - German (Germany)",lang:"de-DE"},{name:"Microsoft Helena Mobile - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Laura Mobile - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Sabina Mobile - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Julie Mobile - French (France)",lang:"fr-FR"},{name:"Microsoft Paulina Mobile - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Huihui Mobile - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Yaoyao Mobile - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Tracy Mobile - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-CN"},{name:"Microsoft Elsa Mobile - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Maria Mobile - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Ayumi Mobile - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Haruka Mobile - Japanese (Japan)",lang:"ja-JP"},{name:"Helena",lang:"de-DE"},{name:"Catherine",lang:"en-AU"},{name:"Arthur",lang:"en-GB"},{name:"Martha",lang:"en-GB"},{name:"Marie",lang:"fr-FR"},{name:"O-ren",lang:"ja-JP"},{name:"Yu-shu",lang:"zh-CN"},{name:"Microsoft David - English (United States)",lang:"en-US"},{name:"Microsoft Zira - English (United States)",lang:"en-US"},{name:"Microsoft Mark - English (United States)",lang:"en-US"},{name:"Microsoft George - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Susan - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Hazel - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Heera - English (India)",lang:"en-In"},{name:"Microsoft Irina - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Hedda - German (Germany)",lang:"de-DE"},{name:"Microsoft Katja - German (Germany)",lang:"de-DE"},{name:"Microsoft Helena - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Laura - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Sabina - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Julie - French (France)",lang:"fr-FR"},{name:"Microsoft Paulina - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Huihui - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Yaoyao - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Tracy - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-CN"},{name:"Microsoft Elsa - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Maria - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Ayumi - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Haruka - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Hortense - French (France)",lang:"fr-FR"},{name:"Microsoft Hanhan - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Heami - Korean (Korean)",lang:"ko-KR"},{name:"Microsoft Stefan - German (Germany)",lang:"de-DE"},{name:"Microsoft Ravi - English (India)",lang:"en-IN"},{name:"Microsoft Pablo - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Raul - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Paul - French (France)",lang:"fr-FR"},{name:"Microsoft Cosimo - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Ichiro - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Adam - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Daniel - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Pavel - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Kangkang - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Danny - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-HK"},{name:"Microsoft Yating - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Zhiwei - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Hortense Mobile - French (France)",lang:"fr-FR"},{name:"Microsoft Hanhan Mobile - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Heami Mobile - Korean (Korean)",lang:"ko-KR"},{name:"Microsoft Stefan Mobile - German (Germany)",lang:"de-DE"},{name:"Microsoft Ravi Mobile - English (India)",lang:"en-IN"},{name:"Microsoft Pablo Mobile - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Raul Mobile - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Paul Mobile - French (France)",lang:"fr-FR"},{name:"Microsoft Cosimo Mobile - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Ichiro Mobile - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Adam Mobile - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Daniel Mobile - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Pavel Mobile - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Kangkang Mobile - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Danny Mobile - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-HK"},{name:"Microsoft Yating Mobile - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Zhiwei Mobile - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft David Desktop - English (United States)",lang:"en-US"},{name:"Microsoft Zira Desktop - English (United States)",lang:"en-US"},{name:"Microsoft Mark Desktop - English (United States)",lang:"en-US"},{name:"Microsoft George Desktop - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Susan Desktop - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Hazel Desktop - English (United Kingdom)",lang:"en-GB"},{name:"Microsoft Heera Desktop - English (India)",lang:"en-In"},{name:"Microsoft Irina Desktop - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Hedda Desktop - German (Germany)",lang:"de-DE"},{name:"Microsoft Katja Desktop - German (Germany)",lang:"de-DE"},{name:"Microsoft Helena Desktop - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Laura Desktop - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Sabina Desktop - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Julie Desktop - French (France)",lang:"fr-FR"},{name:"Microsoft Paulina Desktop - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Huihui Desktop - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Yaoyao Desktop - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Tracy Desktop - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-CN"},{name:"Microsoft Elsa Desktop - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Maria Desktop - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Ayumi Desktop - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Haruka Desktop - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Hortense Desktop - French (France)",lang:"fr-FR"},{name:"Microsoft Hanhan Desktop - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Heami Desktop - Korean (Korean)",lang:"ko-KR"},{name:"Microsoft Stefan Desktop - German (Germany)",lang:"de-DE"},{name:"Microsoft Ravi Desktop - English (India)",lang:"en-IN"},{name:"Microsoft Pablo Desktop - Spanish (Spain)",lang:"es-ES"},{name:"Microsoft Raul Desktop - Spanish (Mexico)",lang:"es-MX"},{name:"Microsoft Paul Desktop - French (France)",lang:"fr-FR"},{name:"Microsoft Cosimo Desktop - Italian (Italy)",lang:"it-IT"},{name:"Microsoft Ichiro Desktop - Japanese (Japan)",lang:"ja-JP"},{name:"Microsoft Adam Desktop - Polish (Poland)",lang:"pl-PL"},{name:"Microsoft Daniel Desktop - Portuguese (Brazil)",lang:"pt-BR"},{name:"Microsoft Pavel Desktop - Russian (Russia)",lang:"ru-RU"},{name:"Microsoft Kangkang Desktop - Chinese (Simplified, PRC)",lang:"zh-CN"},{name:"Microsoft Danny Desktop - Chinese (Traditional, Hong Kong S.A.R.)",lang:"zh-HK"},{name:"Microsoft Yating Desktop - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Microsoft Zhiwei Desktop - Chinese (Traditional, Taiwan)",lang:"zh-TW"},{name:"Martin",lang:"de-DE"},{name:"Daniel",lang:"fr-FR"},{name:"Hattori",lang:"ja-JP"},{name:"Li-mu",lang:"zh-CN"},{name:"Gordon",lang:"en-AU"},{name:"Aaron",lang:"en-US"},{name:"Nicky",lang:"en-US"},{name:"Microsoft Hanhan Desktop - Chinese (Taiwan)",lang:"zh-TW"},{name:"Microsoft Heami Desktop - Korean",lang:"ko-KR"},{name:"Fallback Australian Male",lang:"en-AU",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Russian Male",lang:"ru",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Arabic Male",lang:"ar",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Chinese",lang:"zh-CN",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Chinese HK",lang:"zh-HK",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Chinese TW",lang:"zh-TW",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback French Male",lang:"fr",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Deutsch Male",lang:"de",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Hindi Male",lang:"hi",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Indonesian Male",lang:"id",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Japanese Male",lang:"ja",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Korean Male",lang:"ko",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Polish Male",lang:"pl",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Brazilian Portuguese Male",lang:"pt-BR",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Portuguese Male",lang:"pt-PT",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Spanish Male",lang:"es",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Spanish (Latin American) Male",lang:"es-419",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Thai Male",lang:"th",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Turkish Male",lang:"tr",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Vietnamese Female",lang:"vi",fallbackvoice:!0,service:"g1",gender:"female"},{name:"Fallback Italian Male",lang:"it",fallbackvoice:!0,service:"g1",gender:"male"},{name:"Fallback Dutch Male",lang:"nl",fallbackvoice:!0,timerSpeed:0,service:"g1",gender:"male"},{name:"Microsoft Anna - English (United States)",lang:"en-US",gender:"female"},{name:"Microsoft Lili - Chinese (China)",lang:"zh-CN",gender:"female"}],a.iOS=/(iPad|iPhone|iPod)/g.test(navigator.userAgent),a.iOS9=/(iphone|ipod|ipad).* os 9_/.test(navigator.userAgent.toLowerCase()),a.iOS10=/(iphone|ipod|ipad).* os 10_/.test(navigator.userAgent.toLowerCase()),a.iOS11=/(iphone|ipod|ipad).* os 11_/.test(navigator.userAgent.toLowerCase()),a.iOS9plus=/(iphone|ipod|ipad).* os 10_/.test(navigator.userAgent.toLowerCase())||/(iphone|ipod|ipad).* os 10_/.test(navigator.userAgent.toLowerCase()),a.iOS12_0=/(iphone|ipod|ipad).* os 12_0/.test(navigator.userAgent.toLowerCase()),a.iOS12=/(iphone|ipod|ipad).* os 12_/.test(navigator.userAgent.toLowerCase()),a.is_chrome=-1<navigator.userAgent.indexOf("Chrome"),a.is_safari=-1<navigator.userAgent.indexOf("Safari"),a.is_chrome&&a.is_safari&&(a.is_safari=!1),a.is_opera=!!window.opera||0<=navigator.userAgent.indexOf(" OPR/"),a.is_android=-1<navigator.userAgent.toLowerCase().indexOf("android"),a.iOS_initialized=!1,a.iOS9_initialized=!1,a.iOS10_initialized=!1,a.iOS11_initialized=!1,a.cache_ios_voices=[{name:"he-IL",voiceURI:"he-IL",lang:"he-IL"},{name:"th-TH",voiceURI:"th-TH",lang:"th-TH"},{name:"pt-BR",voiceURI:"pt-BR",lang:"pt-BR"},{name:"sk-SK",voiceURI:"sk-SK",lang:"sk-SK"},{name:"fr-CA",voiceURI:"fr-CA",lang:"fr-CA"},{name:"ro-RO",voiceURI:"ro-RO",lang:"ro-RO"},{name:"no-NO",voiceURI:"no-NO",lang:"no-NO"},{name:"fi-FI",voiceURI:"fi-FI",lang:"fi-FI"},{name:"pl-PL",voiceURI:"pl-PL",lang:"pl-PL"},{name:"de-DE",voiceURI:"de-DE",lang:"de-DE"},{name:"nl-NL",voiceURI:"nl-NL",lang:"nl-NL"},{name:"id-ID",voiceURI:"id-ID",lang:"id-ID"},{name:"tr-TR",voiceURI:"tr-TR",lang:"tr-TR"},{name:"it-IT",voiceURI:"it-IT",lang:"it-IT"},{name:"pt-PT",voiceURI:"pt-PT",lang:"pt-PT"},{name:"fr-FR",voiceURI:"fr-FR",lang:"fr-FR"},{name:"ru-RU",voiceURI:"ru-RU",lang:"ru-RU"},{name:"es-MX",voiceURI:"es-MX",lang:"es-MX"},{name:"zh-HK",voiceURI:"zh-HK",lang:"zh-HK"},{name:"sv-SE",voiceURI:"sv-SE",lang:"sv-SE"},{name:"hu-HU",voiceURI:"hu-HU",lang:"hu-HU"},{name:"zh-TW",voiceURI:"zh-TW",lang:"zh-TW"},{name:"es-ES",voiceURI:"es-ES",lang:"es-ES"},{name:"zh-CN",voiceURI:"zh-CN",lang:"zh-CN"},{name:"nl-BE",voiceURI:"nl-BE",lang:"nl-BE"},{name:"en-GB",voiceURI:"en-GB",lang:"en-GB"},{name:"ar-SA",voiceURI:"ar-SA",lang:"ar-SA"},{name:"ko-KR",voiceURI:"ko-KR",lang:"ko-KR"},{name:"cs-CZ",voiceURI:"cs-CZ",lang:"cs-CZ"},{name:"en-ZA",voiceURI:"en-ZA",lang:"en-ZA"},{name:"en-AU",voiceURI:"en-AU",lang:"en-AU"},{name:"da-DK",voiceURI:"da-DK",lang:"da-DK"},{name:"en-US",voiceURI:"en-US",lang:"en-US"},{name:"en-IE",voiceURI:"en-IE",lang:"en-IE"},{name:"hi-IN",voiceURI:"hi-IN",lang:"hi-IN"},{name:"el-GR",voiceURI:"el-GR",lang:"el-GR"},{name:"ja-JP",voiceURI:"ja-JP",lang:"ja-JP"}],a.cache_ios9_voices=[{name:"Maged",voiceURI:"com.apple.ttsbundle.Maged-compact",lang:"ar-SA",localService:!0,default:!0},{name:"Zuzana",voiceURI:"com.apple.ttsbundle.Zuzana-compact",lang:"cs-CZ",localService:!0,default:!0},{name:"Sara",voiceURI:"com.apple.ttsbundle.Sara-compact",lang:"da-DK",localService:!0,default:!0},{name:"Anna",voiceURI:"com.apple.ttsbundle.Anna-compact",lang:"de-DE",localService:!0,default:!0},{name:"Melina",voiceURI:"com.apple.ttsbundle.Melina-compact",lang:"el-GR",localService:!0,default:!0},{name:"Karen",voiceURI:"com.apple.ttsbundle.Karen-compact",lang:"en-AU",localService:!0,default:!0},{name:"Daniel",voiceURI:"com.apple.ttsbundle.Daniel-compact",lang:"en-GB",localService:!0,default:!0},{name:"Moira",voiceURI:"com.apple.ttsbundle.Moira-compact",lang:"en-IE",localService:!0,default:!0},{name:"Samantha (Enhanced)",voiceURI:"com.apple.ttsbundle.Samantha-premium",lang:"en-US",localService:!0,default:!0},{name:"Samantha",voiceURI:"com.apple.ttsbundle.Samantha-compact",lang:"en-US",localService:!0,default:!0},{name:"Tessa",voiceURI:"com.apple.ttsbundle.Tessa-compact",lang:"en-ZA",localService:!0,default:!0},{name:"Monica",voiceURI:"com.apple.ttsbundle.Monica-compact",lang:"es-ES",localService:!0,default:!0},{name:"Paulina",voiceURI:"com.apple.ttsbundle.Paulina-compact",lang:"es-MX",localService:!0,default:!0},{name:"Satu",voiceURI:"com.apple.ttsbundle.Satu-compact",lang:"fi-FI",localService:!0,default:!0},{name:"Amelie",voiceURI:"com.apple.ttsbundle.Amelie-compact",lang:"fr-CA",localService:!0,default:!0},{name:"Thomas",voiceURI:"com.apple.ttsbundle.Thomas-compact",lang:"fr-FR",localService:!0,default:!0},{name:"Carmit",voiceURI:"com.apple.ttsbundle.Carmit-compact",lang:"he-IL",localService:!0,default:!0},{name:"Lekha",voiceURI:"com.apple.ttsbundle.Lekha-compact",lang:"hi-IN",localService:!0,default:!0},{name:"Mariska",voiceURI:"com.apple.ttsbundle.Mariska-compact",lang:"hu-HU",localService:!0,default:!0},{name:"Damayanti",voiceURI:"com.apple.ttsbundle.Damayanti-compact",lang:"id-ID",localService:!0,default:!0},{name:"Alice",voiceURI:"com.apple.ttsbundle.Alice-compact",lang:"it-IT",localService:!0,default:!0},{name:"Kyoko",voiceURI:"com.apple.ttsbundle.Kyoko-compact",lang:"ja-JP",localService:!0,default:!0},{name:"Yuna",voiceURI:"com.apple.ttsbundle.Yuna-compact",lang:"ko-KR",localService:!0,default:!0},{name:"Ellen",voiceURI:"com.apple.ttsbundle.Ellen-compact",lang:"nl-BE",localService:!0,default:!0},{name:"Xander",voiceURI:"com.apple.ttsbundle.Xander-compact",lang:"nl-NL",localService:!0,default:!0},{name:"Nora",voiceURI:"com.apple.ttsbundle.Nora-compact",lang:"no-NO",localService:!0,default:!0},{name:"Zosia",voiceURI:"com.apple.ttsbundle.Zosia-compact",lang:"pl-PL",localService:!0,default:!0},{name:"Luciana",voiceURI:"com.apple.ttsbundle.Luciana-compact",lang:"pt-BR",localService:!0,default:!0},{name:"Joana",voiceURI:"com.apple.ttsbundle.Joana-compact",lang:"pt-PT",localService:!0,default:!0},{name:"Ioana",voiceURI:"com.apple.ttsbundle.Ioana-compact",lang:"ro-RO",localService:!0,default:!0},{name:"Milena",voiceURI:"com.apple.ttsbundle.Milena-compact",lang:"ru-RU",localService:!0,default:!0},{name:"Laura",voiceURI:"com.apple.ttsbundle.Laura-compact",lang:"sk-SK",localService:!0,default:!0},{name:"Alva",voiceURI:"com.apple.ttsbundle.Alva-compact",lang:"sv-SE",localService:!0,default:!0},{name:"Kanya",voiceURI:"com.apple.ttsbundle.Kanya-compact",lang:"th-TH",localService:!0,default:!0},{name:"Yelda",voiceURI:"com.apple.ttsbundle.Yelda-compact",lang:"tr-TR",localService:!0,default:!0},{name:"Ting-Ting",voiceURI:"com.apple.ttsbundle.Ting-Ting-compact",lang:"zh-CN",localService:!0,default:!0},{name:"Sin-Ji",voiceURI:"com.apple.ttsbundle.Sin-Ji-compact",lang:"zh-HK",localService:!0,default:!0},{name:"Mei-Jia",voiceURI:"com.apple.ttsbundle.Mei-Jia-compact",lang:"zh-TW",localService:!0,default:!0}],a.cache_ios10_voices=[{name:"Maged",voiceURI:"com.apple.ttsbundle.Maged-compact",lang:"ar-SA"},{name:"Zuzana",voiceURI:"com.apple.ttsbundle.Zuzana-compact",lang:"cs-CZ"},{name:"Sara",voiceURI:"com.apple.ttsbundle.Sara-compact",lang:"da-DK"},{name:"Anna",voiceURI:"com.apple.ttsbundle.Anna-compact",lang:"de-DE"},{name:"Helena",voiceURI:"com.apple.ttsbundle.siri_female_de-DE_compact",lang:"de-DE"},{name:"Martin",voiceURI:"com.apple.ttsbundle.siri_male_de-DE_compact",lang:"de-DE"},{name:"Nikos (Enhanced)",voiceURI:"com.apple.ttsbundle.Nikos-premium",lang:"el-GR"},{name:"Melina",voiceURI:"com.apple.ttsbundle.Melina-compact",lang:"el-GR"},{name:"Nikos",voiceURI:"com.apple.ttsbundle.Nikos-compact",lang:"el-GR"},{name:"Catherine",voiceURI:"com.apple.ttsbundle.siri_female_en-AU_compact",lang:"en-AU"},{name:"Gordon",voiceURI:"com.apple.ttsbundle.siri_male_en-AU_compact",lang:"en-AU"},{name:"Karen",voiceURI:"com.apple.ttsbundle.Karen-compact",lang:"en-AU"},{name:"Daniel (Enhanced)",voiceURI:"com.apple.ttsbundle.Daniel-premium",lang:"en-GB"},{name:"Arthur",voiceURI:"com.apple.ttsbundle.siri_male_en-GB_compact",lang:"en-GB"},{name:"Daniel",voiceURI:"com.apple.ttsbundle.Daniel-compact",lang:"en-GB"},{name:"Martha",voiceURI:"com.apple.ttsbundle.siri_female_en-GB_compact",lang:"en-GB"},{name:"Moira",voiceURI:"com.apple.ttsbundle.Moira-compact",lang:"en-IE"},{name:"Nicky (Enhanced)",voiceURI:"com.apple.ttsbundle.siri_female_en-US_premium",lang:"en-US"},{name:"Samantha (Enhanced)",voiceURI:"com.apple.ttsbundle.Samantha-premium",lang:"en-US"},{name:"Aaron",voiceURI:"com.apple.ttsbundle.siri_male_en-US_compact",lang:"en-US"},{name:"Fred",voiceURI:"com.apple.speech.synthesis.voice.Fred",lang:"en-US"},{name:"Nicky",voiceURI:"com.apple.ttsbundle.siri_female_en-US_compact",lang:"en-US"},{name:"Samantha",voiceURI:"com.apple.ttsbundle.Samantha-compact",lang:"en-US"},{name:"Tessa",voiceURI:"com.apple.ttsbundle.Tessa-compact",lang:"en-ZA"},{name:"Monica",voiceURI:"com.apple.ttsbundle.Monica-compact",lang:"es-ES"},{name:"Paulina",voiceURI:"com.apple.ttsbundle.Paulina-compact",lang:"es-MX"},{name:"Satu",voiceURI:"com.apple.ttsbundle.Satu-compact",lang:"fi-FI"},{name:"Amelie",voiceURI:"com.apple.ttsbundle.Amelie-compact",lang:"fr-CA"},{name:"Daniel",voiceURI:"com.apple.ttsbundle.siri_male_fr-FR_compact",lang:"fr-FR"},{name:"Marie",voiceURI:"com.apple.ttsbundle.siri_female_fr-FR_compact",lang:"fr-FR"},{name:"Thomas",voiceURI:"com.apple.ttsbundle.Thomas-compact",lang:"fr-FR"},{name:"Carmit",voiceURI:"com.apple.ttsbundle.Carmit-compact",lang:"he-IL"},{name:"Lekha",voiceURI:"com.apple.ttsbundle.Lekha-compact",lang:"hi-IN"},{name:"Mariska",voiceURI:"com.apple.ttsbundle.Mariska-compact",lang:"hu-HU"},{name:"Damayanti",voiceURI:"com.apple.ttsbundle.Damayanti-compact",lang:"id-ID"},{name:"Alice",voiceURI:"com.apple.ttsbundle.Alice-compact",lang:"it-IT"},{name:"Hattori",voiceURI:"com.apple.ttsbundle.siri_male_ja-JP_compact",lang:"ja-JP"},{name:"Kyoko",voiceURI:"com.apple.ttsbundle.Kyoko-compact",lang:"ja-JP"},{name:"O-ren",voiceURI:"com.apple.ttsbundle.siri_female_ja-JP_compact",lang:"ja-JP"},{name:"Yuna",voiceURI:"com.apple.ttsbundle.Yuna-compact",lang:"ko-KR"},{name:"Ellen",voiceURI:"com.apple.ttsbundle.Ellen-compact",lang:"nl-BE"},{name:"Xander",voiceURI:"com.apple.ttsbundle.Xander-compact",lang:"nl-NL"},{name:"Nora",voiceURI:"com.apple.ttsbundle.Nora-compact",lang:"no-NO"},{name:"Zosia",voiceURI:"com.apple.ttsbundle.Zosia-compact",lang:"pl-PL"},{name:"Luciana",voiceURI:"com.apple.ttsbundle.Luciana-compact",lang:"pt-BR"},{name:"Joana",voiceURI:"com.apple.ttsbundle.Joana-compact",lang:"pt-PT"},{name:"Ioana",voiceURI:"com.apple.ttsbundle.Ioana-compact",lang:"ro-RO"},{name:"Milena",voiceURI:"com.apple.ttsbundle.Milena-compact",lang:"ru-RU"},{name:"Laura",voiceURI:"com.apple.ttsbundle.Laura-compact",lang:"sk-SK"},{name:"Alva",voiceURI:"com.apple.ttsbundle.Alva-compact",lang:"sv-SE"},{name:"Kanya",voiceURI:"com.apple.ttsbundle.Kanya-compact",lang:"th-TH"},{name:"Yelda",voiceURI:"com.apple.ttsbundle.Yelda-compact",lang:"tr-TR"},{name:"Li-mu",voiceURI:"com.apple.ttsbundle.siri_male_zh-CN_compact",lang:"zh-CN"},{name:"Ting-Ting",voiceURI:"com.apple.ttsbundle.Ting-Ting-compact",lang:"zh-CN"},{name:"Yu-shu",voiceURI:"com.apple.ttsbundle.siri_female_zh-CN_compact",lang:"zh-CN"},{name:"Sin-Ji",voiceURI:"com.apple.ttsbundle.Sin-Ji-compact",lang:"zh-HK"},{name:"Mei-Jia",voiceURI:"com.apple.ttsbundle.Mei-Jia-compact",lang:"zh-TW"}],a.cache_ios11_voices=[{name:"Maged",voiceURI:"com.apple.ttsbundle.Maged-compact",lang:"ar-SA"},{name:"Zuzana",voiceURI:"com.apple.ttsbundle.Zuzana-compact",lang:"cs-CZ"},{name:"Sara",voiceURI:"com.apple.ttsbundle.Sara-compact",lang:"da-DK"},{name:"Anna",voiceURI:"com.apple.ttsbundle.Anna-compact",lang:"de-DE"},{name:"Helena",voiceURI:"com.apple.ttsbundle.siri_female_de-DE_compact",lang:"de-DE"},{name:"Martin",voiceURI:"com.apple.ttsbundle.siri_male_de-DE_compact",lang:"de-DE"},{name:"Melina",voiceURI:"com.apple.ttsbundle.Melina-compact",lang:"el-GR"},{name:"Catherine",voiceURI:"com.apple.ttsbundle.siri_female_en-AU_compact",lang:"en-AU"},{name:"Gordon",voiceURI:"com.apple.ttsbundle.siri_male_en-AU_compact",lang:"en-AU"},{name:"Karen",voiceURI:"com.apple.ttsbundle.Karen-compact",lang:"en-AU"},{name:"Arthur",voiceURI:"com.apple.ttsbundle.siri_male_en-GB_compact",lang:"en-GB"},{name:"Daniel",voiceURI:"com.apple.ttsbundle.Daniel-compact",lang:"en-GB"},{name:"Martha",voiceURI:"com.apple.ttsbundle.siri_female_en-GB_compact",lang:"en-GB"},{name:"Moira",voiceURI:"com.apple.ttsbundle.Moira-compact",lang:"en-IE"},{name:"Aaron",voiceURI:"com.apple.ttsbundle.siri_male_en-US_compact",lang:"en-US"},{name:"Fred",voiceURI:"com.apple.speech.synthesis.voice.Fred",lang:"en-US"},{name:"Nicky",voiceURI:"com.apple.ttsbundle.siri_female_en-US_compact",lang:"en-US"},{name:"Samantha",voiceURI:"com.apple.ttsbundle.Samantha-compact",lang:"en-US"},{name:"Tessa",voiceURI:"com.apple.ttsbundle.Tessa-compact",lang:"en-ZA"},{name:"Monica",voiceURI:"com.apple.ttsbundle.Monica-compact",lang:"es-ES"},{name:"Paulina",voiceURI:"com.apple.ttsbundle.Paulina-compact",lang:"es-MX"},{name:"Satu",voiceURI:"com.apple.ttsbundle.Satu-compact",lang:"fi-FI"},{name:"Amelie",voiceURI:"com.apple.ttsbundle.Amelie-compact",lang:"fr-CA"},{name:"Daniel",voiceURI:"com.apple.ttsbundle.siri_male_fr-FR_compact",lang:"fr-FR"},{name:"Marie",voiceURI:"com.apple.ttsbundle.siri_female_fr-FR_compact",lang:"fr-FR"},{name:"Thomas",voiceURI:"com.apple.ttsbundle.Thomas-compact",lang:"fr-FR"},{name:"Carmit",voiceURI:"com.apple.ttsbundle.Carmit-compact",lang:"he-IL"},{name:"Lekha",voiceURI:"com.apple.ttsbundle.Lekha-compact",lang:"hi-IN"},{name:"Mariska",voiceURI:"com.apple.ttsbundle.Mariska-compact",lang:"hu-HU"},{name:"Damayanti",voiceURI:"com.apple.ttsbundle.Damayanti-compact",lang:"id-ID"},{name:"Alice",voiceURI:"com.apple.ttsbundle.Alice-compact",lang:"it-IT"},{name:"Hattori",voiceURI:"com.apple.ttsbundle.siri_male_ja-JP_compact",lang:"ja-JP"},{name:"Kyoko",voiceURI:"com.apple.ttsbundle.Kyoko-compact",lang:"ja-JP"},{name:"O-ren",voiceURI:"com.apple.ttsbundle.siri_female_ja-JP_compact",lang:"ja-JP"},{name:"Yuna",voiceURI:"com.apple.ttsbundle.Yuna-compact",lang:"ko-KR"},{name:"Ellen",voiceURI:"com.apple.ttsbundle.Ellen-compact",lang:"nl-BE"},{name:"Xander",voiceURI:"com.apple.ttsbundle.Xander-compact",lang:"nl-NL"},{name:"Nora",voiceURI:"com.apple.ttsbundle.Nora-compact",lang:"no-NO"},{name:"Zosia",voiceURI:"com.apple.ttsbundle.Zosia-compact",lang:"pl-PL"},{name:"Luciana",voiceURI:"com.apple.ttsbundle.Luciana-compact",lang:"pt-BR"},{name:"Joana",voiceURI:"com.apple.ttsbundle.Joana-compact",lang:"pt-PT"},{name:"Ioana",voiceURI:"com.apple.ttsbundle.Ioana-compact",lang:"ro-RO"},{name:"Milena",voiceURI:"com.apple.ttsbundle.Milena-compact",lang:"ru-RU"},{name:"Laura",voiceURI:"com.apple.ttsbundle.Laura-compact",lang:"sk-SK"},{name:"Alva",voiceURI:"com.apple.ttsbundle.Alva-compact",lang:"sv-SE"},{name:"Kanya",voiceURI:"com.apple.ttsbundle.Kanya-compact",lang:"th-TH"},{name:"Yelda",voiceURI:"com.apple.ttsbundle.Yelda-compact",lang:"tr-TR"},{name:"Li-mu",voiceURI:"com.apple.ttsbundle.siri_male_zh-CN_compact",lang:"zh-CN"},{name:"Ting-Ting",voiceURI:"com.apple.ttsbundle.Ting-Ting-compact",lang:"zh-CN"},{name:"Yu-shu",voiceURI:"com.apple.ttsbundle.siri_female_zh-CN_compact",lang:"zh-CN"},{name:"Sin-Ji",voiceURI:"com.apple.ttsbundle.Sin-Ji-compact",lang:"zh-HK"},{name:"Mei-Jia",voiceURI:"com.apple.ttsbundle.Mei-Jia-compact",lang:"zh-TW"}],a.systemvoices=null,a.CHARACTER_LIMIT=100,a.VOICESUPPORT_ATTEMPTLIMIT=5,a.voicesupport_attempts=0,a.fallbackMode=!1,a.WORDS_PER_MINUTE=130,a.fallback_audio=null,a.fallback_playbackrate=1,a.def_fallback_playbackrate=a.fallback_playbackrate,a.fallback_audiopool=[],a.msgparameters=null,a.timeoutId=null,a.OnLoad_callbacks=[],a.useTimer=!1,a.utterances=[],a.userInteractionEvents=["mousedown","mouseup","mousewheel","keydown"],a.fallbackBufferLength=5,a.tstCompiled=function(a){return eval("typeof xy === 'undefined'");},a.fallbackServicePath="https://code.responsivevoice.org/"+(a.tstCompiled()?"":"develop/")+"getvoice.php",a.default_rv=a.responsivevoices[0],a.debug=!1,a.rvsMapped=!1,a.forcedFallbackMode=!1,a.speechAllowedByUser=!0,a.log=function(c){a.debug&&console.log(c);},a.init=function(){a.is_android&&(a.useTimer=!0),a.is_opera||"undefined"==typeof speechSynthesis?(console.log("RV: Voice synthesis not supported"),a.enableFallbackMode()):setTimeout(function(){var d=setInterval(function(){var b=window.speechSynthesis.getVoices();0!=b.length||null!=a.systemvoices&&0!=a.systemvoices.length?(console.log("RV: Voice support ready"),a.systemVoicesReady(b),clearInterval(d)):(console.log("Voice support NOT ready"),a.voicesupport_attempts++,a.voicesupport_attempts>a.VOICESUPPORT_ATTEMPTLIMIT&&(clearInterval(d),null==window.speechSynthesis?a.enableFallbackMode():a.iOS?(a.iOS11?a.systemVoicesReady(a.cache_ios11_voices):a.iOS10?a.systemVoicesReady(a.cache_ios10_voices):a.iOS9?a.systemVoicesReady(a.cache_ios9_voices):a.systemVoicesReady(a.cache_ios_voices),console.log("RV: Voice support ready (cached)")):(console.log("RV: speechSynthesis present but no system voices found"),a.enableFallbackMode())));},100);},100),(a.iOS||a.is_android||a.is_safari)&&a.enableWindowClickHook(),a.Dispatch("OnLoad");},a.systemVoicesReady=function(c){a.systemvoices=c,a.mapRVs(),null!=a.OnVoiceReady&&a.OnVoiceReady.call(),a.Dispatch("OnReady"),window.hasOwnProperty("dispatchEvent")&&window.dispatchEvent(new Event("ResponsiveVoice_OnReady"));},a.enableFallbackMode=function(){a.fallbackMode=!0,a.forcedFallbackMode=!0,console.log("RV: Enabling fallback mode"),a.mapRVs(),null!=a.OnVoiceReady&&a.OnVoiceReady.call(),a.Dispatch("OnReady"),window.hasOwnProperty("dispatchEvent")&&window.dispatchEvent(new Event("ResponsiveVoice_OnReady")),a.Dispatch("OnServiceSwitched");},a.getVoices=function(){for(var d=[],b=0;b<a.responsivevoices.length;b++)d.push({name:a.responsivevoices[b].name});return d;},a.speak=function(i,j,c){if(a.rvsMapped){var d=null;if(a.isPlaying())a.log("Cancelling previous speech"),a.cancel(),setTimeout(function(){a.speak(i,j,c);},50);else{i=i.replace(/["`]/gm,"'"),a.msgparameters=c||{},a.msgtext=i,a.msgvoicename=j,a.onstartFired=!1;var o=[];if(i.length>a.CHARACTER_LIMIT){for(var k=i;k.length>a.CHARACTER_LIMIT;){var p=k.search(/([:!\u00a1?\u00bf;\(\)\[\]\u2014\u00ab\u00bb\n]+|\.[^0-9]+)/),q="";if((-1==p||p>=a.CHARACTER_LIMIT)&&(p=k.search(/,[^0-9]+/)),-1==p||p>=a.CHARACTER_LIMIT){var r=k.split(" ");for(p=0;p<r.length;p++){if(q.length+r[p].length+1>a.CHARACTER_LIMIT){r[p].length>=a.CHARACTER_LIMIT&&(q+=r[p].substr(0,a.CHARACTER_LIMIT-q.length-1));break;}q+=(0==p?"":" ")+r[p];}}else q=k.substr(0,p+1);k=k.substr(q.length,k.length-q.length),o.push(q);}0<k.length&&o.push(k);}else o.push(i);if(console.log(o),a.multipartText=o,null==j?(p=a.default_rv,a.setDefaultVoice(p.name)):p=a.getResponsiveVoice(j),!0===p.deprecated&&console.warn("ResponsiveVoice: Voice "+p.name+" is deprecated and will be removed in future releases"),k={},null!=p.mappedProfile)k=p.mappedProfile;else if(k.systemvoice=a.getMatchedVoice(p),k.collectionvoice={},null==k.systemvoice)return void console.log("RV: ERROR: No voice found for: "+j);if(a.checkSpeechAllowed()){for(a.fallbackMode&&0<a.fallback_audiopool.length&&a.clearFallbackPool(),a.msgprofile=k,a.log("Voice picked: "+a.msgprofile.systemvoice.name),a.utterances=[],a.fallbackChunks=[],p=0;p<o.length;p++)if(!a.fallbackMode&&a.getServiceEnabled(a.services.NATIVE_TTS))a.log("Using SpeechSynthesis"),d=a.services.NATIVE_TTS,q=new SpeechSynthesisUtterance,q.voiceURI=k.systemvoice.voiceURI,q.volume=a.selectBest([k.collectionvoice.volume,k.systemvoice.volume,1]),q.rate=a.selectBest([a.iOS9plus?1:null,k.collectionvoice.rate,k.systemvoice.rate,1]),q.pitch=a.selectBest([k.collectionvoice.pitch,k.systemvoice.pitch,1]),q.text=o[p],q.lang=a.selectBest([k.collectionvoice.lang,k.systemvoice.lang]),q.rvIndex=p,q.rvTotal=o.length,0==p&&(q.onstart=a.speech_onstart),a.msgparameters.onendcalled=!1,null==c?(a.log("No Params received for current Utterance"),q.voice=k.systemvoice,q.onend=a.speech_onend,q.onboundary=a.onboundary,q.onerror=function(c){a.log("RV: Unknow Error"),a.log(c);}):(q.voice="undefined"==typeof c.voice?k.systemvoice:c.voice,p<o.length-1&&1<o.length?(q.onend=a.onPartEnd,q.hasOwnProperty("addEventListener")&&q.addEventListener("end",a.onPartEnd)):(q.onend=a.speech_onend,q.hasOwnProperty("addEventListener")&&q.addEventListener("end",a.speech_onend)),q.onerror=c.onerror||function(c){a.log("RV: Unknow Error"),a.log(c);},c.rate=a.validateParameters(c,"rate"),c.pitch=a.validateParameters(c,"pitch"),c.volume=a.validateParameters(c,"volume"),q.onpause=c.onpause,q.onresume=c.onresume,q.onmark=c.onmark,q.onboundary=c.onboundary||a.onboundary,q.pitch=null==c.pitch?q.pitch:c.pitch,q.rate=a.iOS?(null==c.rate?1:c.rate*c.rate)*q.rate:(null==c.rate?1:c.rate)*q.rate,q.volume=null==c.volume?q.volume:c.volume),a.utterances.push(q),0==p&&(a.currentMsg=q),console.log(q),a.tts_speak(q);else if(a.fallbackMode&&a.getServiceEnabled(a.services.FALLBACK_AUDIO)){d=a.services.FALLBACK_AUDIO,a.fallback_playbackrate=a.def_fallback_playbackrate,q=a.selectBest([k.collectionvoice.pitch,k.systemvoice.pitch,1]),r=a.selectBest([a.iOS9plus?1:null,k.collectionvoice.rate,k.systemvoice.rate,1]);var s=a.selectBest([k.collectionvoice.volume,k.systemvoice.volume,1]);if(null!=c){q*=null==c.pitch?1:c.pitch,r*=null==c.rate?1:c.rate,s*=null==c.volume?1:c.volume;var t=c.extraParams||null;}q/=2,r/=2,s*=2,q=Math.min(Math.max(q,0),1),r=Math.min(Math.max(r,0),1),s=Math.min(Math.max(s,0),1),q=a.fallbackServicePath+"?t="+encodeURIComponent(o[p])+"&tl="+(k.collectionvoice.lang||k.systemvoice.lang||"en-US")+"&sv="+(k.collectionvoice.service||k.systemvoice.service||"")+"&vn="+(k.collectionvoice.voicename||k.systemvoice.voicename||"")+"&pitch="+q.toString()+"&rate="+r.toString()+"&vol="+s.toString(),void 0!==k.collectionvoice.gender&&(q+="&gender="+k.collectionvoice.gender),t&&(q+="&extraParams="+JSON.stringify(t)),a.fallbackChunks.push({text:o[p],url:q,audio:null});}a.fallbackMode&&a.getServiceEnabled(a.services.FALLBACK_AUDIO)&&(a.fallbackChunkIndex=0,a.fallback_startPart()),a.log("Service used: "+d);}else a.scheduledSpeak={text:i,voicename:j,parameters:c};}}else setTimeout(function(){a.speak(i,j,c);},15);},a.startTimeout=function(e,b){var c=a.msgprofile.collectionvoice.timerSpeed;null==a.msgprofile.collectionvoice.timerSpeed&&(c=1),0>=c||(a.timeoutId=setTimeout(b,a.getEstimatedTimeLength(e,c)),a.log("Timeout ID: "+a.timeoutId));},a.checkAndCancelTimeout=function(){null!=a.timeoutId&&(clearTimeout(a.timeoutId),a.timeoutId=null);},a.speech_timedout=function(){a.cancel(),a.cancelled=!1,a.speech_onend();},a.speech_onend=function(){a.checkAndCancelTimeout(),!0===a.cancelled?a.cancelled=!1:(a.log("on end fired"),null!=a.msgparameters&&null!=a.msgparameters.onend&&1!=a.msgparameters.onendcalled&&(a.log("Speech on end called  -"+a.msgtext),a.msgparameters.onendcalled=!0,a.msgparameters.onend()));},a.speech_onstart=function(){a.onstartFired||(a.onstartFired=!0,a.log("Speech start"),(a.iOS||a.is_safari||a.useTimer)&&(a.fallbackMode||a.startTimeout(a.msgtext,a.speech_timedout)),a.msgparameters.onendcalled=!1,null!=a.msgparameters&&null!=a.msgparameters.onstart&&a.msgparameters.onstart());},a.fallback_startPart=function(){0==a.fallbackChunkIndex&&a.speech_onstart(),a.fallback_updateChunksBuffer(),a.fallback_audio=a.fallbackChunks[a.fallbackChunkIndex].audio,null==a.fallback_audio?a.log("RV: Fallback Audio is not available"):(function(){var d=a.fallback_audio;if(setTimeout(function(){d.playbackRate=a.fallback_playbackrate;},50),d.onloadedmetadata=function(){d.playbackRate=a.fallback_playbackrate;},2<=d.readyState)d.play();else{var b=function(){d.play(),d.removeEventListener("canplaythrough",b);};d.addEventListener("canplaythrough",b,!1);}}(),a.fallback_errors&&(a.log("RV: Speech cancelled due to errors"),a.speech_onend()),a.fallback_audio.addEventListener("ended",a.fallback_finishPart),a.useTimer&&a.startTimeout(a.multipartText[a.fallbackChunkIndex],a.fallback_finishPart));},a.isFallbackAudioPlaying=function(){var d;for(d=0;d<a.fallback_audiopool.length;d++){var e=a.fallback_audiopool[d];if(!e.paused&&!e.ended&&e.currentTime!=e.duration)return!0;}return!1;},a.fallback_finishPart=function(){a.isFallbackAudioPlaying()?(a.checkAndCancelTimeout(),a.timeoutId=setTimeout(a.fallback_finishPart,1E3*(a.fallback_audio.duration-a.fallback_audio.currentTime))):(a.checkAndCancelTimeout(),a.fallbackChunkIndex<a.fallbackChunks.length-1?(a.fallbackChunkIndex++,a.fallback_startPart()):a.speech_onend());},a.cancel=function(){a.checkAndCancelTimeout(),a.fallbackMode?(null!=a.fallback_audio&&a.fallback_audio.pause(),a.clearFallbackPool()):(a.cancelled=!0,speechSynthesis.cancel());},a.voiceSupport=function(){return"speechSynthesis"in window;},a.OnFinishedPlaying=function(){null!=a.msgparameters&&null!=a.msgparameters.onend&&a.msgparameters.onend()},a.setDefaultVoice=function(d){if(a.rvsMapped){var b=a.getResponsiveVoice(d);null!=b&&(a.default_rv=b);}else setTimeout(function(){a.setDefaultVoice(d);},15);},a.mapRVs=function(){if("object"==typeof navigator){var e,g="anguage",i=navigator;i=(e=i["l"+g+"s"],e&&e.length?e:(g=i["l"+g]||i["browserL"+g]||i["userL"+g])?[g]:g);}else i=void 0;for(e=i[0],g=0;g<a.responsivevoices.length;g++){i=a.responsivevoices[g];for(var j,l=0;l<i.voiceIDs.length;l++)if(j=a.voicecollection[i.voiceIDs[l]],1!=j.fallbackvoice){var m=a.getSystemVoice(j.name);if(a.forcedFallbackMode&&(m=null),a.iOS12_0&&i.lang.toLowerCase()!=e.toLowerCase()&&i.lang.toLowerCase().split("-")[0]!=e.toLowerCase()&&(m=null),null!=m){i.mappedProfile={systemvoice:m,collectionvoice:j};break;}}else{i.mappedProfile={systemvoice:{},collectionvoice:j};break;}}a.rvsMapped=!0;},a.getMatchedVoice=function(e){for(var b,f=0;f<e.voiceIDs.length;f++)if(b=a.getSystemVoice(a.voicecollection[e.voiceIDs[f]].name),null!=b)return b;return null;},a.getSystemVoice=function(e){var b=String.fromCharCode(160),c=e.replace(/\s+| /g,"");if("undefined"==typeof a.systemvoices||null===a.systemvoices)return null;for(var d=0;d<a.systemvoices.length;d++)if(0===a.systemvoices[d].name.localeCompare(e)||0===a.systemvoices[d].name.replace(/\s+| /g,"").replace(/ *\([^)]*\) */g,"").localeCompare(c))return a.systemvoices[d];return null;},a.getResponsiveVoice=function(d){for(var e=0;e<a.responsivevoices.length;e++)if(a.responsivevoices[e].name==d)return d=a.fallbackMode,a.fallbackMode=!(!0!==a.responsivevoices[e].mappedProfile.collectionvoice.fallbackvoice&&!0!==a.forcedFallbackMode),d!=a.fallbackMode&&(a.mapRVs(),a.Dispatch("OnServiceSwitched")),a.responsivevoices[e];return null;},a.Dispatch=function(e){if(a.hasOwnProperty(e+"_callbacks")&&null!=a[e+"_callbacks"]&&0<a[e+"_callbacks"].length){for(var b=a[e+"_callbacks"],c=0;c<b.length;c++)b[c]();return!0;}var f=e+"_callbacks_timeout",g=e+"_callbacks_timeoutCount";return a.hasOwnProperty(f)||(a[g]=10,a[f]=setInterval(function(){--a[g],(a.Dispatch(e)||0>a[g])&&clearTimeout(a[f]);},50)),!1;},a.AddEventListener=function(d,b){a.hasOwnProperty(d+"_callbacks")||(a[d+"_callbacks"]=[]),a[d+"_callbacks"].push(b);},a.addEventListener=a.AddEventListener,a.RemoveEventListener=function(d,b){a[d+"_callbacks"]&&-1!=a[d+"_callbacks"].indexOf(b)&&a[d+"_callbacks"].splice(a[d+"_callbacks"].indexOf(b),1);},a.clickEvent=function(){a.log("Click event"),a.click_event_detected=!0,a.initializePermissions(),a.userInteractionEvents.forEach(function(c){window.removeEventListener(c,a.clickEvent,!1);}),a.Dispatch("OnClickEvent");},a.initializePermissions=function(){if(a.iOS&&!a.iOS_initialized){a.log("Initializing iOS click event");var c=new SpeechSynthesisUtterance(" ");speechSynthesis.speak(c),a.iOS_initialized=!0;}a.is_android&&!a.android_initialized&&(a.log("Initializing Android click event"),c=new SpeechSynthesisUtterance(" "),speechSynthesis.speak(c)),a.initFallbackPool();},a.isPlaying=function(){return a.fallbackMode?null!=a.fallback_audio&&!a.fallback_audio.ended&&!a.fallback_audio.paused:speechSynthesis.speaking;},a.clearFallbackPool=function(){for(var c=0;c<a.fallback_audiopool.length;c++)null!=a.fallback_audiopool[c]&&(a.fallback_audiopool[c].pause(),a.fallback_audiopool[c].src="");a.fallback_audiopool_index=0,a.fallbackChunks=[];},a.initFallbackPool=function(){if(!a.fallback_audiopool||0==a.fallback_audiopool.length){for(var e=0;10>e;e++){var f=e,c=document.createElement("AUDIO");c.preload="auto",a.is_android&&(c.src="",c.load(),9==f&&(a.log("Android HTML audio initialized"),a.android_initialized=!0)),a.iOS&&(c.src="",c.load(),9==f&&(a.log("iOS HTML audio initialized"),a.iOS_initialized=!0)),a.fallback_audiopool.push(c);}a.fallback_audiopool_index=0;}},a.allowSpeechClicked=function(c){a.allowSpeechDiv.parentNode.removeChild(a.allowSpeechDiv),a.allowSpeechDiv=null,(a.speechAllowedByUser=c)&&(a.clickEvent(),a.scheduledSpeak&&(a.speak(a.scheduledSpeak.text,a.scheduledSpeak.voicename,a.scheduledSpeak.parameters),a.scheduledSpeak=null)),a.Dispatch("OnAllowSpeechClicked");},a.checkSpeechAllowed=function(d){if(0==a.speechAllowedByUser)return!1;if((a.is_android||a.iOS||a.is_safari&&(a.fallbackMode||a.forcedFallbackMode))&&!a.click_event_detected){if(a.allowSpeechDiv)return;if(a.allowSpeechDiv_appearances=null==a.allowSpeechDiv_appearances?1:++a.allowSpeechDiv_appearances,2<a.allowSpeechDiv_appearances)return console.log("ResponsiveVoice: Speech not allowed by user"),!1;var e=document.createElement("style");return e.innerHTML=".rvNotification{position:fixed;background-color:#fff;text-align:center;font-family:-apple-system,system-ui,BlinkMacSystemFont,\"Segoe UI\",Roboto,\"Helvetica Neue\",Arial,sans-serif;font-weight:400;line-height:1.5;box-shadow:0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);z-index:10000;width:100vw;left:0;bottom:0;font-size:1rem;padding-bottom:.5em;padding-right:.5em}.rvButtonRow{padding-right:2em;padding-bottom:1em;text-align:right;font-size:medium}.rvButton{cursor:pointer;display:inline-block;margin-left:1em;padding:.8em 2em;border-radius:3px;font-size:small}.rvButtonAllow{border:none;background-color:#2b8cff;color:#fff}.rvButtonDeny{border:1px solid #2b8cff;color:#2b8cff;background-color:#fff}.rvTextRow{padding-top:1em;padding-bottom:2em}@media (min-width:576px){.rvNotification{width:60vw;left:20vw}}@media (min-width:768px){.rvNotification{width:50vw;left:25vw}}@media (min-width:992px){.rvNotification{width:40vw;left:30vw}}@media (min-width:1200px){.rvNotification{width:30vw;left:35vw}}",document.body.appendChild(e),a.allowSpeechDiv=document.createElement("div"),a.allowSpeechDiv.classList.add("rvNotification"),null==d&&(d={}),a.allowSpeechDiv.innerHTML="<div class=\"rvTextRow\"><strong>"+(null==d.urlOverride?window.location.hostname:d.urlOverride)+"</strong> "+(null==d.textOverride?"wants to play speech":d.textOverride)+"</div><div class=\"rvButtonRow\"><div onclick=\"responsiveVoice.allowSpeechClicked(false);\" class=\"rvButton rvButtonDeny\">DENY</div><div onclick=\"responsiveVoice.allowSpeechClicked(true);\" class=\"rvButton rvButtonAllow\">ALLOW</div></div>",document.body.appendChild(a.allowSpeechDiv),!1;}return!0;},a.fallback_audioPool_getAudio=function(){return a.initFallbackPool(),a.fallback_audiopool_index>=a.fallback_audiopool.length&&(a.fallback_audiopool_index=0),a.fallback_audiopool[a.fallback_audiopool_index++];},a.fallback_updateChunksBuffer=function(){for(var d,e=a.fallbackChunkIndex;e<Math.min(a.fallbackChunks.length,a.fallbackChunkIndex+a.fallbackBufferLength);e++)d=a.fallbackChunks[e],null==d.audio&&(d.audio=a.fallback_audioPool_getAudio(),d.audio.src=d.url,d.audio.playbackRate=a.fallback_playbackrate,d.audio.preload="auto",d.audio.load());},a.selectBest=function(c){for(var a=0;a<c.length;a++)if(null!=c[a])return c[a];return null;},a.pause=function(){a.fallbackMode?null!=a.fallback_audio&&a.fallback_audio.pause():speechSynthesis.pause();},a.resume=function(){a.fallbackMode?null!=a.fallback_audio&&a.fallback_audio.play():speechSynthesis.resume();},a.tts_speak=function(c){setTimeout(function(){a.cancelled=!1,speechSynthesis.speak(c);},.01);},a.setVolume=function(d){if(a.isPlaying())if(a.fallbackMode){for(var b=0;b<a.fallback_audiopool.length;b++)a.fallback_audiopool[b].volume=d;a.fallback_audio.volume=d;}else for(b=0;b<a.utterances.length;b++)a.utterances[b].volume=d;},a.onPartEnd=function(c){null!=a.msgparameters&&null!=a.msgparameters.onchuckend&&a.msgparameters.onchuckend(),a.Dispatch("OnPartEnd"),c=a.utterances.indexOf(c.utterance),a.currentMsg=a.utterances[c+1];},a.onboundary=function(){a.log("On Boundary"),a.iOS&&!a.onstartFired&&a.speech_onstart();},a.numToWords=function(g){function i(d){if(Array.isArray(d)){for(var a=0,e=Array(d.length);a<d.length;a++)e[a]=d[a];return e;}return Array.from(d);}var j=function(){return function(i,a){if(Array.isArray(i))return i;if(Symbol.iterator in Object(i)){var b,j=[],c=!0,k=!1;try{for(var l,m=i[Symbol.iterator]();!(c=(l=m.next()).done)&&(j.push(l.value),!a||j.length!==a);c=!0);}catch(a){k=!0,b=a;}finally{try{!c&&m["return"]&&m["return"]();}finally{if(k)throw b;}}return j;}throw new TypeError("Invalid attempt to destructure non-iterable instance");};}(),c=function(b){return 0===b.length;},d=function(c){return function(a){return a.slice(0,c);};},h=function(c){return function(a){return a.slice(c);};},b=function(d){return function(a){return function(b){return d(a(b));};};},e=["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"],f=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"],k=["","thousand","million","billion","trillion","quadrillion","quintillion","sextillion","septillion","octillion","nonillion"];return"number"==typeof g?a.numToWords(g+""):"0"===g?"zero":b(function e(f){return function(a){return c(a)?[]:[d(f)(a)].concat(i(e(f)(h(f)(a))));};}(3))(function(b){return b.slice(0).reverse();})(Array.from(g)).map(function(d){var g=j(d,3);d=g[0];var h=g[1];return g=g[2],[0===(+g||0)?"":e[g]+" hundred ",0===(+d||0)?f[h]:f[h]&&f[h]+" "||"",e[h+d]||e[d]].join("");}).map(function(c,a){return""===c?c:c+" "+k[a];}).filter(b(function(b){return!b;})(c)).reverse().join(" ").trim();},a.getWords=function(e){e=e.replace(/$|\u00a5|\u20a1|\u20ac|\u00a3|\u20aa|\u20b9|\uffe5|\u17db|\u20a9|\u20a6|\u0e3f|\u20b4|\u20ab/gi," dummy currency ");var f=e.split(/(\s*[\s,]\s*|\?|;|:|\.|\(|\)|!)/);f=f.filter(function(b){return /[^\s]/.test(b);});for(var g=0;g<f.length;g++)null!=(e=f[g].toString().match(/\d+/))&&(f.splice(g,1),a.numToWords(+e[0]).split(/\s+/).map(function(b){f.push(b);}));return f;},a.getEstimatedTimeLength=function(e,b){var i=a.getWords(e),d=0,j=a.fallbackMode?1300:700;b=b||1,i.map(function(b){d+=(b.toString().match(/[^ ]/igm)||b).length;});var k=i.length,f=1E3*(60/a.WORDS_PER_MINUTE*b)*k;return 5>k&&(f=b*(j+50*d)),a.log("Estimated time length: "+f+" ms, words: ["+i+"], charsCount: "+d),f;},a.validateParameters=function(d,a){if("undefined"==typeof d[a])return d[a];switch(a){case"rate":case"pitch":case"volume":var c=+d[a];isNaN(c)&&console.warn("ResponsiveVoice: the parameter "+a+" has a wrong value \""+d[a]+"\". Defaults were used."),d[a]=isNaN(c)?"1":d[a];}return d[a];},a.services={NATIVE_TTS:0,FALLBACK_AUDIO:1},a.servicesPriority=[0,1],a.servicesEnabled=[],a.setServiceEnabled=function(d,b){a.servicesEnabled[d]=b;},a.getServiceEnabled=function(c){return a.servicesEnabled[c]||!1;},a.setServiceEnabled(a.services.NATIVE_TTS,!0),a.setServiceEnabled(a.services.FALLBACK_AUDIO,!0),a.forceFallbackMode=function(c){a.forcedFallbackMode=c,a.fallbackMode=c,a.mapRVs(),a.Dispatch("OnServiceSwitched");},a.enableWindowClickHook=function(){a.userInteractionEvents.forEach(function(c){window.addEventListener(c,a.clickEvent,!1);});},"interactive"===document.readyState?a.init():document.addEventListener("DOMContentLoaded",function(){a.init();});},responsiveVoice=new ResponsiveVoice;
+
+window.onload = function(){
+	var div_voice = null;
+	function drawBorderAroundSelection(e) {
+		if (e.target.parentNode.className != 'voice') {
+			$('.rect').remove();
+		}
+
+		var selection = window.getSelection(); // get the selection then
+		if (selection.anchorNode) {
+			var range = selection.getRangeAt(0);  // the range at first selection group
+			var rect = range.getBoundingClientRect(); // and convert this to useful data
+
+			if (rect.width > 0 && window.getSelection().toString().length > 2) {
+
+
+				window.selectedvoicetext = window.getSelection().toString();
+				div_voice = document.createElement('div'); // make box
+				div_voice.classList.add('rect');
+				div_voice.setAttribute("id", "voice_el");
+				div_voice.style.top = rect.top + 'px'; // set coordinates
+				div_voice.style.zIndex  = 999; // Z-Index
+				div_voice.style.left = rect.left + 'px';
+				div_voice.style.position = 'fixed'; // fixed positioning = easy mode
+				div_voice.innerHTML = '<span class="voice"><img id="voice_img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgOTAgOTAiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDkwIDkwOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGNsYXNzPSIiPjxnPjxnPgoJPHBhdGggc3R5bGU9ImZpbGw6I0ZGRkZGRiIgZD0iTTgxLjExNCwzMC4xNDZDNzMuMTk2LDExLjcyNSw2MC40NTYtMi4zMDYsNTQuMDA5LDAuMzE2QzQzLjA2Miw0Ljc2NSw2MC41MywyNi4xMzMsNi43NzQsNDcuOTg0ICAgYy00LjY0MywxLjg4Ny01LjgyLDkuNDQxLTMuODc3LDEzLjk1N2MxLjkzOSw0LjUxNSw4LjI5MSw5LjAxLDEyLjkzNiw3LjEyM2MwLjgwMy0wLjMyNiwzLjc1NC0xLjI3NSwzLjc1NC0xLjI3NSAgIGMzLjMxNiw0LjQ1LDYuNzg3LDEuODExLDguMDE4LDQuNjM5YzEuNDc5LDMuMzk4LDQuNjk3LDEwLjc4NSw1Ljc4OSwxMy4yOThjMS4wOTYsMi41MTEsMy41NzYsNC44MzcsNS4zNzcsNC4xNTMgICBjMS43OTUtMC42ODQsNy45MS0zLjAxMSwxMC4yNS0zLjkwMWMyLjMzOC0wLjg5LDIuODk2LTIuOTc0LDIuMTgyLTQuNjE5Yy0wLjc3MS0xLjc3Mi0zLjkzMi0yLjI5Mi00LjgzMi00LjM2ICAgYy0wLjkwMi0yLjA2OC0zLjg0OC04LjY5Ni00LjY5NS0xMC43ODVjLTEuMTUyLTIuODQxLDEuMjk1LTUuMTUyLDQuODUtNS41MjJjMjQuNDY3LTIuNTUsMjkuMDQxLDEyLjU2MSwzNy4zNzEsOS4xNzMgICBDOTAuMzQzLDY3LjI0Myw4OS4wMyw0OC41NjgsODEuMTE0LDMwLjE0NnogTTc4LjM1OCw2MC4wM2MtMS40MzIsMC41ODItMTEuMDYxLTcuMDEzLTE3LjIxNS0yMS4zMzQgICBjLTYuMTUyLTE0LjMxOC01LjM3OS0yNy40MDgtMy45NDktMjcuOTg5YzEuNDMtMC41ODIsMTAuODIyLDguNTgsMTYuOTc1LDIyLjg5OEM4MC4zMjEsNDcuOTIzLDc5Ljc5LDU5LjQ0OCw3OC4zNTgsNjAuMDN6IiBkYXRhLW9yaWdpbmFsPSIjMDMwMTA0IiBjbGFzcz0iYWN0aXZlLXBhdGgiIGRhdGEtb2xkX2NvbG9yPSIjZmZmZmZmIj48L3BhdGg+CjwvZz48L2c+IDwvc3ZnPg==" /></span>';
+				document.body.appendChild(div_voice); // finally append
+			}
+		}
+	}
+	window.onmouseup = drawBorderAroundSelection;
+};
+$(document).on('click', '#voice_el', function(){
+	responsiveVoice.cancel();
+	responsiveVoice.speak(window.selectedvoicetext, 'Russian Female');
+});
+// const voice_btn = getElementById('voice_el');
+// console.log(voice_btn);
+// voice_btn.onclick = function() {
+
+// };
+
+
+jQuery(document).ready(function($) {
+
+	$(document).on("click", '.react', function(evt) {
+		alert('test');
+	});
+	var countnum = 1;
+
+	$("#callBackForm").validate({
+		rules: {
+			'phone': {
+				minlength: 8
+			}
+		}
+	});
+
+	$('input#phone').inputmask({"mask": "+(999) 99 999-99-99", showMaskOnHover: false});
+
+	$('.sortDate').change(function(e) {
+		$('.sbmt').addClass('active');
+	});
+
+	if($('header nav .container .wrap ul li.active .drop').is(":visible")) {
+		//$('header').css('padding-bottom', '50px');
+	}
+
+	$('.sidebarFormDeposits .reset').click(function(e) {
+		e.preventDefault();
+		$('select').val(null).trigger("change");
+	});
+
+
+	//** tabs **/
+	$('.pageYurLisa .content__wraps--menu ul li').each(function(e){
+		var indexTabLink = e+1;
+		tab = $(this);
+		tab.click(function(){
+			$('.pageYurLisa .content__wraps--menu ul li').removeClass('active');
+			$(this).addClass('active');
+			$('.pageYurLisa .content__wraps--content .content__wraps--content--padding').each(function(i){
+				var indexTabContent = i+1;
+				if(indexTabLink == indexTabContent){
+					$('.pageYurLisa .content__wraps--content .content__wraps--content--padding').removeClass('active');
+					$(this).addClass('active');
+				}
+			});
+		});
+	});
+
+
+	// active sidemenu
+	$('.sidebarMenu ul li').each(function(index, el) {
+		var menutitle = $(this).find('a').text();
+		var headingtitle = $('.headingtitle').text();
+		if(menutitle == headingtitle) {
+			$(this).addClass('active');
+		}
+	});
+
+
+	// read more docs
+    function ItemLengthHide(element,hidebtnclass) {
+    	$(element).each(function(index, el) {
+	   		if(index >= 12) {
+	   			$(this).hide();
+	   		}
+	   		if (index < 12) {
+	   			$(hidebtnclass).hide();
+	   		}
+	   		else {
+	   			$(hidebtnclass).show();
+	   		}
+	    });
+    }
+
+    function ItemLengthHideWithSelect(element,hidebtnclass,valueselect) {
+    	$('.sectionDownloadList .item').hide().filter(function() {
+	    	var v = $(this).data('year');
+	    	return v == valueselect;
+	    }).show();
+    	$('.sectionDownloadList .item:visible').each(function(index, el) {
+	   		if(index >= 12) {
+	   			$(this).hide();
+	   		}
+	   		if (index < 12) {
+	   			$(hidebtnclass).hide();
+	   		}
+	   		else {
+	   			$(hidebtnclass).show();
+	   		}
+	    });
+    }
+
+    // hide dropTwo
+    if($('.dropTwo').length) {
+    	$('.drop .more').show();
+    }
+    else {
+    	$('.drop .more').hide();
+    }
+
+
+    ItemLengthHide('.sectionDownloadList__tabsContent--tabContent.active .item','.sectionDownloadList__tabsContent .btnLoadMore');
+    $('.sectionDownloadList__tabsLinks--tabLink').click(function(e) {
+    	e.preventDefault();
+    	ItemLengthHide('.sectionDownloadList__tabsContent--tabContent.active .item','.sectionDownloadList__tabsContent .btnLoadMore');
+    });
+
+    $('.sectionDownloadList__tabsContent .btnLoadMore').click(function(e) {
+    	e.preventDefault();
+    	countnum++;
+    	$(this).attr('data-counter', countnum);
+
+    	var activelist = 12*countnum;
+	    for (var i = 0; i < activelist; i++) {
+	       $('.sectionDownloadList__tabsContent--tabContent.active .item').eq(i).show();
+	    }
+
+	    var item_length = $('.sectionDownloadList__tabsContent--tabContent.active .item').length - 1;
+	    if(item_length < activelist) {
+		    $(this).hide();
+		    countnum = 1;
+		}
+    });
+
+    /*=============================================================================================*/
+
+    $('.sectionDownloadList .btnLoadMore').click(function(e) {
+    	e.preventDefault();
+    	countnum++;
+    	$(this).attr('data-counter', countnum);
+
+    	var activelist = 12*countnum;
+	    for (var i = 0; i < activelist; i++) {
+	       $('.sectionDownloadList .item').filter('[data-year="'+$('.sortDate').val()+'"]').eq(i).show();
+	    }
+
+	    var item_length = $('.sectionDownloadList .item').filter('[data-year="'+$('.sortDate').val()+'"]').length - 1;
+	    if(item_length < activelist) {
+		    $(this).hide();
+		    countnum = 1;
+		}
+    });
+    /*=============================================================================================*/
+
+	// Sort Doc by date
+	if($('.sortWraps select').length) {
+		$('.sortWraps select').change(function(e) {
+			var val = $(this).val();
+			if (val != 'all') {
+				ItemLengthHideWithSelect('.sectionDownloadList .item','.sectionDownloadList .btnLoadMore', val);
+		    }
+		    else {
+		    	$('.sectionDownloadList .item').show();
+		    }
+
+		});
+
+		$('.sortWraps select').trigger('change');
+	}
+
+
+	// Sort Doc by date2
+	if($('.BankNumbers-select .sortWraps select').length) {
+		$('.BankNumbers-select select').change(function(e) {
+			var val = $(this).val();
+			if (val != 'all') {
+				$('.bankNumbers__content').hide().filter(function() {
+			    	var v = $(this).data('year');
+			    	if(v == val) {
+			    		$(this).addClass('active');
+			    	}
+			    	return v == val;
+			    }).show();
+			}
+			else {
+				$('.bankNumbers__content').show();
+			}
+
+		});
+		$('.BankNumbers-select select').trigger('change');
+	}
+
+
+	// Print Page
+	$('.iconsPrint a:eq(2)').click(function(event) {
+        $('.breadcrumbs ~ section, .breadcrumbs ~ div').printThis({
+        	importCSS: false,
+        });
+    });
+
+
+	// calback
+    $(".callBackBlock form").validate({
+		rules: {
+			'phone': {
+				minlength: 8
+			}
+		}
+	});
+	$('.callBackBlock form input[type="text"]').inputmask({"mask": "+(999) 99 999-99-99", showMaskOnHover: false});
+
+	// datepicker
+
+	// Ajax Load More
+    var countmore = parseInt($('.sectionAdsList__container .btnLoadMore, .gridVideoLists--btns .btnLoadMore').data('showing'));
+    $('.sectionAdsList__container .btnLoadMore, .gridVideoLists--btns .btnLoadMore').click(function(e) {
+    	e.preventDefault();
+    	var cur = $(this);
+    	countmore++;
+    	var iblock = parseInt($(this).data('iblock'));
+    	var section_id = parseInt($(this).data('section'));
+    	// news
+    	$.ajax({
+			type: 'POST',
+			url: '/api/for-bussclasifields/',
+			data: {counter:countmore,iblock:iblock,section_id:section_id},
+			dataType: 'html',
+			beforeSend : function(){
+
+			},
+			success: function(result){
+				if(result.length && result.length != 3) {
+					$('.ajaxdata').empty();
+					$('.ajaxdata').append(result);
+				}
+				else {
+					cur.hide();
+				}
+		    }
+		});
+    });
+
+    // Ajax Call back
+    $('.callBackBlock form').submit(function(e) {
+    	e.preventDefault();
+    	var curf = $(this);
+    	var phone = curf.find('input[name="phone"]').val();
+
+    	$.ajax({
+			type: 'POST',
+			url: '/api/callback/',
+			data: {phone:phone},
+			dataType: 'json',
+			beforeSend : function(){
+
+			},
+			success: function(result){
+				$('.msg').remove();
+				if(result) {
+					if(result.status == 'success') {
+						$('<div class="msg successclass">'+result.message+'</div>').insertBefore(curf);
+						curf[0].reset();
+					}
+					else {
+						$('<div class="msg errorclass">'+result.message+'</div>').insertBefore(curf);
+					}
+					$('.callBackBlock .wrap form input[type="text"]').removeAttr('style');
+				}
+				else {
+					$('.callBackBlock .wrap form input[type="text"]').css('border','1px solid red');
+				}
+		    }
+		});
+    });
+
+
+    // functions and bio
+    $('.boardBankList .boardBankList--container .boardBankList--wrap .boardBankList--list .boardBankList--item .item--wraps').each(function(){
+    	$('.boardBankList .boardBankList--container .boardBankList--wrap .boardBankList--list .boardBankList--item .item--wraps .boardBankList--button .button--left a').each(function(e){
+
+    		$(this).click(function(){
+    			$('.boardBankList .boardBankList--container .boardBankList--wrap .boardBankList--list .boardBankList--item .item--wraps .boardBankList--button .button--left a').removeClass('active');
+    			$(this).addClass('active');
+    			$('.boardBankList .boardBankList--container .boardBankList--wrap .boardBankList--list .boardBankList--item .item--wraps .boardBankList--descriptions .boardBankList--description').each(function(a){
+    				if(e==a){
+    					$('.boardBankList .boardBankList--container .boardBankList--wrap .boardBankList--list .boardBankList--item .item--wraps .boardBankList--descriptions .boardBankList--description').hide();
+    					$(this).toggle();
+    				}
+    			});
+    		});
+
+    	});
+    });
+
+
+    // filter by region ex: city id as region value id
+    function filterRegion(city_el,region_el) {
+    	$(city_el).change(function(e) {
+    		var city = $(this).val();
+    		$(region_el+' option').hide().filter(function(index) {
+    			return $(this).val().slice(0,4) == city;
+    		}).show();
+    	});
+    }
+
+    // filter city
+ 	filterRegion('#city','#region');
+ 	filterRegion('#city2','#region2');
+
+ 	// login page
+ 	var allInput = '.moduleAuthorizationForm .container .wrap .moduleAuthorizationForm__wrap .moduleAuthorizationForm--contents .moduleAuthorizationForm--content .moduleAuthorizationForm--content--item .moduleAuthorizationForm--content--item--wraps input,' + '.CreditSmall-formpage input';
+	$(allInput).blur(function() {
+		if ($(this).val() !== '') {
+			$(this).addClass('hasvalue');
+		} else {
+			$(this).removeClass('hasvalue');
+		}
+	});
+	// add * to required field labels
+	$('.moduleRegisterForm__wrap label.required, .moduleOnlineFormCredits--contents label.required').append('&nbsp;<strong>*</strong>&nbsp;');
+
+	var current = 0;
+
+	$.validator.addMethod("pageRequired", function(value, element) {
+		var $element = $(element);
+			function match(index) {
+				return current == index && $(element).parents("#step" + (index + 1)).length;
+			}
+		if (match(0) || match(1) || match(2) || match(3)) {
+			return !this.optional(element);
+		}
+		return "dependency-mismatch";
+	}, $.validator.messages.required);
+
+
+	if ($('.singleBankCards, .moduleOnlineFormCredits').length > 0) {
+		$('.innerSection1 .btn').click(function(e) {
+			e.preventDefault();
+			$('html, body').animate({
+                scrollTop: $(".moduleOnlineFormCredits").offset().top
+            }, 2000);
+		});
+	}
+
+	$(window).resize(function(){
+		if ($(window).width() <= 680) {
+			$('.mobileMenu .dropTwo ul li').each(function(index, el) {
+				$('.mobileMenu ul:eq(0) li.active ul:eq(0)').append($(this));
+			});
+			$('.langSwitch .active > a:eq(0)').click(function(e) {
+				e.preventDefault();
+			});
+			/*$('.sidebarFormDeposits form').submit(function(e) {
+				$('html, body').animate({
+	                scrollTop: $(".sectionDepositsList").offset().top
+	            }, 1000);
+			});*/
+		}
+	});
+
+	if ($(window).width() <= 680) {
+		$('.mobileMenu .dropTwo ul li').each(function(index, el) {
+			$('.mobileMenu ul:eq(0) li.active  ul:eq(0)').append($(this));
+		});
+		$('.langSwitch .active > a:eq(0)').click(function(e) {
+			e.preventDefault();
+		});
+		/*$('.sidebarFormDeposits form').submit(function(e) {
+			$('html, body').animate({
+                scrollTop: $(".sectionDepositsList").offset().top
+            }, 1000);
+		});*/
+
+	}
+
+
+	function pdf() {
+        var pdf = new jsPDF('p', 'pt', 'a4');
+        var element = document.querySelectorAll('body');
+        var options = {
+            pagesplit: true,
+        };
+        pdf.setFontSize(24);
+        pdf.internal.scaleFactor = 3;
+        pdf.addHTML(element, options, function() {
+        	/*var blob = pdf.output("blob");
+        	var win = window.open();
+		    win.location = URL.createObjectURL(blob);
+		    win.opener = null;
+		    win.blur();*/
+		    pdf.save('uzpsb_saved_page.pdf');
+    		//window.open(URL.createObjectURL(blob));
+        });
+	}
+
+	$('.gopdf').click(function(e) {
+    	e.preventDefault();
+        pdf();
+    });
+
+	
+
+	// Currency exchange calculator start
+	function currenciesCalculatorStart() {
+		var sellingCurrElem = $("#range-slider--1"),
+			resultCurrElem = $("#range-slider--2"),
+			sellingCurrInputElem = $("#sellingCurr"),
+			resultCurrInputElem = $("#resultCurr"),
+			sellingCurrencySelect = $("select#sellSelect"),
+			resultCurrencySelect = $("select#resultSelect"),
+			sellingCurrType = sellingCurrInputElem.attr('data-currency') ? sellingCurrInputElem.attr('data-currency') : "USD",
+			resultCurrType = resultCurrInputElem.attr('data-currency') ? resultCurrInputElem.attr('data-currency') : "UZS",
+			sellingCurrency = 100,
+			reverseCurrency = parseFloat((1 / sellingCurrency).toFixed(6)),
+			minSellingCurr = 1,
+			maxSellingCurr = sellingCurrType === "UZS" ? 100000000 : 10000,
+			minResultCurr = 1,
+			maxResultCurr = resultCurrType === "UZS" ? 100000000 : 10000,
+			currenciesArr = [],
+			from1 = 1,
+			from2 = 1;
+
+		getCurrencies().done(function(data) {
+			var parsedData,	currArr;
+			if (data.length - data.lastIndexOf(",") === 2) {
+				parsedData = data.slice(0, data.lastIndexOf(",")) + data.slice(data.lastIndexOf(",") + 1, data.length);
+			} else parsedData = data;
+			parsedData = JSON.parse(parsedData);
+			currenciesArr = parsedData.splice(0, 6);
+			initSelectWithOptions("select#sellSelect", currenciesArr, sellingCurrType);
+			initSelectWithOptions("select#resultSelect", currenciesArr, resultCurrType);
+
+			currArr = getCurrencyValues(sellingCurrType, resultCurrType, currenciesArr);
+
+			sellingCurrency = parseFloat(currArr[0]);
+			reverseCurrency = parseFloat(currArr[1]);
+
+			if (sellingCurrency < reverseCurrency) {
+				maxSellingCurr = 10000 * reverseCurrency;
+				setMaxRangeValue("#range-slider--1", 10000 * reverseCurrency);
+				maxResultCurr = 10000;
+				setMaxRangeValue("#range-slider--2", 10000);
+			} else {
+				maxSellingCurr = 10000;
+				setMaxRangeValue("#range-slider--1", 10000);
+				maxResultCurr = 10000 * sellingCurrency;
+				setMaxRangeValue("#range-slider--2", 10000 * sellingCurrency);
+			}
+
+			updateInputSliderPair(resultCurrInputElem, resultCurrElem, sellingCurrency, from1);
+		});
+
+		sellingCurrElem.ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			min: minSellingCurr,
+			max: maxSellingCurr,
+			from: 1,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1,
+			force_edges: true,
+			onStart: function (data) {
+				if (sellingCurrInputElem) {
+					sellingCurrInputElem.val(data.from);
+				}
+			},
+			onChange: function (data) {
+				if (sellingCurrInputElem) {
+					sellingCurrInputElem.val(data.from);
+					updateInputSliderPair(resultCurrInputElem, resultCurrElem, sellingCurrency, data.from);
+				}
+				from1 = data.from;
+				from2 = sellingCurrency * data.from;
+			}
+		});
+
+		resultCurrElem.ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			min: minResultCurr,
+			max: maxResultCurr,
+			from: 1,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1,
+			force_edges: true,
+			onStart: function (data) {
+				if (resultCurrInputElem) {
+					resultCurrInputElem.val(data.from);
+				}
+			},
+			onChange: function (data) {
+				if (resultCurrInputElem) {
+					resultCurrInputElem.val(data.from);
+					updateInputSliderPair(sellingCurrInputElem, sellingCurrElem, reverseCurrency, data.from);
+				}
+				from1 = data.from * reverseCurrency;
+				from2 = data.from;
+			}
+		});
+
+		$("#sellingCurr").on('input', function(event) {
+			getOnlyFloatNumber(this);
+			if (event.target.value > maxSellingCurr) {
+				event.target.value = maxSellingCurr;
+			}
+			from1 = event.target.value;
+			updateSlider(sellingCurrElem, from1);
+			updateInputSliderPair(resultCurrInputElem, resultCurrElem, sellingCurrency, event.target.value);
+		});
+
+		$("#resultCurr").on('input', function(event) {
+			getOnlyFloatNumber(this);
+			if (event.target.value > maxResultCurr) {
+				event.target.value = maxResultCurr;
+			}
+			from2 = event.target.value;
+			updateSlider(resultCurrElem, from2);
+			updateInputSliderPair(sellingCurrInputElem, sellingCurrElem, reverseCurrency, event.target.value);
+		});
+
+		sellingCurrencySelect.change(function () {
+			var currArr;
+			if ($(this).val() !== sellingCurrType) {
+				if ($(this).val() === resultCurrType) {
+					currArr = getCurrencyValues(resultCurrType, sellingCurrType, currenciesArr);
+					sellingCurrency = parseFloat(currArr[0]);
+					reverseCurrency = parseFloat(currArr[1]);
+
+					resultCurrencySelect.val(sellingCurrType);
+					resultCurrType = sellingCurrType;
+				} else {
+					currArr = getCurrencyValues($(this).val(), resultCurrType, currenciesArr);
+
+					sellingCurrency = parseFloat(currArr[0]);
+					reverseCurrency = parseFloat(currArr[1]);
+				}
+
+				if (sellingCurrency > reverseCurrency) {
+					maxSellingCurr = 10000;
+					setMaxRangeValue("#range-slider--1", 10000);
+					maxResultCurr = 10000 * sellingCurrency;
+					setMaxRangeValue("#range-slider--2", 10000 * sellingCurrency);
+				} else {
+					maxSellingCurr = 10000 * reverseCurrency;
+					setMaxRangeValue("#range-slider--1", 10000 * reverseCurrency);
+					maxResultCurr = 10000;
+					setMaxRangeValue("#range-slider--2", 10000);
+				}
+				updateInputSliderPairNoDecimal(sellingCurrInputElem, sellingCurrElem, 1, from1 > maxSellingCurr ? maxSellingCurr : from1);
+				updateInputSliderPair(resultCurrInputElem, resultCurrElem, sellingCurrency, from1 > maxSellingCurr ? maxSellingCurr : from1);
+				sellingCurrType = $(this).val();
+			}
+		});
+
+		resultCurrencySelect.change(function () {
+			var currArr;
+			if ($(this).val() !== resultCurrType) {
+				if ($(this).val() === sellingCurrType) {
+					currArr = getCurrencyValues(sellingCurrType, resultCurrType, currenciesArr);
+
+					sellingCurrency = parseFloat(currArr[0]);
+					reverseCurrency = parseFloat(currArr[1]);
+
+					sellingCurrencySelect.val(resultCurrType);
+					sellingCurrType = resultCurrType;
+				} else {
+					currArr = getCurrencyValues(sellingCurrType, $(this).val(), currenciesArr);
+
+					sellingCurrency = parseFloat(currArr[0]);
+					reverseCurrency = parseFloat(currArr[1]);
+				}
+
+				if (sellingCurrency > reverseCurrency) {
+					maxSellingCurr = 10000;
+					setMaxRangeValue("#range-slider--1", 10000);
+					maxResultCurr = 10000 * sellingCurrency;
+					setMaxRangeValue("#range-slider--2", 10000 * sellingCurrency);
+				} else {
+					maxSellingCurr = 10000 * reverseCurrency;
+					setMaxRangeValue("#range-slider--1", 10000 * reverseCurrency);
+					maxResultCurr = 10000;
+					setMaxRangeValue("#range-slider--2", 10000);
+				}
+				updateInputSliderPairNoDecimal(sellingCurrInputElem, sellingCurrElem, 1, from1 > maxSellingCurr ? maxSellingCurr : from1);
+				updateInputSliderPair(resultCurrInputElem, resultCurrElem, sellingCurrency, from1 > maxSellingCurr ? maxSellingCurr : from1);
+				resultCurrType = $(this).val();
+			}
+		});
+
+		function getCurrencies() {
+			return $.ajax({
+				url: "/exchange-rate/json",
+				method: "GET",
+				error: function (request, status, error) {
+					console.log("Error on fetching currencies!");
+				}
+			});
+		}
+
+		function initSelectWithOptions(selectID, currArr, currType = "USD") {
+			var options = '';
+			if (currArr.length) {
+				currArr.forEach(function (elem) {
+					if (currType === elem.code) {
+						options += `<option value=${elem.code} selected="selected">${elem.code}</option>`;
+					}  else options += `<option value=${elem.code}>${elem.code}</option>`;
+				});
+				if (currType === "UZS") {
+					options += '<option value="UZS" selected="selected">UZS</option>';
+				} else options += '<option value="UZS">UZS</option>';
+			} else options = '<option value="USD">USD</option><option value="UZS">UZS</option>';
+			$(selectID).append(options);
+		}
+
+		function getCurrencyValue(currency, currArr, type) {
+			var curr;
+			for (var i = 0; i < currArr.length; i++) {
+				if (currArr[i].code === currency) {
+					if (type === "sell") {
+						curr = currArr[i].cell_price;
+					} else curr = currArr[i].buy_price;
+
+					break;
+				} else curr = false;
+			}
+			return curr;
+		}
+
+		function updateInputSliderPairNoDecimal(inputElem, sliderElem, currency, sliderVal) {
+			inputElem.val((currency * sliderVal));
+			sliderElem.data("ionRangeSlider").update({
+				from: currency * sliderVal
+			});
+		}
+
+		function updateInputSliderPair(inputElem, sliderElem, currency, sliderVal) {
+			inputElem.val((currency * sliderVal).toFixed(4));
+			sliderElem.data("ionRangeSlider").update({
+				from: currency * sliderVal
+			});
+		}
+
+		function updateSlider(sliderElem, value) {
+			sliderElem.data("ionRangeSlider").update({
+				from: value
+			});
+		}
+
+		function getCurrencyValues(firstType, secondType, currenciesArray) {
+			var firstCurr, secondCurr;
+			if (firstType === "UZS" || secondType === "UZS") {
+				if (firstType === "UZS") {
+					secondCurr = parseFloat(getCurrencyValue(secondType, currenciesArray, "sell"));
+					firstCurr = (1 / secondCurr);
+				} else {
+					firstCurr = parseFloat(getCurrencyValue(firstType, currenciesArray, "buy"));
+					secondCurr = (1 / firstCurr);
+				}
+				return [firstCurr, secondCurr];
+			} else {
+				var temp;
+				firstCurr = parseFloat(parseFloat(getCurrencyValue(firstType, currenciesArray, "buy")));
+				temp = firstCurr;
+				secondCurr = parseFloat(parseFloat(getCurrencyValue(secondType, currenciesArray, "sell")));
+				firstCurr = firstCurr > secondCurr ? (firstCurr / secondCurr) : (firstCurr / secondCurr);
+				secondCurr = temp > secondCurr ? (secondCurr / temp) : (secondCurr / temp);
+				return [firstCurr, secondCurr];
+			}
+		}
+
+		function setMaxRangeValue(rangeElem, max) {
+			$(rangeElem).data("ionRangeSlider").update({
+				min: 1,
+				max: max
+			});
+		}
+	}
+
+	// currenciesCalculatorStart();
+	// Currency exchange calculator end
+
+	const tabs = document.querySelectorAll('#tabs-nav li');
+	
+
+	tabs.forEach(item => {
+		item.addEventListener('click', (e) => {
+			const myTab = e.target.attributes[0].value;
+			let pogasheniePayments;
+			if(myTab == '#tab-2') {
+				const onlineMikrozaimAmount = parseInt($('#onlineMikrozaimAmount').val().replace(/\s+/g, ''));
+				const creditTerm = parseInt($('#creditTerm').val().replace(/\s+/g, ''));
+				const loansPercent = parseFloat($('#loansPercent').val().replaceAll(',', '.')) / 100;
+				pogasheniePayments = calcCredit(onlineMikrozaimAmount, creditTerm, loansPercent, "simple", true);
+				
+			} else if(myTab == '#tab-4') {
+				const ipotekaKreditAmount = parseInt($('#ipotekaKreditAmount').val().replace(/\s+/g, ''));
+				const ipotekaKreditTerm = parseInt($('#ipotekaKreditTerm').val().replace(/\s+/g, ''));
+				const ipotekaKreditPercent = parseFloat($('#ipotekaKreditPercent').val().replaceAll(',', '.')) / 100;
+				pogasheniePayments = calcCredit(ipotekaKreditAmount, ipotekaKreditTerm, ipotekaKreditPercent, "simple", true);				
+			} else if(myTab == '#tab-5') {
+				const autoKreditAmount = parseInt($('#autoKreditAmount').val().replace(/\s+/g, ''));
+				const autoKreditTerm = parseInt($('#autoKreditTerm').val().replace(/\s+/g, ''));
+				const autoKreditPercent = parseFloat($('#autoKreditPercent').val().replaceAll(',', '.')) / 100;
+				pogasheniePayments = calcCredit(autoKreditAmount, autoKreditTerm, autoKreditPercent, "simple", true);
+			}
+		})
+	});
+
+
+
+	function calcCredit(creditAmount, creditTerm, creditInterestRate, creditPaymentType, frontpage = false, creditName="") {
+		
+		// credit_type, vznos, element, grace_period,
+
+		let finishDate = new Date(),
+			currentDate = new Date(),
+			creditPledgeValue = ($("#creditPledge").val() != null) ? parseInt($("#creditPledge").val().replace(/\s+/g, '')) : 0,
+			creditInsuranceValue = ($("#creditInsurance").val() != null) ? parseInt($("#creditInsurance").val().replace(/\s+/g, '')) : 0,
+			creditNatorialValue = ($("#creditNatorial").val() != null) ? parseInt($("#creditNatorial").val().replace(/\s+/g, '')) : 0,
+			creditOtherExpValue = ($("#creditOtherExp").val() != null) ? parseInt($("#creditOtherExp").val().replace(/\s+/g, '')) : 0,
+			
+			calculatedDataArray = [],
+			xrrvaluesDataArray = [],
+			creditFullPaymentSum = 0,
+			creditInteresPaymentSum = 0,
+			creditGracePeriod = 0, //= parseInt($creditGracePeriodInput.val()),
+			creditRemainSum = 0,
+			frontpageAmount = 0,
+			xirrx = 0,
+			resultElements = [];
+			
+			finishDate.setMonth(currentDate.getMonth() + creditTerm);
+			finishDate.setDate(finishDate.getDate() - 1);
+
+			otherExpensesSum = creditInsuranceValue + creditNatorialValue + creditPledgeValue + creditOtherExpValue;
+
+
+		$(".result_calc").empty();
+		$('tfoot.conclusion>tr>td').nextAll().nextAll().remove();
+
+		
+		if (creditPaymentType === "simple") {
+
+			var objToPush = {};					
+
+			for (let i = 0; i <= creditTerm; i++) {
+				objToPush = {
+					num: i,
+					date: 0,
+					remain: 0, 
+					fullPayment: 0,
+					mainLoan: 0, 
+					interestPayment: 0							
+				};
+
+				if (creditGracePeriod > 0 && creditGracePeriod >= i + 1) {
+					objToPush.remain = creditAmount;
+				} else {
+					objToPush.mainLoan = creditAmount / (creditTerm - creditGracePeriod);
+
+					if (i === 0) {																
+						objToPush.date = currentDate.toDateString();
+						// console.log(objToPush.date);
+						objToPush.fullPayment = otherExpensesSum - creditAmount;
+
+					} else if(i === 1) {
+						objToPush.remain = creditAmount;
+						objToPush.mainLoan = creditAmount / creditTerm;
+
+						currentDate.setMonth(currentDate.getMonth() + 1);
+						currentDate.setDate(currentDate.getDate() - 1);
+						
+						objToPush.date = currentDate.toDateString();
+						// console.log(objToPush.date);
+
+						var form_date = new Date(calculatedDataArray[i - 1].date.replace(/(\d{2})\.(\d{2})\.(\d{4})/,'$3-$2-$1'));
+
+						let difference = form_date>currentDate ? form_date - currentDate : currentDate - form_date;
+						let diff_days = Math.floor(difference / (1000 * 3600 * 24));
+
+						objToPush.interestPayment = objToPush.remain * creditInterestRate * diff_days / 365;
+						objToPush.fullPayment = objToPush.interestPayment + objToPush.mainLoan;
+
+						frontpageAmount = objToPush.fullPayment;
+
+					} else {
+
+						objToPush.remain = calculatedDataArray[i - 1].remain - calculatedDataArray[i - 1].mainLoan;								
+						currentDate.setMonth(currentDate.getMonth() + 1);
+						objToPush.date = currentDate.toDateString();
+						
+						var form_date = new Date(calculatedDataArray[i - 1].date.replace(/(\d{2})\.(\d{2})\.(\d{4})/,'$3-$2-$1'));
+
+						let difference = form_date>currentDate ? form_date - currentDate : currentDate - form_date;
+						let diff_days = Math.floor(difference / (1000 * 3600 * 24));
+
+						objToPush.interestPayment = objToPush.remain * creditInterestRate * diff_days / 365;
+						objToPush.fullPayment = objToPush.interestPayment + objToPush.mainLoan;
+					}
+				}
+
+				xrrvaluesDataArray.push({Date:objToPush.date, Flow: objToPush.fullPayment});
+				calculatedDataArray.push(objToPush);	
+				
+				creditRemainSum += objToPush.remain;
+				creditFullPaymentSum += objToPush.fullPayment;
+				creditInteresPaymentSum += objToPush.interestPayment;
+			}
+
+			xirrx = ExcelFormulas.XIRR(xrrvaluesDataArray) * 100;        
+			// console.log(xirrx.toFixed(1));
+			// console.log(calculatedDataArray);
+			
+
+		} else if (creditPaymentType === "annuitet") {
+			var objToPushA = {},
+				currentDateA = new Date(),
+				xrrvaluesDataArrayA = [];					
+
+			for (let i = 0; i <= creditTerm; i++) {
+				objToPushA = {
+					num: i,
+					date: 0,
+					remain: 0, 
+					fullPayment: 0,
+					mainLoan: 0, 
+					interestPayment: 0							
+				};
+
+				if (i === 0) {
+					objToPushA.date = currentDate.toDateString();
+					objToPushA.fullPayment = otherExpensesSum - creditAmount;	
+
+				} else if(i === 1) {
+					currentDateA.setMonth(currentDateA.getMonth() + 1);
+					currentDateA.setDate(currentDateA.getDate() - 1);
+					objToPushA.date = currentDateA.toDateString();
+					objToPushA.remain = creditAmount;
+					
+					var form_date = new Date(calculatedDataArray[i - 1].date.replace(/(\d{2})\.(\d{2})\.(\d{4})/,'$3-$2-$1'));
+
+					let difference = form_date>currentDateA ? form_date - currentDateA : currentDateA - form_date;
+					let diff_days = Math.floor(difference / (1000 * 3600 * 24));
+
+					objToPushA.interestPayment = objToPushA.remain * creditInterestRate * diff_days / 365;
+					
+					objToPushA.fullPayment = PMT(creditInterestRate / 12, creditTerm, creditAmount, 0) * -1;
+					frontpageAmount = objToPushA.fullPayment;
+					objToPushA.mainLoan = objToPushA.fullPayment - objToPushA.interestPayment;
+
+
+				} else {
+					currentDateA.setMonth(currentDateA.getMonth() + 1);
+					objToPushA.date = currentDateA.toDateString();
+
+					var form_date = new Date(calculatedDataArray[i - 1].date.replace(/(\d{2})\.(\d{2})\.(\d{4})/,'$3-$2-$1'));
+
+					let difference = form_date>currentDateA ? form_date - currentDateA : currentDateA - form_date;
+					let diff_days = Math.floor(difference / (1000 * 3600 * 24));
+
+					objToPushA.remain = calculatedDataArray[i - 1].remain - calculatedDataArray[i - 1].mainLoan;							
+					objToPushA.fullPayment = PMT(creditInterestRate / 12, creditTerm, creditAmount, 0) * -1;
+					objToPushA.interestPayment = objToPushA.remain * creditInterestRate * diff_days / 365;
+					objToPushA.mainLoan = objToPushA.fullPayment - objToPushA.interestPayment;
+
+				}
+				xrrvaluesDataArrayA.push({Date:objToPushA.date, Flow: objToPushA.fullPayment});
+				calculatedDataArray.push(objToPushA);
+
+				creditRemainSum += objToPushA.remain;
+				creditFullPaymentSum += objToPushA.fullPayment;
+				creditInteresPaymentSum += objToPushA.interestPayment;
+			}
+				xirrx = ExcelFormulas.XIRR(xrrvaluesDataArrayA)*100;						
+				// console.log(xirrx.toFixed(1));
+				// console.log(calculatedDataArray);
+
+				
+		}	
+
+				
+		// filling extra info tables start
+		// table 1
+		$('.credit_date').text(formatDate(currentDate));
+		currentDate.setMonth(currentDate.getMonth() + creditTerm);
+		currentDate.setDate(currentDate.getDate() - 1);
+		$('.credit_date2').text(formatDate(currentDate));
+
+		$('.srok_credit').text($creditTermInput.val());
+		//$('.credit-full-payment-summ').text($creditInterestRateInput.val());
+
+		// table 2
+		//console.log(otherExpensesInPercent)
+		$('.credit-full-payment-summ').html(number_format(creditAmount + creditInteresPaymentSum, 2, ",", " "));
+
+		$('.credit-predge-summ').html(number_format(creditPledgeValue, 2, ",", " "));
+		$('.credit-natorial-summ').html(number_format(creditNatorialValue, 2, ",", " "));
+
+		$('.credit-insurance-summ').html(number_format(creditInsuranceValue, 2, ",", " "));
+		$('.credit-other-summ').html(number_format(creditOtherExpValue, 2, ",", " "));
+
+		
+		
+		$('.credit-full-value').html(xirrx.toFixed(1) + '%');
+		// filling extra info tables end
+
+		for (let i = 0; i < calculatedDataArray.length; i++) {
+			if (i === 0) {
+				
+			} else {
+				resultElements += 
+					`<tr>
+						<td scope="row" data-label="${mes}">` + (i) + `</td>
+						<td data-label="${ost}">` + number_format(calculatedDataArray[i].remain, 2, ",", " ") + `</td>
+						<td data-label="${credit_dolg}">` + number_format(calculatedDataArray[i].mainLoan, 2, ",", " ") + `</td>
+						<td data-label="${credit_plata}">` + number_format(calculatedDataArray[i].interestPayment, 2, ",", " ") + `</td>
+						<td data-label="${credit_ejsmes}">` + number_format(calculatedDataArray[i].fullPayment, 2, ",", " ") + `</td>
+					'</tr>`;						
+			}
+		}
+
+		$(".result_calc").append(resultElements);
+
+		let repayTheLoan;
+		if (creditPaymentType === "simple") {
+			repayTheLoan = "Differensial";
+		} else {
+			repayTheLoan = "Annuitet";
+		}
+		
+		
+		
+		$(".kmaStylesSqbNewCredits__TopInfoOrderBtn").parent().append(linkdiv);
+
+		var conclusionRow =
+			`<td>` +  number_format(creditAmount, 2, ",", " ") + `</td>
+			<td>` + number_format(creditInteresPaymentSum, 2, ",", " ") + `</td>
+			<td>` + number_format( parseInt(creditAmount) + parseInt(creditInteresPaymentSum), 2, ",", " ") + `</td>`;
+
+		$("tfoot.conclusion>tr").append(conclusionRow);
+
+		if(creditName == "ipoteka") {
+			
+			const btnsContainer = document.querySelector('.infoList'),
+				  select = document.querySelector('#ipotekaSelect'),
+				  selectedIndex = select.selectedIndex,
+				  amount = $('#ipotekaKreditAmount').val(),
+				  term = $('#ipotekaKreditTerm').val(),
+				  ipotekaKreditPercent = $('#ipotekaKreditPercent').val(),
+				  infoListTranslate = (BX.message("LANGUAGE_ID")  == "uz") ? "Axborot varaqasi" : "Информационный лист";
+
+				btnsContainer.innerHTML = `<br><a class="btn take-btn" href="/business/online-form/credit.php?typeOfLoan=${select.options[selectedIndex].text.replace(/"/g, ' ')}&purposeOfLoan=${select.options[selectedIndex].text.replace(/"/g, ' ')}&loanAmount=${creditAmount.toLocaleString()} so'm&loanTerm=${creditTerm} oy&creditAmountandPersent=${(creditInterestRate*100).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})}%&fullProcentSum=${creditInteresPaymentSum.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&totalAmount=${(creditInteresPaymentSum + creditAmount).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&loanGracePeriod=0 oy&periodicityOfPayments=har oyda&repayTheLoan=${repayTheLoan}&onePayment=${calculatedDataArray[2].fullPayment.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&FormLoanAllocation=Mahsulot/xizmat ta'minotchisi hisobvarag'iga pul o'tkazish&additionalCosts=&bailPaymet=${creditPledgeValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&insurePayment=${creditInsuranceValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&notarizationPay=${creditNatorialValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&insurancePaymenRisk=${creditOtherExpValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&fullCostLoan=${xirrx.toFixed(1)}%&deadlineLoan=3 kun&fineLoan=Mavjud emas&increased=${(creditInterestRate*100*1.5).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})}%&loanSecurity=">${infoListTranslate}</a>`;
+			
+		}
+		
+
+		if(!frontpage) {
+
+			$('.calculatorResultLists, .calculatorCredit__creditResult').show();
+
+			$('html, body').animate({
+				scrollTop: $(".calculatorResultLists").offset().top
+			}, 1000);
+
+		} else {
+			return calculatedDataArray;
+		}
+
+		linkdiv.classList.add('infoList');
+		
+		linkdiv.innerHTML = `<a href="/business/online-form/credit.php?typeOfLoan=${typeOfLoan}&purposeOfLoan=${purposeOfLoan}&loanAmount=${creditAmount.toLocaleString()} so'm&loanTerm=${creditTerm} oy&creditAmountandPersent=${(creditInterestRate*100).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})}%&fullProcentSum=${creditInteresPaymentSum.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&totalAmount=${(creditInteresPaymentSum + creditAmount).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&loanGracePeriod=0 oy&periodicityOfPayments=har oyda&repayTheLoan=${repayTheLoan}&onePayment=${calculatedDataArray[2].fullPayment.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&FormLoanAllocation=${FormLoanAllocation}&additionalCosts=&bailPaymet=${creditPledgeValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&insurePayment=${creditInsuranceValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&notarizationPay=${creditNatorialValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&insurancePaymenRisk=${creditOtherExpValue.toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})} so'm&fullCostLoan=${xirrx.toFixed(1)}%&deadlineLoan=3 kun&fineLoan=Mavjud emas&increased=${(creditInterestRate*100*1.5).toLocaleString("ru-RU", {minimumFractionDigits: 2, maximumFractionDigits: 2})}%&loanSecurity=${loanSecurity}">${varaqasi}</a>`;
+
+		
+			
+
+	}
+
+	function formatDate(dateObj) {
+		return dateObj.getDate() + "/" + (dateObj.getMonth() + 1) + "/" + dateObj.getFullYear();
+	}
+
+	function number_format(number, decimals, dec_point, thousands_sep) {
+		var i, j, kw, kd, km, minus = '';
+		if (number < 0) {
+			minus = '-';
+			number = number * -1;
+		}
+		if (isNaN(decimals = Math.abs(decimals))) {
+			decimals = 2;
+		}
+		if (dec_point == undefined) {
+			dec_point = ",";
+		}
+		if (thousands_sep == undefined) {
+			thousands_sep = ".";
+		}
+
+		i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
+
+		if ((j = i.length) > 3) {
+			j = j % 3;
+		} else {
+			j = 0;
+		}
+
+		km = (j ? i.substr(0, j) + thousands_sep : "");
+		kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
+		kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
+		return minus + km + kw + kd;
+	}
+
+	
+
+	var 	$fullPrice = $("#fullPrice"),
+			$creditAmountInput = $("#creditAmount"),
+			$creditTermInput = $("#creditTerm"),
+			$creditInitPaymentInput = $("#creditInitPayment"),
+			$creditInterestRateInput = $("#creditInterestRate"),
+			$creditGracePeriodInput = $("#creditGracepayment"),
+			$creditTypeSelect = $("select#creditType");
+			$creditInsurance = $('#creditInsurance');
+
+	const linkdiv = document.createElement('div');
+	
+	
+
+	
+
+	// Credit calculator start
+	function creditCalculatorStart() {
+
+		$('#fullPrice-slider').ionRangeSlider({
+						
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1000000,
+			min: Number($fullPrice.attr('data-min') ? $fullPrice.attr('data-min') : 1),
+			max: Number($fullPrice.attr('data-max') ? $fullPrice.attr('data-max') : 1),
+			force_edges: true,
+			from: Number($fullPrice.attr('placeholder') ? $fullPrice.attr('placeholder') : 1),
+			onStart: function(data) {
+
+				$fullPrice.val(data.from.toLocaleString());
+				$creditInitPaymentInput.val((data.from * 0.1).toLocaleString());
+				$creditAmountInput.val((data.from * 0.9).toLocaleString());
+				
+			},
+			onChange: function(data) {
+
+				$fullPrice.val(data.from.toLocaleString());
+				$creditInitPaymentInput.val((data.from * 0.1).toLocaleString());
+				$creditAmountInput.val((data.from * 0.9).toLocaleString());
+
+
+				dd1_initPayment.update({
+					min: 10,
+					max: 100000,
+					from: 1,
+					to: 100000,
+					step: 1
+				});
+
+			},
+			block: ($fullPrice.attr('data-min') == $fullPrice.attr('data-max')) ? true : false
+			
+		});
+		
+
+		$('#creditAmount-slider').ionRangeSlider({
+						
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1000,
+			min: Number($creditAmountInput.attr('data-min') ? $creditAmountInput.attr('data-min') : 1),
+			max: Number($creditAmountInput.attr('data-max') ? $creditAmountInput.attr('data-max') : 1),
+			force_edges: true,
+			from: Number($creditAmountInput.attr('placeholder') ? $creditAmountInput.attr('placeholder') : 1),
+			onStart: function(data) {
+				 if(typeof($fullPrice[0]) == 'undefined' || typeof($creditInitPaymentInput[0]) == 'undefined') {					
+					$creditAmountInput.val(data.from.toLocaleString());
+				 }				 
+			},
+			onChange: function(data) {
+				$creditAmountInput.val(data.from.toLocaleString());
+				$creditInsurance.val((data.from * $creditInsurance.attr('data-insurance') / 100).toLocaleString());
+
+			},
+			block: ($creditAmountInput.attr('data-min') == $creditAmountInput.attr('data-max')) ? true : false
+			
+		});
+
+		$('#creditTerm-slider').ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: (document.location.pathname == "/individuals/credits/avtokredit-ru/" || document.location.pathname == "/uz/individuals/credits/avtokredit-uz/") ? 12 : 6,
+			min: Number($creditTermInput.attr('data-min') ? $creditTermInput.attr('data-min') : 1),
+			max: Number($creditTermInput.attr('data-max') ? $creditTermInput.attr('data-max') : 1),
+			force_edges: true,
+			from: Number($creditTermInput.attr('placeholder') ? $creditTermInput.attr('placeholder') : 1),
+			onStart: function(data) {
+				$creditTermInput.val(data.from);
+			},
+			onChange: function(data) {
+				$creditTermInput.val(data.from);
+
+				if(document.location.pathname == "/individuals/credits/avtokredit-ru/" || document.location.pathname == "/uz/individuals/credits/avtokredit-uz/" ) {
+					
+					switch(data.from) {
+						case 60 : 
+							$creditInterestRateInput.val('27');
+							break;
+						case 48 : 
+							$creditInterestRateInput.val('26');
+							break;
+						case 36 : 
+							$creditInterestRateInput.val('25');
+							break;
+						case 24 : 
+							$creditInterestRateInput.val('24');
+							break;
+						case 12 : 
+							$creditInterestRateInput.val('21');
+							break;
+						default:
+							$creditInterestRateInput.val('27');
+					}
+						
+				}
+			},
+			block: ($creditTermInput.attr('data-min') == $creditTermInput.attr('data-max')) ? true : false
+		});
+
+		const	dd1_initPayment = $('#creditInitPayment-slider').data("ionRangeSlider");
+
+		$('#creditInitPayment-slider').ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1,
+			min: Number($creditInitPaymentInput.attr('data-min') ? $creditInitPaymentInput.attr('data-min') : 1),
+			max: (typeof($fullPrice[0]) == 'undefined' || typeof($creditInitPaymentInput[0]) == 'undefined') ?
+				Number($creditInitPaymentInput.attr('data-max') ? $creditInitPaymentInput.attr('data-max') : 1) :
+				parseInt($fullPrice.val().replace(/\s/g,'')) * 0.9,
+			force_edges: true,
+			onStart: function(data) {
+				$creditInitPaymentInput.val(data.from.toLocaleString());
+			},
+			onChange: function(data) {
+				$creditInitPaymentInput.val(data.from.toLocaleString());
+				$creditAmountInput.val(($fullPrice.val().replace(/\s/g,'') - data.from).toLocaleString());
+			}
+		});
+
+		$('#creditInterestRate-slider').ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 2,
+			min: Number($creditInterestRateInput.attr('data-min') ? $creditInterestRateInput.attr('data-min') : 1),
+			max: Number($creditInterestRateInput.attr('data-max') ? $creditInterestRateInput.attr('data-max') : 1),
+			from: Number($creditInterestRateInput.attr('placeholder') ? $creditInterestRateInput.attr('placeholder') : 1),
+			force_edges: true,
+			onStart: function(data) {
+				$creditInterestRateInput.val(data.from);
+			},
+			onChange: function(data) {
+				$creditInterestRateInput.val(data.from);
+			},
+			block: (Number($creditInterestRateInput.attr('data-min')) == Number($creditInterestRateInput.attr('data-max'))) ? true : false
+		});
+
+		$('#creditGracepayment-slider').ionRangeSlider({
+			skin: "round",
+			type: "single",
+			grid: false,
+			hide_min_max: true,
+			hide_from_to: true,
+			step: 1,
+			min: Number($creditGracePeriodInput.attr('data-min') ? $creditGracePeriodInput.attr('data-min') : 1),
+			max: Number($creditGracePeriodInput.attr('data-max') ? $creditGracePeriodInput.attr('data-max') : 1),
+			force_edges: true,
+			onStart: function(data) {
+				$creditGracePeriodInput.val(data.from);
+			},
+			onChange: function(data) {
+				$creditGracePeriodInput.val(data.from);
+			}
+		});
+
+		if ($creditTypeSelect.val() === "annuitet") {
+			$("input#creditGracepayment").parent().parent().parent().hide();
+			$("td.vznos_credit--heading").hide();
+			$("td.vznos_credit").hide();
+		}
+
+		$creditTypeSelect.change(function (event) {
+			if ($creditTypeSelect.val() === "annuitet") {
+				$("input#creditGracepayment").parent().parent().parent().hide();
+				$("td.vznos_credit--heading").hide();
+				$("td.vznos_credit").hide();
+				$creditGracePeriodInput.val('0');
+			} else if ($creditTypeSelect.val() === "simple") {
+				$("input#creditGracepayment").parent().parent().parent().show();
+				$("td.vznos_credit--heading").show();
+				$("td.vznos_credit").show();
+				$creditGracePeriodInput.val('0');
+			}
+		});
+
+
+		
+		
+
+		$('#calculateCreditForm').submit(function (e) {
+			e.preventDefault();
+
+			var creditAmount = parseInt($creditAmountInput.val().replace(/\s+/g, '')),
+				creditTerm = parseInt($creditTermInput.val()),
+				
+				creditInterestRate = parseFloat($creditInterestRateInput.val()) / 100,
+				creditTypeValue = '', //$creditTypeSelect.val(),
+				
+				
+
+				creditPaymentType = $("#creditPaymentType").val().replace(/\s+/g, '');
+
+				// otherExpensesInPercent = (otherExpensesSum / (creditRemainSum / creditTerm) / (creditTerm / 12)) * 100,
+
+			calcCredit (creditAmount, creditTerm, creditInterestRate, creditPaymentType);
+		});
+
+
+		
+
+
+
+		function PMT(ir, np, pv, fv, type) {
+			/*
+			* ir   - interest rate per month
+			* np   - number of periods (months)
+			* pv   - present value
+			* fv   - future value
+			* type - when the payments are due:
+			*        0: end of the period, e.g. end of month (default)
+			*        1: beginning of period
+			*/
+			var pmt, pvif;
+
+			fv || (fv = 0);
+			type || (type = 0);
+
+			if (ir === 0)
+				return -(pv + fv) / np;
+
+			pvif = Math.pow(1 + ir, np);
+			pmt = - ir * pv * (pvif + fv) / (pvif - 1);
+
+			if (type === 1)
+				pmt /= (1 + ir);
+
+			return pmt;
+		}
+
+		
+	}
+
+	creditCalculatorStart();
+	// Credit calculator end
+
+	// Helper class script to get only integer string in input field
+	$(".integerInput").on('input', function (event) {
+		this.value = this.value.replace(/[^\d]/g, '');
+				
+		if(event.target.id == 'creditAmount') {
+			const numericVal = (+this.value.replace(/\s+/g, '') * $creditInsurance.attr('data-insurance') / 100); 
+			$creditInsurance.val(Math.round(numericVal).toLocaleString());
+		}
+		
+	});
+
+	// Get Only Float Number Input func
+	function getOnlyFloatNumber(obj) {
+		obj.value = obj.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+	}
+
+
+	
+	if ($('.responsive_slider').length) {
+		$('.responsive_slider').slick({
+			dots: true,
+			infinite: false,
+			speed: 300,
+			slidesToShow: 4,
+			slidesToScroll: 4,
+			responsive: [{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 4,
+					slidesToScroll: 4,
+					infinite: false,
+					dots: true
+				}
+			},
+			{
+				breakpoint: 920,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: false
+				}
+			},
+			{
+				breakpoint: 720,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					infinite: false
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					infinite: false
+				}
+			}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			]
+		});
+	}
+	
+//topmenu
+
+	const navbarlinks = document.querySelectorAll('.navbar ul li a.left_link'),
+		 closebuttons = document.querySelectorAll('.dropcontainer .drop .container .wrap .new-menu-clouser');
+
+	// function delActive() {
+	// 	navbarlinks.forEach((element) => {
+	// 		element.parentNode.classList.remove('active');
+	// 	});
+	// }
+	
+	// navbarlinks.forEach((element) => {
+	// 	console.log(element);
+	// 	element.addEventListener('click', (event) => {
+	// 		console.log(element);
+	// 		console.dir(event.target.id);
+
+	// 		delActive(); 
+	// 		element.parentNode.classList.add('active');
+	// 	});
+	// });
+
+	const aHrefLinks = document.querySelectorAll(".nav ul li a");
+	// console.log(aHrefLinks);
+	aHrefLinks.forEach((element) => {
+		element.addEventListener('click', function(el) {
+			el.preventDefault();
+		});
+	});
+
+	$('.nav ul').on('click', 'li', function() {
+		
+		$(this)
+
+		  .addClass('active').siblings().removeClass('active')
+
+		  .closest('div.v3-navbar2').find('div.drop').removeClass('active').eq($(this).index()+1).addClass('active');
+
+		//   console.log($(this).index()+1);
+
+		  startSliderTimer($(this).index()+1);
+	});
+	
+	$('.dropcontainer .drop .container .wrap').on('click', '.new-menu-clouser', function() {
+		
+		$(this)
+			.closest('.dropcontainer').find('.drop.active').removeClass('active');
+	  });
+	
+	//   closebuttons.forEach((element) => {
+	// 	element.addEventListener('click', (event) => {
+	// 				console.log(element);
+	// 				console.dir(event.target.id);
+	// 				delActive(); 
+	// 				// element.parentNode.classList.add('active');
+	// 			});
+	//   });
+
+	const myslider1 = $("#myslider1").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+	const myslider2 = $("#myslider2").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+	const myslider3 = $("#myslider3").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+
+	const myslider4 = $("#myslider4").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+
+	const myslider5 = $("#myslider5").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+
+	const myslider6 = $("#myslider6").owlCarousel({
+		items: 1,
+		loop: true,
+		margin: 0,
+		mouseDrag: true,
+		nav: true,
+		dots: false,
+		navText: ['<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.60001 14.3999H10.6667C10.8725 14.3999 11.0603 14.2809 11.1488 14.0948C11.2373 13.9087 11.2101 13.6884 11.0795 13.5284L6.55575 7.99985L11.0795 2.47079C11.2101 2.31132 11.2368 2.09105 11.1488 1.90439C11.0608 1.71772 10.8725 1.59985 10.6667 1.59985H9.60001C9.44001 1.59985 9.28855 1.67185 9.18721 1.79559L4.38721 7.66225C4.22668 7.85905 4.22668 8.14119 4.38721 8.33799L9.18721 14.2047C9.28855 14.3279 9.44001 14.3999 9.60001 14.3999Z" fill="white" fill-opacity="0.5"/></svg>', '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.39999 14.3999H5.33332C5.12745 14.3999 4.93972 14.2809 4.85119 14.0948C4.76265 13.9087 4.78985 13.6884 4.92052 13.5284L9.44425 7.99985L4.92052 2.47079C4.78985 2.31132 4.76319 2.09105 4.85119 1.90439C4.93919 1.71772 5.12745 1.59985 5.33332 1.59985H6.39999C6.55999 1.59985 6.71145 1.67185 6.81279 1.79559L11.6128 7.66225C11.7733 7.85905 11.7733 8.14119 11.6128 8.33799L6.81279 14.2047C6.7114514.3279 6.55999 14.3999 6.39999 14.3999Z" fill="white"/></svg>'],
+		autoplay: false,
+		slideSpeed: 300,
+		navigation: false,
+		singleItem: true
+	});
+	
+	
+
+		
+
+	
+	let  oCountList= document.querySelectorAll("div[countdown]");
+
+
+	
+	// oCountList.forEach((oCount) => {
+
+		
+		
+	// 	oCount.innerText = oCount.countValue = +oCount.getAttribute("countdown");
+	// 	oCount.countRatio = 360 / oCount.countValue;
+	// 	oCount.countColor = 100 / oCount.countValue;
+	// 	oCount.countLight = oCount.countValue / 20;
+	// 	fCountdown.bind(oCount);
+	// 	oCount.countTimer = setInterval(fCountdown.bind(oCount), 1000);	
+	// 	oCount.style.setProperty("--col", `hsla(${5 * oCount.countColor}, 100%, ${50 - 5 / oCount.countLight}%, 0)`);		
+	// });
+	
+
+	function startSliderTimer(selectedNumb){
+		let i = 0;
+		oCountList.forEach((oCount) => {
+			i++;
+			if(i == selectedNumb) {
+				clearInterval(oCount.countTimer);
+				oCount.listNumber = i;
+				oCount.innerText = oCount.countValue = +oCount.getAttribute("countdown");
+				oCount.countRatio = 360 / oCount.countValue;
+				oCount.countColor = 100 / oCount.countValue;
+				oCount.countLight = oCount.countValue / 20;
+				fCountdown.bind(oCount);
+				oCount.countTimer = setInterval(fCountdown.bind(oCount), 1000);		
+				oCount.style.setProperty("--col", `hsla(${5 * oCount.countColor}, 100%, ${50 - 5 / oCount.countLight}%, 0)`);
+				d
+			}
+		});
+	}
+
+
+	// $('.owl-next').click(function() {
+	// 	startSliderTimer();
+	// 	//console.log(oCount);
+	// });
+		
+
+	function fCountdown() {
+		let nCount = this.countValue;
+		// console.log(this.countValue);
+		if (nCount > 0) {
+			nCount--;
+			this.innerText = this.countValue = nCount;
+			this.style.setProperty("--deg", 361 - nCount * this.countRatio);
+			this.style.setProperty("--col", "rgba(29, 52, 72, 0.3)");
+			//this.style.setProperty("--col", `hsla(${nCount * this.countColor}, 100%, ${50 - nCount / this.countLight}%, 1)`);
+			
+		} else {
+			clearInterval(this.countTimer);
+			
+			this.style.setProperty("--col", `hsla(${nCount * this.countColor}, 100%, ${50 - nCount / this.countLight}%, 0)`);
+			
+			startSliderTimer(this.listNumber);
+			// console.log(this.listNumber);
+
+			if(this.listNumber ==1 ) {
+				myslider1.trigger('next.owl.carousel');} 
+			else if(this.listNumber == 2) {
+				myslider2.trigger('next.owl.carousel');}
+			else if(this.listNumber == 3) {
+				myslider3.trigger('next.owl.carousel');}
+			else{
+				console.log('this.listNumber Error');
+			}
+				
+		}
+	}
+
+
+
+	function PMT(ir, np, pv, fv, type) {
+		/*
+		 * ir   - interest rate per month
+		 * np   - number of periods (months)
+		 * pv   - present value
+		 * fv   - future value
+		 * type - when the payments are due:
+		 *        0: end of the period, e.g. end of month (default)
+		 *        1: beginning of period
+		 */
+		var pmt, pvif;
+
+		fv || (fv = 0);
+		type || (type = 0);
+
+		if (ir === 0)
+			return -(pv + fv)/np;
+
+		pvif = Math.pow(1 + ir, np);
+		pmt = - ir * pv * (pvif + fv) / (pvif - 1);
+
+		if (type === 1)
+			pmt /= (1 + ir);
+
+		return pmt;
+	}
+
+
+	if(document.location.pathname == "/individuals/" || document.location.pathname == "/uz/individuals/") {
+
+		function getVklads() {
+			return $.ajax({
+				url: `/api/individuals/vkladi/index.php?lang=${BX.message("LANGUAGE_ID")}`,
+				method: 'GET',
+				error: function (request, status, error) {
+					console.log('Error on fetching mikrozaim credit!');
+				}
+			});
+		}
+
+		getVklads().done(function(data) {
+
+			let $depositPercent = $('#depositPercent'),
+				$depositPayment = $('#depositPayment'),
+				$depositFullPayment = $('#depositFullPayment'),
+				$depositTerm = $("#depositTerm");
+
+			$depositTerm.val(data[0]['duration']);
+				
+			function depositCalc(summa, foiz, month) {
+	
+				$depositPercent.val(foiz + "%");
+				$depositPayment.val(parseFloat(summa * foiz / 100 * month / 12 / month).toLocaleString("ru-RU", { minimumFractionDigits: 0, maximumFractionDigits: 0 }));
+
+				$depositFullPayment.val(parseFloat(summa * foiz / 100 / 12 * month).toLocaleString("ru-RU", { minimumFractionDigits: 0, maximumFractionDigits: 0 }));
+	
+				// $('#depositPayment').append(options);
+	
+				// const monthSum = document.querySelector(".month_sum p");
+				// monthSum.textContent = (summa * foiz / 100 * srok / 12 / srok).toLocaleString("ru-RU", {minimumFractionDigits: 0,maximumFractionDigits: 0});
+			}
+	
+			let options = "";
+			data.forEach((elem) => {
+					options += `<option value=${elem.name}>${elem.name}</option>`;
+			});
+			$('#depositsSelect').append(options);
+	
+			
+	
+			$('#depositsAmount').val(parseInt(1000000).toLocaleString("ru-RU", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			}));
+	
+			$depositPercent.val(data[0]['percent']);
+
+			depositCalc(parseInt($('#depositsAmount').val().replace(/\s+/g, '')), parseInt(data[0]['percent']), parseInt(data[0]['duration']));
+
+			var instance, depositTermSlider;
+	
+			$('#depositsAmountSlider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 1000000,
+				min: 1000000,
+				max: 100000000,
+				force_edges: true,
+				from: 1000000,
+				onChange: function (data) {
+	
+					$('#depositsAmount').val(data.from.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+
+					depositCalc(data.from, parseInt($depositPercent.val()), parseInt($depositTerm.val()));
+	
+					// let pogasheniePayments = calcCredit(data.from, $creditTermInput.val(), foiz, "simple", true);
+	
+					// $('#autoKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+					//     minimumFractionDigits: 2,
+					//     maximumFractionDigits: 2
+					// }));
+				}
+			});
+	
+			instance = $('#depositsAmountSlider').data("ionRangeSlider");
+			
+			$('#depositTermSlider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 1,
+				min: 1,
+				max: parseInt(data[0]['duration']),
+				force_edges: true,
+				from: parseInt(data[0]['duration']),
+				onChange: function (data) {
+					$depositTerm.val(data.from);
+					depositCalc(parseInt($('#depositsAmount').val().replace(/\s+/g, '')), parseInt($depositPercent.val()), data.from);
+				}
+			});
+			depositTermSlider = $('#depositTermSlider').data("ionRangeSlider");
+	
+			$('#depositsSelect').change(function(e) {
+				data.forEach(item => {				
+					if(item.name === $('#depositsSelect option').filter(':selected').val()) {
+						
+						$depositPercent.val(item.percent + "%");
+	
+						if($('#depositsSelect option').filter(':selected').val() === "Капитал") {
+	
+							$('#depositsAmount').val(parseInt(1000).toLocaleString("ru-RU", {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 0
+							}));
+	
+							instance.update({
+								step: 100,
+								min: 500,
+								max: 1000000,
+								from: 500
+							});
+	
+							depositTermSlider.update({
+								skin: "round",
+								type: "single",
+								grid: false,
+								hide_min_max: true,
+								hide_from_to: true,
+								step: 1,
+								min: 1,
+								max: parseInt(item.duration),
+								force_edges: true,
+								from: parseInt(item.duration),
+							});
+	
+							$depositTerm.val(6);
+	
+						} else {
+							$('#depositsAmount').val(parseInt(1000000).toLocaleString("ru-RU", {
+								minimumFractionDigits: 0,
+								maximumFractionDigits: 0
+							}));
+	
+							instance.update({
+								step: 1000000,
+								min: 1000000,
+								max: 100000000,
+								from: 1000000,
+							});
+	
+							depositTermSlider.update({
+								skin: "round",
+								type: "single",
+								grid: false,
+								hide_min_max: true,
+								hide_from_to: true,
+								step: 1,
+								min: 1,
+								max: parseInt(item.duration),
+								force_edges: true,
+								from: parseInt(item.duration),
+							});
+	
+							$depositTerm.val(item.duration);
+	
+						}
+	
+						depositCalc(parseInt($('#depositsAmount').val().replace(/\s+/g, '')), parseInt(item.percent), parseInt(item.duration));
+	
+					}
+				});
+			});
+		});
+
+		function getMikrozaymCredit() {
+			return $.ajax({
+				url: '/api/individuals/krediti/view.php?PID=2619',
+				method: 'GET',
+				error: function (request, status, error) {
+					console.log('Error on fetching mikrozaim credit!');
+				}
+			});
+		}
+	
+		getMikrozaymCredit().done(function(data) {
+			let $creditAmountInput = $("#onlineMikrozaimAmount"),
+				$creditTermInput = $("#creditTerm"),
+				foiz = parseFloat(data.percent[0]) / 100;
+	
+				$creditTermInput.val(data.duration[2]);
+	
+			$("#minSumma").html((data.min_amount).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '));
+	
+			$('#onlineMikrozaimminSumma').val(parseInt(data.max_amount).toLocaleString("ru-RU", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			}));
+	
+			let pogasheniePayments = calcCredit(data.max_amount, $creditTermInput.val(), foiz, "simple", true);
+	
+			$('#monthlyPayment1').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			}));
+	
+			$('#onlineMikrozaimAmount-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 1000,
+				min: data.min_amount,
+				max: data.max_amount,
+				force_edges: true,
+				from: data.max_amount,
+				onStart: updateInputs,
+				onChange: updateInputs
+			});
+	
+			function updateInputs(data) {
+				from = data.from;
+				to = data.to;
+				$('#onlineMikrozaimAmount').val(data.from.toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+	
+				let pogasheniePayments = calcCredit(data.from, $creditTermInput.val(), foiz, "simple", true);
+	
+				$('#monthlyPayment1').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+			}
+	
+	
+			$('#creditTerms-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 12,
+				min: data.duration[0],
+				max: data.duration[1],
+				force_edges: true,
+				from: data.duration[2],
+				onChange: function (data) {
+					$creditTermInput.val(data.from);
+
+					if(data.from == 12) {
+						foiz = 0.279;
+					} else if(data.from == 24) {
+						foiz = 0.289;
+					} else if(data.from == 36) {
+						foiz =  0.299;
+					} else if(data.from == 48) {
+						foiz = 0.309;
+					}
+					$('#loansPercent').val((foiz * 100).toFixed(1) + "%");
+					pogasheniePayments = calcCredit(parseInt($creditAmountInput.val().replace(/\s+/g, '')), data.from, foiz, "simple", true);
+
+					$('#monthlyPayment1').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+				}
+			});
+		});
+	
+		function getAutoCredit() {
+			return $.ajax({
+				url: '/api/individuals/krediti/view.php?PID=2614',
+				method: 'GET',
+				error: function (request, status, error) {
+					console.log('Error on fetching auto credit!');
+				}
+			});
+		}
+	
+		getAutoCredit().done(function(data) {
+			// console.log(data);
+	
+			$("#autoCreditMinSumma").html((data.min_amount).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '));
+	
+			let $creditAmountInput = $("#autoKreditAmount"),
+				$creditTermInput = $("#autoKreditTerm"),
+				foiz = parseFloat(data.percent[1]) / 100;
+	
+			$creditTermInput.val(data.duration[2]);
+	
+			$('#autoKreditPercent').val(foiz*100+'%');
+	
+			$('#autoKreditAmount').val(parseInt(data.max_amount).toLocaleString("ru-RU", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			}));
+	
+			let pogasheniePayments = calcCredit(data.max_amount, $creditTermInput.val(), foiz, "simple", true);
+	
+			$('#autoKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			}));
+	
+			$('#autoKreditAmount-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 1000,
+				min: data.min_amount,
+				max: data.max_amount,
+				force_edges: true,
+				from: data.max_amount,
+				onChange: function (data) {
+	
+					$('#autoKreditAmount').val(data.from.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+	
+					let pogasheniePayments = calcCredit(data.from, $creditTermInput.val(), foiz, "simple", true);
+	
+					$('#autoKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+				}
+			});
+	
+			$('#autoKreditTerm-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 12,
+				min: data.duration[0],
+				max: data.duration[1],
+				force_edges: true,
+				from: data.duration[1],
+				onChange: function (data) {
+	
+					if(data.from == 12) {
+						foiz = 0.21;
+					} else if(data.from == 24){
+						foiz = 0.24;
+					} else if(data.from == 36){
+						foiz = 0.25;
+					} else if(data.from == 48){
+						foiz = 0.26;
+					}
+					
+					$creditTermInput.val(data.from);
+	
+					let pogasheniePayments = calcCredit(parseInt($creditAmountInput.val().replace(/\s+/g, '')), data.from, foiz, "simple", true);
+	
+					$('#autoKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+	
+					// console.log(foiz);
+					$('#autoKreditPercent').val(foiz*100+'%');
+				}
+			});
+		});
+
+	}
+
+
+	if(document.location.pathname == "/individuals/" || document.location.pathname == "/uz/individuals/" || document.location.pathname == "/uz/individuals/ipoteka/" || document.location.pathname == "/individuals/ipoteka/" ) {
+		function getIpotekaKredits() {
+			return $.ajax({
+				url: `/api/individuals/ipoteka/index.php?lang=${BX.message("LANGUAGE_ID")}`,
+				method: 'GET',
+				error: function (request, status, error) {
+					console.log('Error on fetching mikrozaim credit!');
+				}
+			});
+		}
+
+		getIpotekaKredits().done(function(data) {
+			var instance2;
+
+			var instance3 = $('#ipotekaKreditTerm-slider').data("ionRangeSlider");
+	
+			let foiz = parseFloat(data[0].percent[1]) / 100;
+	
+			let select = document.querySelector('#ipotekaSelect');
+	
+			$('#ipotekaKreditTerm').val(120);
+	
+			$('#ipotekaSelect').change(function(e) {
+				
+				$('#ipotekaKreditTerm').val(data[select.selectedIndex].duration[1]);
+				
+				instance2.update({
+					step: 1000000,
+					min: 10000000,
+					max: data[select.selectedIndex].max_amount,
+					from: 10000000,
+				});
+	
+
+				instance3.update({
+					step: 12,
+					min: 12,
+					max: data[select.selectedIndex].duration[1],
+					from: data[select.selectedIndex].duration[1]
+				});
+			
+	
+				$('#ipotekaKreditAmount').val(parseInt(10000000).toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+	
+				foiz = parseFloat(data[select.selectedIndex].percent[1] / 100);
+	
+				$('#ipotekaKreditPercent').val(foiz * 100 + "%");
+	
+				let pogasheniePayments = calcCredit(parseInt($('#ipotekaKreditAmount').val().replace(/\s+/g, '')), $('#ipotekaKreditTerm').val(), foiz, "simple", true, "ipoteka"); //$creditTermInput.val()
+				$('#ipotekaKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+	
+	
+			});
+
+			
+	
+			$('#ipotekaKreditTerm-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 12,
+				min: 12,
+				max: 120,
+				force_edges: true,
+				from: 120,
+				onChange: function (data) {
+					$('#ipotekaKreditTerm').val(data.from);
+	
+					if(data.from <= 84 && select.selectedIndex == 0) {
+						foiz = 0.24;
+					} else if(data.from > 84 && data.from <= 120 && select.selectedIndex == 0) {
+						foiz = 0.25;
+					} else if(data.from > 120 && select.selectedIndex == 0) {
+						foiz = 0.26;
+					}
+
+					$('#ipotekaKreditPercent').val(foiz * 100 + "%");
+	
+					let pogasheniePayments = calcCredit(parseInt($('#ipotekaKreditAmount').val().replace(/\s+/g, '')), data.from, foiz, "simple", true, "ipoteka"); //$creditTermInput.val()
+					$('#ipotekaKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 0
+					}));
+
+				}
+			});
+
+			
+	
+			instance3 = $('#ipotekaKreditTerm-slider').data("ionRangeSlider");
+	
+			function updateInputs(myData) {
+	
+				// console.log(myData);
+				foiz = parseFloat(data[select.selectedIndex].percent[1] / 100);
+	
+				$('#ipotekaKreditPercent').val(foiz * 100 + "%");
+	
+				from = myData.from;
+				to = myData.to;
+	
+				$('#ipotekaKreditAmount').val(myData.from.toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+	
+				let pogasheniePayments = calcCredit(parseInt($('#ipotekaKreditAmount').val().replace(/\s+/g, '')), 120, foiz, "simple", true, "ipoteka"); //$creditTermInput.val()
+				$('#ipotekaKreditPayment').val(pogasheniePayments[1].fullPayment.toLocaleString("ru-RU", {
+					minimumFractionDigits: 0,
+					maximumFractionDigits: 0
+				}));
+			}
+	
+			let options = "";
+			data.forEach((elem) => {
+					options += `<option value=${elem.name}>${elem.name}</option>`;
+			});
+
+			$('#ipotekaSelect').append(options);
+
+			
+	
+			$('#ipotekaKreditAmount-slider').ionRangeSlider({
+				skin: "round",
+				type: "single",
+				grid: false,
+				hide_min_max: true,
+				hide_from_to: true,
+				step: 1000000,
+				min: parseInt(data[0]['min_amount']),
+				max: parseInt(data[0]['max_amount']),
+				force_edges: true,
+				from: parseInt(data[0]['min_amount']),
+				onStart: updateInputs,
+				onChange: updateInputs
+			});
+	
+			instance2 = $('#ipotekaKreditAmount-slider').data("ionRangeSlider");
+
+
+			function infolist() {
+
+			}
+
+			$('#ipotekaSelect').trigger('change');
+		});
+
+	}
+	
+});

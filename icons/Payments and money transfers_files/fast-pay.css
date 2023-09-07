@@ -1,0 +1,572 @@
+.fast-pay-header h1{
+	font-weight: normal;
+	font-size: 30px;
+	line-height: 30px;
+	color: #003E64;
+	margin-bottom: 40px;
+	margin-top: 100px;
+}
+/*****transfer tab buttons*******/
+.fast-pay-btn{
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.fast-pay-btn a{
+	flex-basis: 326px;
+	border: none;
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+    -moz-transition: opacity 0.3s, -moz-transform 0.3s;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.fast-pay-btn a.btn{
+	padding: 20px 30px 20px 20px;
+	background-color: #FFFFFF;
+	border-radius: 20px;
+	text-align: right;
+	margin-bottom: 40px;
+	position: relative;
+	z-index: 0;
+}
+.fast-pay-btn a.btn img{
+	margin-bottom: 40px;
+}
+.fast-pay-btn a.btn p{
+	text-align: left;
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 140.62%;
+	text-transform: uppercase;
+	color: #333E48;
+	z-index: 2;
+	position: relative;
+}
+/********transfer main part*******/
+.fast-pay-transfer {
+    position: relative;
+    color: #003E64;
+}
+.fast-pay-transfer,
+.repay-loan{
+	background: #F7F7F7;
+	border-radius: 20px;
+	padding: 40px 40px 50px;
+	margin-bottom: 50px;
+}
+.fast-pay-transfer .transfer-title p,
+.repay-loan .transfer-title p{
+	font-weight: 500;
+	font-size: 36px;
+	line-height: 36px;
+	color: #003E64;
+	margin-bottom: 75px;
+}
+.fast-pay-transfer .transfers-sum{
+	margin-top: 58px;
+}
+.fast-pay-transfer .card-number .input-group-divider{
+	border-left: 1px solid #dfe1e5;
+    height: 65%;
+    margin-top: 13px;
+}
+.fast-pay-transfer .input-group{
+	height: 70px;
+	background: #FFFFFF;
+	border: 1px solid #E3E3E3;
+	box-sizing: border-box;
+	border-radius: 6px;
+}
+.fast-pay-transfer .form-control:focus{
+	box-shadow: none;
+}
+.fast-pay-transfer .form-control,
+.fast-pay-transfer .input-group-text{
+	border-radius: 6px;
+	border: none;
+	font-weight: normal;
+	font-size: 23px;
+	line-height: 23px;
+	color: #383838;
+	padding: 20px;
+	text-align: center;
+	background-color: transparent;
+	height: 100%;
+}
+.fast-pay-transfer .input-group-text{
+	padding-left: 0;
+}
+.fast-pay-transfer .card-number .input-left{
+	width: 53%;
+	border-right: none;
+}
+.fast-pay-transfer .card-number .input-right{
+	border-left: none;
+}
+.fast-pay-transfer .card-number .input-left:after{
+	content: "|"
+}
+.fast-pay-transfer .card-number img,
+.fast-pay-transfer .receiver-card-number img{
+	float: right;
+	position: relative;
+	bottom: 8px;
+}
+.fast-pay-transfer .input-group-append img{
+	padding: 20px;
+	position: inherit!important;
+}
+.fast-pay-transfer .card-number select{
+	background-image: url(../../img/fast-pay-transfer-arrow.svg);
+    background-position: calc(100% - 20px) calc(1em - 4px);
+    background-repeat: no-repeat;
+}
+.fast-pay-transfer .card-number select.form-control{
+	padding-right: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.fast-pay-transfer label{
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 20px;
+	color: #003E64;
+	margin-bottom: 21px;
+}
+
+.fast-pay-transfer .receiver-card-number p{
+	margin-top: 16px;
+	font-weight: normal;
+	font-size: 16px;
+	/* color: #1D3448; */
+	text-transform: uppercase;
+}
+.fast-pay-transfer .pay{
+	float: right;
+}
+.fast-pay-transfer .pay .btn{
+	font-weight: normal;
+	font-size: 36px;
+	line-height: 42px;
+	text-align: center;
+	color: #FFFFFF;
+	padding: 14px 30px;
+	background-color: #D52023;
+	border-radius: 6px;
+}
+.fast-pay-transfer .pay-pink .btn{
+	font-weight: normal;
+	font-size: 36px;
+	line-height: 42px;
+	text-align: center;
+	color: #FFFFFF;
+	padding: 14px 30px;
+	background: linear-gradient(180deg, #FF329B 0%, #D51C7B 100%);
+	border-radius: 6px;
+}
+.fast-pay-transfer .pay .btn img{
+	margin-left: 28px;
+	-webkit-transition: transform 0.3s ease-out;
+  	-webkit-transition: -webkit-transform 0.3s ease-out;
+  	transition: -webkit-transform 0.3s ease-out;
+  	transition: transform 0.3s ease-out;
+  	transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+}
+.fast-pay-transfer .pay-pink .btn img{
+	margin-right: 28px;
+	-webkit-transition: transform 0.3s ease-out;
+  	-webkit-transition: -webkit-transform 0.3s ease-out;
+  	transition: -webkit-transform 0.3s ease-out;
+  	transition: transform 0.3s ease-out;
+  	transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+}
+.fast-pay-transfer .pay .btn:hover img{
+	-webkit-transform: translateX(6px);
+  	transform: translateX(6px);
+}
+.fast-pay-transfer .pay-pink .btn:hover img{
+	-webkit-transform: translateX(-6px);
+  	transform: translateX(-6px);
+}
+.fast-pay-transfer .commission label,
+.fast-pay-transfer .to-pay label{
+	font-weight: normal;
+	font-size: 20px;
+	line-height: 20px;
+	color: #0A1E32;
+	margin-bottom: 14px;
+}
+.fast-pay-transfer .commission p,
+.fast-pay-transfer .to-pay p{
+	font-weight: bold;
+	font-size: 40px;
+	line-height: 40px; 
+	color: #003E64;
+	margin-bottom: 0;
+}
+.fast-pay-transfer .commission p span,
+.fast-pay-transfer .to-pay p span{
+	font-size: 28px;
+}
+.fast-pay-transfer .form-control-p{
+	font-size: 23px;
+	line-height: 23px;
+	color: #1D3448;
+}
+.fast-pay-transfer .confirmation .form-group{
+	background-color: #FFFFFF;
+	max-width: 422px;
+	border: 1px solid #E3E3E3;
+	margin: auto;
+	border-radius: 6px;
+	height: 70px;
+}
+.fast-pay-transfer .confirmation h5{
+	font-weight: 500;
+	font-size: 36px;
+	line-height: 36px;
+	color: #383838;
+	text-align: center;
+	margin-bottom: 65px;
+}
+.fast-pay-transfer .confirmation h4{
+	font-weight: 500;
+	font-size: 50px;
+	line-height: 50px;
+	color: #1D3448;
+	text-align: center;
+	margin-bottom: 40px;
+}
+.fast-pay-transfer .confirmation p{
+	font-size: 20px;
+	line-height: 186.19%;
+	text-align: center;
+	color: #1D3448;
+	margin-top: 15px;
+}
+.fast-pay-transfer .confirmation p span{
+	color: #D52023;
+}
+.fast-pay-transfer .confirmation button.submit{
+	background:  #D52023;
+	border-radius: 6px;
+	font-size: 36px;
+	line-height: 36px;
+	text-align: center;
+	color: #FFFFFF;
+	padding: 17px 36px;
+	margin: 30px auto 0;
+	display: block;
+}
+.fast-pay-transfer .confirmation button.btn-link#resend-btn {
+	color:  #D52023;
+	font-size: 20px;
+	line-height: 20px;
+    text-align: center;
+    margin: 0 auto;
+}
+.fast-pay-transfer .succeed{
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 60px;
+}
+.fast-pay-transfer .succeed-more{
+	display: flex;
+}
+.fast-pay-transfer .succeed .btn,
+.fast-pay-transfer .succeed-more .btn{
+	font-weight: 500;
+	font-size: 28px;
+	line-height: 28px;
+	color: #1D3448;
+	padding: 0;
+}
+.fast-pay-transfer .succeed .btn img,
+.fast-pay-transfer .succeed-more .btn img{
+	margin-right: 25px;
+}
+
+
+.payment-history{
+	border-radius: 20px;
+	background-color: #FFFFFF;
+	padding: 40px 40px 6px;
+	margin-bottom: 100px;
+}
+.payment-history .table{
+	margin-bottom: 0;
+}
+.payment-history h1{
+	display: inline-block;
+	font-weight: 500;
+	font-size: 36px;
+	line-height: 36px;
+	color: #383838;
+}
+.payment-history a{
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 20px;
+	text-decoration-line: underline;
+	background: -webkit-linear-gradient(137.02deg, #8612D2 97.85%, #AF37FF 19.89%);
+  	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent;
+}
+.payment-history .table td, 
+.payment-history .table th{
+	padding: 34px 0;
+	font-size: 25px;
+	line-height: 25px;
+	color: #2C2C2E;
+}
+.payment-history .table tr:first-child td{
+	border-top: none;
+}
+.payment-history .table tr td:last-child{
+	text-align-last: right;
+	font-weight: 500;
+	font-size: 25px;
+	line-height: 25px;
+}
+.payment-history .table tr td:first-child{
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 20px;
+	color: #8E8E93;
+}
+.payment-history tr td.positive{
+	background: -webkit-linear-gradient(135.22deg, #18B57F 0%, #3CEBAF 99.38%);
+	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent;
+}
+.payment-history tr td.negative{
+	background: -webkit-linear-gradient(180deg, #FF329B 0%, #D51C7B 100%);
+	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent;
+}
+
+
+@media (min-width: 1300px) and (max-width: 1384px){
+	.fast-pay-transfer .form-control, 
+	.fast-pay-transfer .input-group-text{
+		font-size: 20px;
+		padding: 12px;
+	}
+	.fast-pay-transfer .input-group-text {
+	    padding-left: 0;
+	}
+	.fast-pay-transfer .commission p, 
+	.fast-pay-transfer .to-pay p{
+		font-size: 36px;
+	}		
+}
+@media (min-width: 1200px) and (max-width: 1299.98px){
+	.fast-pay-transfer .commission p, 
+	.fast-pay-transfer .to-pay p,
+	.fast-pay-transfer .pay-pink .btn,
+	.fast-pay-transfer .pay .btn{
+		font-size: 30px;
+	}
+}
+@media (max-width: 1080px){
+	.transfers-sum .d-flex{
+		display: block!important;
+	}
+	.fast-pay-transfer .pay{
+		float: none;
+	}
+	.to-pay,
+	.pay,
+	.pay-pink,
+	.commission{
+		margin-top: 20px;
+	}
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+	.fast-pay-transfer .form-control, 
+	.fast-pay-transfer .input-group-text{
+		font-size: 16px;
+		padding: 10px;
+	}
+/*	.fast-pay-transfer .input-group{
+		height: 50px;
+	}*/
+	.fast-pay-transfer .card-number .input-group-divider{
+		margin-top: 10px;
+	}
+	.fast-pay-transfer .input-group-text {
+	    padding-left: 0;
+	}
+	.fast-pay-transfer .commission p, 
+	.fast-pay-transfer .to-pay p{
+		font-size: 28px;
+	}
+	.fast-pay-transfer .pay .btn img{
+		margin-left: 10px;
+	}
+	.fast-pay-transfer .pay-pink .btn img{
+		margin-right: 10px;
+	}
+	.fast-pay-transfer .pay .btn,
+	.fast-pay-transfer .pay-pink .btn{
+		padding: 12px 24px;
+		font-size: 26px;
+	}
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+	.receiver-card-number,
+	.amount
+	{
+		margin-top: 40px;
+	}
+	.to-pay,
+	.pay{
+		margin-top: 20px;
+		float: none;
+	}
+	.fast-pay-transfer .succeed{
+		display: block;
+	}
+	.fast-pay-transfer .succeed .btn, 
+	.fast-pay-transfer .succeed-more .btn{
+		display: block;
+		margin-top: 20px;
+	}
+}
+@media (min-width: 576px) and (max-width: 767.98px) {
+	.receiver-card-number,
+	.amount
+	{
+		margin-top: 40px;
+	}
+	.to-pay,
+	.pay{
+		margin-top: 20px;
+	}
+	.fast-pay-transfer .form-control, 
+	.fast-pay-transfer .input-group-text{
+		font-size: 21px;
+	}
+	.payment-history{
+		padding: 40px 30px 6px;
+	}
+	.payment-history h1{
+		font-size: 28px;
+    	line-height: 28px;
+	}
+	.payment-history a{
+		font-size: 18px;
+    	line-height: 18px;
+	}
+	.payment-history .table tr td:last-child{
+		font-size: 22px;
+		line-height: 22px;
+	}
+	.payment-history .table tr td:first-child{
+		font-size: 18px;
+    	line-height: 18px;
+	}
+	.payment-history .table td, .payment-history .table th{
+		font-size: 22px;
+    	line-height: 18px;
+	}
+	.fast-pay-transfer .succeed{
+		display: block;
+	}
+	.fast-pay-transfer .succeed .btn, 
+	.fast-pay-transfer .succeed-more .btn{
+		display: block;
+		margin-top: 20px;
+	}
+
+}
+@media (max-width: 575.98px) {
+	.fast-pay-transfer .transfer-title p{
+		font-size: 24px;
+		margin-bottom: 50px;
+	}
+	.fast-pay-transfer .form-control, 
+	.fast-pay-transfer .input-group-text{
+		font-size: 16px;
+		padding: 8px;
+		line-height: normal;
+		height: 70px;
+	}/*
+	.fast-pay-transfer .input-group{
+		height: 50px;
+	}*/
+	.fast-pay-transfer{
+		padding: 30px 15px 50px;
+	}
+	.fast-pay-transfer .card-number .input-group-divider {
+	    height: 60%;
+	    margin-top: 10px;
+	}
+	.fast-pay-transfer .commission p, 
+	.fast-pay-transfer .to-pay p{
+		font-size: 30px;
+	}
+	.fast-pay-transfer .pay .btn img{
+		margin-left: 5px;
+    	width: 40px;
+	}
+	.fast-pay-transfer .pay .btn,
+	.fast-pay-transfer .pay-pink .btn{
+		padding: 8px 12px;
+		font-size: 22px;
+	}
+	.receiver-card-number,
+	.amount
+	{
+		margin-top: 40px;
+	}
+	.to-pay,
+	.pay{
+		margin-top: 20px;
+	}
+	.payment-history{
+    	padding: 30px 20px 6px;
+	}
+	.payment-history h1{
+		font-size: 22px;
+    	line-height: 22px;
+	}
+	.payment-history a{
+		font-size: 16px;
+    	line-height: 16px;
+	}
+	.payment-history .table tr td:last-child{
+		font-size: 12px;
+		line-height: 12px;
+	}
+	.payment-history .table tr td:first-child{
+		font-size: 12px;
+    	line-height: 12px;
+	}
+	.payment-history .table td, .payment-history .table th{
+		font-size: 12px;
+    	line-height: 12px;
+	}
+	.fast-pay-transfer .succeed{
+		display: block;
+	}
+	.fast-pay-transfer .succeed .btn, 
+	.fast-pay-transfer .succeed-more .btn{
+		display: block;
+		margin-top: 20px;
+		font-size: 26px;
+	}
+	.fast-pay-transfer .confirmation button.submit{
+		font-size: 22px;
+	}
+
+}
+@media (max-width: 387px) {
+	.fast-pay-transfer .card-number label, 
+	.fast-pay-transfer .receiver-card-number label{
+		font-size: 18px;
+	}
+	.fast-pay-transfer .confirmation button{
+		font-size: 30px;
+	}
+}

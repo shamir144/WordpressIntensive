@@ -1,0 +1,1472 @@
+$(window).on("load", function () {
+  $(".inline-list--second__item--popup--item .form-control").keyup(function () {
+    if ($(this).val()) {
+      $(".inline-list--second__item--popup--form button").prop(
+        "disabled",
+        false
+      );
+    }
+  });
+
+  $(".inline-list--second__item--popup--item button").on("click", function (e) {
+    e.preventDefault();
+    $(this).parent().parent().parent().hide();
+    $(this).parent().parent().parent().siblings().hide();
+    $(this).parent().parent().parent().next().show();
+    $(".inline-list--second__item--popup-back").show();
+    $(".toggle-details--hide").addClass("hide");
+  });
+
+  $(".inline-list--second__item--popup-back").on("click", function (e) {
+    e.preventDefault();
+    $(this).parent().not(".first-step").hide();
+    $(this).parent().siblings().hide();
+    $(this).parent().prev().show();
+    $(this).parent().prev().show();
+  });
+
+  // POPUP DANNIE FILTR
+  $(".options").addClass("hide");
+  $(".toggle-details--hide").addClass("hide");
+
+  $(".toggle-details").on("click", function (e) {
+    e.preventDefault();
+    $(".options").removeClass("hide");
+    $(".toggle-details--hide").removeClass("hide");
+
+    $(this).hide();
+  });
+
+  $(".toggle-details--hide").on("click", function (e) {
+    e.preventDefault();
+    $(".toggle-details").show();
+    $(".options").addClass("hide");
+    $(this).addClass("hide");
+  });
+
+  // Popup
+
+  $(".inline-list--second__item").on("click", function (e) {
+    e.preventDefault();
+    $(".inline-list--second__item--popup").fadeIn();
+    $(".inline-list--second__item--popup-overlay").fadeIn();
+  });
+
+  $(
+    ".inline-list--second__item--popup-close, .inline-list--second__item--popup-overlay"
+  ).on("click", function () {
+    $(".inline-list--second__item--popup").fadeOut();
+    $(".inline-list--second__item--popup-overlay").fadeOut();
+  });
+
+  // Plateji perevodi tab
+
+  $(".main-list--second__item").on("click", function (e) {
+    e.preventDefault();
+    var id = $(this).attr("id");
+
+    $(this).parent().parent().parent().fadeOut();
+
+    $(".inline-list").fadeIn();
+
+    $(".inline-list--item[data-id=" + id + "]").fadeIn();
+  });
+
+  $(".inline-list--back").on("click", function () {
+    $(".main-list").fadeIn();
+
+    $(".inline-list").fadeOut();
+
+    $(".inline-list--item").fadeOut();
+  });
+
+  // MAIN PAGE TAB
+  $(".v3-body .card").click(function () {
+    var tab_id = $(this).attr("data-tab");
+
+    $(".v3-body .card").removeClass("current");
+    $(".tab-content").removeClass("current");
+
+    $(this).addClass("current");
+    $("#" + tab_id).addClass("current");
+  });
+
+  // SEARCH
+  $(".search-btn").on("click", function () {
+    $(".search-wrapper").addClass("active");
+    $(".custom-overlay").addClass("active");
+    $(".search-wrapper .close").show();
+    setTimeout(function () {
+      $(".search-input").focus();
+    }, 150);
+  });
+
+  $(".search-submit").hide();
+  $(".search-input").on("change keyup", function () {
+    if ($(".search-input").val()) {
+      $(".search-wrapper .close").hide();
+      $(".search-submit").show();
+      $(".search-btn").css("z-index", "11");
+    } else {
+      $(".search-wrapper .close").show();
+      $(".search-submit").hide();
+      $(".search-btn").css("z-index", "0");
+    }
+  });
+
+  $(".search-wrapper .close").on("click", function () {
+    $(".search-wrapper").removeClass("active");
+    $(".custom-overlay").removeClass("active");
+    document.querySelector(".search-input").value = "";
+    $(".search-btn").css("z-index", "0");
+    $(".search-submit").hide();
+  });
+  $(".custom-overlay").on("click", function () {
+    $(".search-wrapper").removeClass("active");
+    document.querySelector(".search-input").value = "";
+    $(".search-btn").css("z-index", "0");
+    $(this).removeClass("active");
+    $(".search-submit").hide();
+  });
+
+});
+
+$(document).ready(function () {
+  // POP UP CREDIT FOR SMALL CREDITS
+
+  $(".CreditSmallInner__DocInfo--item").on("click", function (e) {
+    e.preventDefault();
+    var popupid = $(this).data("id");
+    $(
+      '.CreditSmallInner__DocInfo--popup[data-popup="' + popupid + '"]'
+    ).addClass("CreditSmallInner__DocInfo--popup--active");
+    $(".CreditSmallInner__DocInfo--popup-overlay").addClass(
+      "CreditSmallInner__DocInfo--popup-overlay--active"
+    );
+  });
+
+  $(document).mouseup(function (e) {
+    var container = $(
+      ".CreditSmallInner__DocInfo--popupBlock, .CreditSmallInner__DocInfo--popup-close"
+    );
+
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+      $(".CreditSmallInner__DocInfo--popup-overlay").removeClass(
+        "CreditSmallInner__DocInfo--popup-overlay--active"
+      );
+      $(".CreditSmallInner__DocInfo--popup").removeClass(
+        "CreditSmallInner__DocInfo--popup--active"
+      );
+    }
+  });
+
+  $(".CreditSmallInner__DocInfo--popup-close").on("click", function () {
+    $(".CreditSmallInner__DocInfo--popup").removeClass(
+      "CreditSmallInner__DocInfo--popup--active"
+    );
+    $(".CreditSmallInner__DocInfo--popup-overlay").removeClass(
+      "CreditSmallInner__DocInfo--popup-overlay--active"
+    );
+  });
+
+  // POP UP END
+
+  // OWL ACC INVESTORAM
+  $(".sync3").owlCarousel({
+    items: 7,
+    slideBy: 1,
+    startPosition: -1,
+    nav: true,
+    dots: false,
+    freeDrag: true,
+    mouseDrag: false,
+    touchDrag: false,
+    navText: [
+      '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+      '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>',
+    ],
+    responsive: {
+      320: {
+        items: 1,
+      },
+      380: {
+        items: 2,
+      },
+      520: {
+        items: 3,
+      },
+      768: {
+        items: 4,
+      },
+      1200: {
+        items: 5,
+      },
+      1300: {
+        items: 6,
+      },
+      1400: {
+        items: 7,
+      },
+    },
+  });
+
+  $(window).on("load", function () {
+    $(".sync3.owl-theme .owl-item:first-child").addClass("wanted-active");
+  });
+
+  $(".sync3.owl-theme .owl-item").each(function () {
+    $(this).on("click", function () {
+      $(this).addClass("wanted-active");
+      $(this).siblings().removeClass("wanted-active");
+    });
+  });
+
+  $(".sync3.owl-theme .owl-item .owl-next").click(function () {
+    $(".sync3.owl-theme .owl-item.wanted-active")
+      .eq(-1)
+      .addClass("wanted-active");
+  });
+
+  // SCROLL MENU (ACTIVE IN CENTER) in small devices
+  var menuWidth = 0;
+  $(".generalInfo__item.active")
+    .prevAll(".generalInfo__item")
+    .addClass("prev-element");
+  $(".generalInfo__item.prev-element").each(function () {
+    menuWidth += 1 * parseInt($(this).width());
+  });
+  var result = menuWidth;
+  $(".generalInfo__menu").scrollLeft(result) + " px";
+
+  var countnum = 1;
+  // MAP OF SITE ANIMATE
+  $(window).on("load", function () {
+    $(".mapOfSiteItem").each(function () {
+      $(this).addClass("active");
+    });
+  });
+  // FIXED TOP MENU CREDITS INSIDE
+  $(".kmaStylesSqbNewCredits__NavMenu li a").on("click", function () {
+    $(this).parent().siblings().removeClass("active");
+    $(this).parent().addClass("active");
+  });
+  // SMOOTH SCROLL CREDITS INSIDE
+  $(
+    ".kmaStylesSqbNewCredits__NavMenu li, .kmaStylesSqbNewCredits__Intro, .kmaStylesSqbNewCredits__TopInfoOrder"
+  ).each(function () {
+    $(this)
+      .find("a")
+      .on("click", function (event) {
+        if (this.hash !== "") {
+          event.preventDefault();
+          var hash = this.hash;
+          if ($(window).width() < 992) {
+            $("html, body").stop().animate(
+              {
+                //scrollTop: $(hash).offset().top - 110
+              },
+              1300
+            );
+          } else {
+            $("html, body").stop().animate(
+              {
+                //scrollTop: $(hash).offset().top - 70
+              },
+              1300
+            );
+          }
+        }
+      });
+  });
+  if ($(".kmaStylesSqbNewCredits__Nav").length > 0) {
+    var scrollTopNav = $(".kmaStylesSqbNewCredits__Nav").position();
+    $(window).on("scroll load", function () {
+      if ($(window).width() < 992) {
+        if ($(window).scrollTop() >= scrollTopNav.top - 56) {
+          $(".kmaStylesSqbNewCredits__Nav").addClass("Fixed");
+        } else {
+          $(".kmaStylesSqbNewCredits__Nav").removeClass("Fixed");
+        }
+      }
+      if ($(window).width() > 992) {
+        if ($(window).scrollTop() >= scrollTopNav.top) {
+          $(".kmaStylesSqbNewCredits__Nav").addClass("Fixed");
+          //$('.kmaStylesSqbNewCredits__NavMenu li a').trigger('click');
+        } else {
+          $(".kmaStylesSqbNewCredits__Nav").removeClass("Fixed");
+        }
+      }
+    });
+  }
+
+  let tab_containers = document.querySelectorAll("[data-tab_id]");
+  function credit_menu_lists() {
+    for (var i = 0; i < tab_containers.length; i++) {
+      let tab_text = tab_containers[i].dataset.tab_id;
+      if (tab_text.length) {
+        $(".kmaStylesSqbNewCredits__NavMenu").append(
+          '<li><a href="#" tab_id="' + tab_text + '">' + tab_text + "</a></li>"
+        );
+      }
+    }
+  }
+  credit_menu_lists();
+
+  $(".kmaStylesSqbNewCredits__NavMenu a").on("click", function (e) {
+    e.preventDefault();
+    var attr = $(this).attr("tab_id");
+    tab_containers.forEach((e) => {
+      if (e.dataset.tab_id == attr) {
+        console.log(e.dataset.tab_id, attr);
+        $("html, body").animate(
+          {
+            scrollTop: $(e).offset().top - 85,
+          },
+          1000
+        );
+      }
+    });
+  });
+
+  // Select all links with hashes
+  $('a[href*="#"]')
+    // Remove links that don't actually link to anything
+    .not('[href="#"]')
+    .not('[href="#0"]')
+    .click(function (event) {
+      // On-page links
+      if (
+        location.pathname.replace(/^\//, "") ==
+          this.pathname.replace(/^\//, "") &&
+        location.hostname == this.hostname
+      ) {
+        // Figure out element to scroll to
+        var target = $(this.hash);
+        target = target.length
+          ? target
+          : $("[name=" + this.hash.slice(1) + "]");
+        // Does a scroll target exist?
+        if (target.length) {
+          // Only prevent default if animation is actually gonna happen
+          event.preventDefault();
+          $("html, body").animate(
+            {
+              scrollTop: target.offset().top,
+            },
+            1000,
+            function () {
+              // Callback after animation
+              // Must change focus!
+              var $target = $(target);
+              $target.focus();
+              if ($target.is(":focus")) {
+                // Checking if the target was focused
+                return false;
+              } else {
+                $target.attr("tabindex", "-1"); // Adding tabindex for elements not focusable
+                $target.focus(); // Set focus again
+              }
+            }
+          );
+        }
+      }
+    });
+
+  // SELECT VKLADI
+  $(".vkl-content .js-example-basic-single").select2({
+    minimumResultsForSearch: Infinity,
+    width: "100%",
+  });
+  // SELECT CREDIT CARD INSIDE
+  $(".calculatorCredit select").select2({
+    minimumResultsForSearch: Infinity,
+    width: "100%",
+  });
+  // SELECT CREDIT CARD INSIDE
+  $(".virtualReception__select").select2({
+    placeholder: function () {
+      $(this).data("placeholder");
+    },
+    allowClear: false,
+    minimumResultsForSearch: Infinity,
+    width: "100%",
+  });
+
+  // SELECT ACCEONERAM I INVESTEROM
+  $(".kmaNewAccInvstSelect").select2({
+    minimumResultsForSearch: -1,
+    dropdownCssClass: "kmaNewAccInvstSelectDropdown",
+    placeholder: function () {
+      $(this).data("placeholder");
+    },
+    width: "100%",
+  });
+  $(".converter__select").select2({
+    minimumResultsForSearch: Infinity,
+    dropdownCssClass: "converter__selectdropdown",
+    width: "30%",
+  });
+
+  $(".course_data .moneyTrasfer__resultTable").basictable({
+    breakpoint: 767,
+    forceResponsive: true,
+  });
+  function matchCustom(params, data) {
+    // If there are no search terms, return all of the data
+    if ($.trim(params.term) === "") {
+      return data;
+    }
+
+    // Do not display the item if there is no 'text' property
+    if (typeof data.text === "undefined") {
+      return null;
+    }
+
+    // `params.term` should be the term that is used for searching
+    // `data.text` is the text that is displayed for the data object
+    if (data.text.indexOf(params.term) > -1) {
+      var modifiedData = $.extend({}, data, true);
+      modifiedData.text += " (matched)";
+
+      // You can return modified objects from here
+      // This includes matching the `children` how you want in nested data sets
+      return modifiedData;
+    }
+
+    // Return `null` if the term should not be displayed
+    return null;
+  }
+  $(".kmaNewFilialSelect").select2({
+    width: "100%",
+    matcher: matchCustom,
+  });
+  // ACCEONERAM I INVESTEROM SORT FUNCTION
+  function ItemLengthHideWithSelect(element, hidebtnclass, valueselect) {
+    $(".kmaNewAccInvstDownloadList .download-item, .kmaNewInfoDisTableWrap")
+      .hide()
+      .filter(function () {
+        var v = $(this).data("year");
+        return v == valueselect;
+      })
+      .fadeIn(200);
+    $(
+      ".kmaNewAccInvstDownloadList .download-item:visible, .kmaNewInfoDisTableWrap:visible"
+    ).each(function (index, el) {
+      // if (index >= 12) {
+      //     $(this).hide();
+      // }
+      // if (index < 12) {
+      //     $(hidebtnclass).hide();
+      // } else {
+      //     $(hidebtnclass).show();
+      // }
+    });
+  }
+  $(".kmaStylesSqbNewBtn--acc").click(function (e) {
+    e.preventDefault();
+    countnum++;
+    $(this).attr("data-counter", countnum);
+
+    var activelist = 12 * countnum;
+    for (var i = 0; i < activelist; i++) {
+      $(".kmaNewAccInvstDownloadList .download-item, .kmaNewInfoDisTableWrap")
+        .filter(
+          '[data-year="' + $(".sortDate, .kmaNewAccInvstSelect").val() + '"]'
+        )
+        .eq(i)
+        .fadeIn(100);
+    }
+
+    var item_length =
+      $(
+        ".kmaNewAccInvstDownloadList .download-item, .kmaNewInfoDisTableWrap"
+      ).filter(
+        '[data-year="' + $(".sortDate, .kmaNewAccInvstSelect").val() + '"]'
+      ).length - 1;
+    if (item_length < activelist) {
+      $(this).hide();
+      countnum = 1;
+    }
+  });
+  // Sort Doc by date-
+  if ($(".yearfilter .item").length) {
+    $(".yearfilter .item").click(function (e) {
+      var val = $(this).attr("data-year");
+      if (val != "all") {
+        ItemLengthHideWithSelect(
+          ".kmaNewAccInvstDownloadList .download-item, .kmaNewInfoDisTableWrap",
+          ".kmaStylesSqbNewBtn--acc",
+          val
+        );
+      } else {
+        $(
+          ".kmaNewAccInvstDownloadList .download-item, .kmaNewInfoDisTableWrap"
+        ).fadeIn();
+      }
+    });
+    $(".kmaNewAccInvstSelect").trigger("change");
+  }
+  // MONEY TRANSFER ALL SELECTS
+  $(".moneyTransfer__select").select2({
+    minimumResultsForSearch: -1,
+    dropdownCssClass: "money-transfer--valute-dropdown",
+    placeholder: function () {
+      $(this).data("placeholder");
+    },
+    width: "100%",
+  });
+  $(".moneyTrasfer__resultTable--tarifi .tarifi").select2({
+    minimumResultsForSearch: -1,
+    dropdownCssClass: "money-transfer--tarifi-dropdown",
+    placeholder: function () {
+      $(this).data("placeholder");
+    },
+    width: "100%",
+  });
+  $(".moneyTransfer__select.valute").select2({
+    minimumResultsForSearch: -1,
+    placeholder: function () {
+      $(this).data("placeholder");
+    },
+    width: "100%",
+    templateResult: formatState,
+    templateSelection: formatState,
+  });
+
+  function formatState(opt) {
+    if (!opt.id) {
+      return opt.text.toUpperCase();
+    }
+    var optimage = $(opt.element).attr("data-image");
+    console.log(optimage);
+    if (!optimage) {
+      return opt.text.toUpperCase();
+    } else {
+      var $opt = $(
+        '<span style="display: flex; align-items: center;"><img src="' +
+          optimage +
+          '" width="25" style="padding-right: 15px"/> ' +
+          opt.text.toUpperCase() +
+          "</span>"
+      );
+      return $opt;
+    }
+  }
+  // ON FOCUS INPUT CREDIT CARD (Custom Placeholder)
+  if ($(".worksheetCredits__form").length) {
+    $(".worksheetCredits__form input, .worksheetCredits__form textarea").focus(
+      function () {
+        if ($(this).keyup()) {
+          $(this).next().addClass("hasValue");
+          $(".fileSelectCustom__placeholder").show();
+          $(".fileSelectCustom__placeholder").removeClass("hasValue");
+        } else if (!$(this).val()) {
+          $(this).next().removeClass("hasValue");
+        } else if ($(this).val().length) {
+          $(this).next().addClass("hasValue");
+          $(".fileSelectCustom__placeholder").show();
+          $(".fileSelectCustom__placeholder").removeClass("hasValue");
+        } else {
+          $(this).next().removeClass("hasValue");
+        }
+        $(".fileSelectCustom__placeholder").show();
+        $(".fileSelectCustom__placeholder").removeClass("hasValue");
+      }
+    );
+    $(".worksheetCredits__form input, .worksheetCredits__form textarea").blur(
+      function () {
+        if (!$(this).val()) {
+          $(this).next().removeClass("hasValue");
+        } else if ($(this).val().length) {
+          $(this).next().addClass("hasValue");
+          $(".fileSelectCustom__placeholder").show();
+          $(".fileSelectCustom__placeholder").removeClass("hasValue");
+        } else {
+          $(this).next().removeClass("hasValue");
+        }
+      }
+    );
+  }
+  $(".placeholder").click(function () {
+    $(this).prev().focus();
+    $(this).removeClass("hasValue");
+    $(".fileSelectCustom__placeholder").show();
+    $(".fileSelectCustom__placeholder").removeClass("hasValue");
+  });
+  // DATA PICKER CUSTOM
+  if ($(".date-picker").length) {
+    $(".date-picker").daterangepicker({
+      singleDatePicker: true,
+      autoUpdateInput: false,
+      showDropdowns: true,
+      minYear: 1901,
+      maxYear: parseInt(moment().format("YYYY"), 10),
+      alwaysShowCalendars: true,
+    });
+    $(".date-picker").val("");
+    $(".date-picker").on("apply.daterangepicker", function (ev, picker) {
+      $(this).val(picker.startDate.format("DD/MM/YYYY"));
+    });
+  }
+  if ($(".unh-date-picker").length) {
+    $(".unh-date-picker").daterangepicker({
+      singleDatePicker: true,
+      autoUpdateInput: false,
+      showDropdowns: true,
+      minYear: 2000,
+      maxYear: parseInt(moment().format("YYYY"), 10),
+      alwaysShowCalendars: true,
+    });
+    $(".unh-date-picker").val("");
+    $(".unh-date-picker").on("apply.daterangepicker", function (ev, picker) {
+      $(this).val(picker.startDate.format("DD/MM/YYYY"));
+    });
+  }
+
+  $(".file").on("change", function (e) {
+    var files = $(this)[0].files;
+    if (files.length >= 2) {
+      $(this)
+        .next()
+        .text(files.length + " Files Ready To Upload");
+    } else {
+      var fileName = e.target.value.split("\\").pop();
+      $(this).next().text(fileName);
+    }
+    $(this).next().show();
+  });
+  // ADD MORE BUTTON (ADD FILE INPUT)
+  var fileCount = 0;
+  $(".add-more").on("click", function () {
+    fileCount += 1;
+    let cloned_element = $(".fileSelectCustom:first").clone();
+    cloned_element.find("input").val("");
+    cloned_element
+      .find(".placeholder")
+      .text(cloned_element.find(".placeholder").attr("data-label"));
+
+    if ($(".fileSelectCustom").length >= 10) {
+      alert("Stop");
+    } else {
+      $(this).before(cloned_element);
+      $(".removeBtnFile").remove();
+      $(".fileSelectCustom").append(
+        '<button type=button class="removeBtnFile"></button>'
+      );
+    }
+
+    cloned_element.find(".file").on("change", function (e) {
+      var files = $(this)[0].files;
+      var fileName = e.target.value.split("\\").pop();
+      $(this).next().text(fileName);
+    });
+
+    $(".removeBtnFile").on("click", function () {
+      let f_length = $(".fileSelectCustom").length - 1;
+      if ($(".fileSelectCustom").length != 1) {
+        $(this).parent().remove();
+      }
+      if (f_length == 1) {
+        $(".removeBtnFile").remove();
+      }
+    });
+  });
+  // IMG PERETASKIVANIYA OFF
+  $("img, a").mousedown(function () {
+    return false;
+  });
+  // TABS
+  $(".kmaSqbTabs .tab").click(function () {
+    $(this).addClass("active").siblings().removeClass("active");
+    var tabcontent = $(this).parent().next();
+    tabcontent.find(".kmaSqbTab__item").hide().removeClass("active");
+    tabcontent
+      .find(".kmaSqbTab__item")
+      .eq($(this).index())
+      .stop()
+      .fadeIn("fast")
+      .addClass("active");
+    if ($(".scrolltothis").length) {
+      $("html, body").animate(
+        {
+          scrollTop: $(".scrolltothis").offset().top,
+        },
+        100
+      );
+    }
+  });
+  $(".kmaSqbInvestCentTab .tab").click(function () {
+    $(this).addClass("active").siblings().removeClass("active");
+    var tabcontent = $(this).parent().next();
+    tabcontent.find(".kmaSqbInvestCentTab__item").hide().removeClass("active");
+    tabcontent
+      .find(".kmaSqbInvestCentTab__item")
+      .eq($(this).index())
+      .stop()
+      .fadeIn("fast")
+      .addClass("active");
+  });
+  // ACCORDION NEW
+  var header = $(".generalInfo__accordionHeader");
+
+  function accordion() {
+    $(this).toggleClass("active");
+    $(this).next().stop().slideToggle("normal");
+    $(this).parent().toggleClass("active");
+    console.log($(this).next().text().length);
+    if ($(window).width() < 992) {
+      if ($(this).parent().text().length > 600) {
+        $(".generalInfo__accordionAnchor").remove();
+        $(this)
+          .next()
+          .append(
+            "<div class='generalInfo__accordionAnchor'> <div class='generalInfo__accordionArrowBtnAnchor'>" +
+              "<span class='generalInfo__accordionArrowTextAnchor'>" +
+              hide_text +
+              "</span>" +
+              "<div class='generalInfo__accordionArrowAnchor'></div></div></div>"
+          );
+      }
+    } else {
+      if ($(this).parent().text().length > 1000) {
+        $(".generalInfo__accordionAnchor").remove();
+        $(this)
+          .next()
+          .append(
+            "<div class='generalInfo__accordionAnchor'> <div class='generalInfo__accordionArrowBtnAnchor'>" +
+              "<span class='generalInfo__accordionArrowTextAnchor'>" +
+              hide_text +
+              "</span>" +
+              "<div class='generalInfo__accordionArrowAnchor'></div></div></div>"
+          );
+      }
+    }
+  }
+  header.click(accordion);
+  $(document).on("click", ".generalInfo__accordionAnchor", function () {
+    var topInfo = $(this).parent().parent().position();
+    $(".generalInfo__accordionHeader, .generalInfo__accordionItem").removeClass(
+      "active"
+    );
+    $(".generalInfo__accordionBody ").slideUp("normal");
+    $("html, body").animate(
+      {
+        scrollTop: topInfo.top + 5,
+      },
+      400
+    );
+  });
+  // POP UP SLIDER SIMPLE LIGHTBOX
+  var gallery = $(".gallery a").simpleLightbox({
+    loop: false,
+    animationSpeed: 200,
+  });
+  gallery.next(); // Next Image
+  // SERTIFICATE SORTIRATION
+  if ($(".kmaNewInfoDis--certificateList").length) {
+    var $grid = $(".kmaNewInfoDis--certificateList").isotope({
+      // main isotope options
+      itemSelector: ".kmaNewInfoDis--certificateListItem",
+      // set layoutMode
+      layoutMode: "masonry",
+    });
+  }
+
+  // OWL HISTORY OF BANK
+  function owlCarousel() {
+    $(".sqbHistory__carouselBlock").each(function () {
+      var sync1 = $(this).find(".sync1");
+      var sync2 = $(this).find(".sync2");
+      var syncedSecondary = true;
+      sync1
+        .owlCarousel({
+          items: 1,
+          nav: false,
+          autoHeight: true,
+          autoplay: false,
+          dots: false,
+          loop: true,
+          startPosition: 0,
+          mouseDrag: false,
+          rewind: false,
+          responsiveRefreshRate: 4000,
+          slideBy: 1,
+          slideSpeed: 4000,
+        })
+        .on("changed.owl.carousel", syncPosition);
+      sync2
+        .on("initialized.owl.carousel", function () {
+          sync2.find(".owl-item").eq(0).addClass("current");
+        })
+        .owlCarousel({
+          items: 3,
+          dots: false,
+          center: true,
+          startPosition: 0,
+          nav: true,
+          smartSpeed: 1000,
+          mouseDrag: false,
+          slideSpeed: 4000,
+          slideBy: 1,
+          rewind: false,
+          responsiveRefreshRate: 1000,
+          navText: [
+            '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+            '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>',
+          ],
+        })
+        .on("changed.owl.carousel", syncPosition2);
+
+      function syncPosition(el) {
+        var count = el.item.count - 1;
+        var current = Math.round(el.item.index - el.item.count / 2 - 0.5);
+        if (current < 0) {
+          current = count;
+        }
+        if (current > count) {
+          current = 0;
+        }
+        sync2
+          .find(".owl-item")
+          .removeClass("current")
+          .eq(current)
+          .addClass("current");
+        var onscreen = sync2.find(".owl-item.active").length - 1;
+        var start = sync2.find(".owl-item.active").first().index();
+        var end = sync2.find(".owl-item.active").last().index();
+        if (current > end) {
+          sync2.data("owl.carousel").to(current, 100, true);
+        }
+        if (current < start) {
+          sync2.data("owl.carousel").to(current - onscreen, 100, true);
+        }
+      }
+
+      function syncPosition2(el) {
+        if (syncedSecondary) {
+          var number = el.item.index;
+          sync1.data("owl.carousel").to(number, 100, true);
+        }
+      }
+      sync2.on("click", ".owl-item", function (e) {
+        e.preventDefault();
+        var number = $(this).index();
+        sync1.data("owl.carousel").to(number, 300, true);
+      });
+    });
+  }
+  owlCarousel();
+  // YOUTUBE POP UP
+  $(".audioMaterials__Item--video").each(function (index) {
+    var current = $(this).find("a");
+    current.click(function (e) {
+      e.preventDefault();
+
+      var videoSRC = $(this).attr("data-video");
+      var videoSRCauto =
+        videoSRC +
+        "?enablejsapi=1&version=3&playerapiid=ytplayer;autoplay=1;rel=0;";
+
+      $(".video-list .video-list__item")
+        .eq(index)
+        .find(".video-list__iframe")
+        .attr("src", videoSRCauto);
+
+      console.log(videoSRCauto);
+
+      $(".video-list").addClass("video-list--active");
+      $(".video-list .video-list__item").removeClass(
+        "video-list__item--active"
+      );
+      $(".video-list__wrapper").removeClass("active");
+      $(".video-list .video-list__item")
+        .eq(index)
+        .addClass("video-list__item--active");
+      $(".video-list__wrapper").addClass("active");
+    });
+  });
+  $(".video-list .video-list__overlay, .video-list .video-list__close").click(
+    function () {
+      $(".video-list__iframe").each(function () {
+        this.contentWindow.postMessage(
+          '{"event":"command","func":"' + "stopVideo" + '","args":""}',
+          "*"
+        );
+      });
+
+      $(".video-list").removeClass("video-list--active");
+      $(".video-list .video-list__item").removeClass(
+        "video-list__item--active"
+      );
+      $(".video-list__wrapper").removeClass("active");
+    }
+  );
+  // YOUTUBE POPUP ESCAPE BUTTON
+  jQuery(document).on("keyup", function (e) {
+    if (e.keyCode == 27) {
+      $(".video-list__iframe").each(function () {
+        this.contentWindow.postMessage(
+          '{"event":"command","func":"' + "stopVideo" + '","args":""}',
+          "*"
+        );
+      });
+
+      $(".video-list").removeClass("video-list--active");
+      $(".video-list .video-list__item").removeClass(
+        "video-list__item--active"
+      );
+      $(".video-list__wrapper").removeClass("active");
+    }
+  });
+  // PARALLAX EFFECT CREDITS
+  $(".kmaStylesSqbNewCredits__item").each(function () {
+    var img = $(this).find(".layer-1");
+    var bg = $(this).find(".layer-2");
+    $(this)
+      .mousemove(function (e) {
+        parallaxIt(e, img, -10, -15);
+        parallaxIt(e, bg, 15, 5);
+      })
+      .on("mouseleave", function (e) {
+        parallaxIt(e, img, 0, 0);
+      });
+  });
+
+  function parallaxIt(e, target, movement_x, movement_y) {
+    var $this = $(".kmaStylesSqbNewCredits__item .kmaStylesSqbNewCredits__img");
+    var relX = e.pageX - $this.offset().left;
+    var relY = e.pageY - $this.offset().top;
+    TweenMax.to(target, 1, {
+      x: ((relX - $this.width() / 3) / $this.width()) * movement_x,
+      y: ((relY - $this.height() / 3) / $this.height()) * movement_y,
+    });
+  }
+
+  // MONEY TRANSFER CALC
+  var $range = $(".js-range-slider"),
+    $input = $(".custom.js-input"),
+    instance,
+    min = 0;
+  var max = $(".calculatorCredit").length ? 100000000 : 10000;
+  $range.ionRangeSlider({
+    skin: "round",
+    type: "single",
+    grid: false,
+    min: min,
+    max: max,
+    hide_min_max: true,
+    hide_from_to: true,
+    from: 100,
+    step: 50,
+    force_edges: true,
+    onStart: function (data) {
+      $input.prop("value", data.from);
+    },
+    onChange: function (data) {
+      $input.prop("value", data.from);
+    },
+  });
+  instance = $range.data("ionRangeSlider");
+  $input.on("change keyup", function () {
+    var val = $(this).prop("value");
+    // validate
+    if (val < min) {
+      val = min;
+    } else if (val > max) {
+      val = max;
+    }
+    $(this).val(val);
+    instance.update({
+      from: Number(val),
+    });
+  });
+  $("#m_currency").change(function (event) {
+    if ($(this).val() == "rub") {
+      instance.update({
+        max: 1000000,
+      });
+    } else {
+      instance.update({
+        max: 10000,
+      });
+    }
+  });
+  // PLUS-MINUS BUTTON MONEY TRANSFER
+  $(".sumCredit__minus").on("click", function () {
+    if (Number($input.val()) > min) {
+      $input.val(Number($input.val()) - 100);
+    } else {
+      $input.val(min);
+    }
+    $input.trigger("change");
+  });
+  $(".sumCredit__plus").on("click", function () {
+    if (Number($input.val()) < max) {
+      $input.val(Number($input.val()) + 100);
+    } else {
+      $input.val(max);
+    }
+    $input.trigger("change");
+  });
+});
+
+$(window).on("load", function () {
+  // STATICHESKIE DANNIE START
+  var barChartData = {
+    labels: ["2014", "2015", "2016", "2017", "2018"],
+    datasets: [
+      {
+        label: "Облигации",
+        backgroundColor: "rgba(204, 204, 255, 1)",
+        borderColor: "rgba(204, 204, 255, 1)",
+        borderWidth: 1,
+        data: [38, 30, 43, 41, 41],
+      },
+      {
+        label: "Депозитные сертификаты",
+        backgroundColor: "rgb(164, 223, 223)",
+        borderColor: "rgb(164, 223, 223)",
+        borderWidth: 1,
+        data: [14.7, 15, 35, 26, 22],
+      },
+    ],
+  };
+  var chartOptions = {
+    responsive: true,
+    legend: {
+      onClick: (e) => e.stopPropagation(),
+      position: "bottom",
+    },
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+  if ($("#ChartJs-1").length) {
+    var ctx = document.getElementById("ChartJs-1").getContext("2d");
+    window.myBar = new Chart(ctx, {
+      type: "bar",
+      data: barChartData,
+      options: chartOptions,
+    });
+  }
+  // STATICHESKIE DANNIE END
+  // bar-chart
+  var VirtualPriemBarChartData = {
+    labels: ["Январь 2022", "Феврал 2022", "Март 2022", "Апрел", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь","Ноябрь", "Декабрь"],
+    datasets: [
+      {
+        backgroundColor: "#00558a",
+        borderColor: "#003E64",
+        borderWidth: 1,
+        data: [95, 66, 130, 128, 75, 123, 101, 109, 108,98,85,160],
+      },
+    ],
+  };
+  var chartOptions = {
+    responsive: true,
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      position: "top",
+      fontColor: "#737373",
+      fontFamily: "Roboto",
+      fontStyle: "400",
+      fontSize: 16,
+      padding: 20,
+      text: "Статистика обращений граждан за последние месяцев",
+    },
+    tooltips: {
+      displayColors: false,
+    },
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+  if ($("#VirtualPriem--Bar").length) {
+    var ctx = document.getElementById("VirtualPriem--Bar").getContext("2d");
+    window.myBar = new Chart(ctx, {
+      type: "bar",
+      data: VirtualPriemBarChartData,
+      options: chartOptions,
+    });
+  }
+
+  // STATICHESKIE DANNIE UZbekcha
+  // bar-chart
+  var VirtualPriemBarChartData2 = {
+    labels: ["Yanvar 2022", "Fevral 2022", "Mart 2022", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentyabr", "Oktyabr", "Noyabr", "Dekabr"],
+    datasets: [
+      {
+        backgroundColor: "#00558a",
+        borderColor: "#003E64",
+        borderWidth: 1,
+        data: [95, 66, 130, 128, 75, 123, 101, 109, 108,98,85,160],
+      },
+    ],
+  };
+  var chartOptions = {
+    responsive: true,
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      position: "top",
+      fontColor: "#737373",
+      fontFamily: "Roboto",
+      fontStyle: "400",
+      fontSize: 18,
+      padding: 20,
+      text: "So'nggi oylar davomida murojaatlar soni, oylar kesimida",
+    },
+    tooltips: {
+      displayColors: false,
+    },
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+  if ($("#VirtualPriem--BarUZ").length) {
+    var ctx = document.getElementById("VirtualPriem--BarUZ").getContext("2d");
+    window.myBar = new Chart(ctx, {
+      type: "bar",
+      data: VirtualPriemBarChartData2,
+      options: chartOptions,
+    });
+  }
+  // pie chart
+
+  var data1 = "528";
+  var data2 = "528";
+  var data3 = "341";
+  var data4 = "187";
+
+  var VirtualPriemPieChartData = {
+    labels: [
+      "Все обращения",
+      "Обработанные обращения",
+      "Обращения от физических лиц",
+      "Обращения от юридических лиц",
+    ],
+    datasets: [
+      {
+        data: [data1, data2, data3, data4],
+        backgroundColor: ["#02375c", "#F7464A", "#9c9c9c", "#F7464A"],
+        hoverBackgroundColor: ["#02245c", "#FF5A5E", "#9d9d9d", "#FF5A5E"],
+      },
+    ],
+  };
+  var chartOptions = {
+    responsive: true,
+    tooltips: {
+      enabled: true,
+      mode: "single",
+      callbacks: {
+        label: function (tooltipItems, data) {
+          var label = data.datasets[0].data[tooltipItems.index] || "";
+          return label + " шт";
+        },
+      },
+      displayColors: false,
+    },
+    legend: {
+      display: true,
+      position: "bottom",
+      labels: {
+        boxWidth: 30,
+        fontColor: "#737373",
+        fontFamily: "Roboto",
+        fontStyle: "400",
+        fontSize: 15,
+        padding: 30,
+      },
+    },
+    title: {
+      display: true,
+      position: "bottom",
+      fontColor: "#737373",
+      fontFamily: "Roboto",
+      fontStyle: "400",
+      fontSize: 18,
+      padding: 20,
+      text: "Обращения за 2 квартал 2020 года",
+    },
+    yAxes: [
+      {
+        ticks: {
+          min: 0,
+          max: 100,
+          stepSize: 20,
+        },
+      },
+    ],
+  };
+  if ($("#VirtualPriem--Pie").length) {
+    var ctx = document.getElementById("VirtualPriem--Pie").getContext("2d");
+    window.myBar = new Chart(ctx, {
+      type: "bar",
+      data: VirtualPriemPieChartData,
+      options: chartOptions,
+    });
+  }
+
+  var sync1 = $("#sync1");
+  var sync2 = $("#sync2");
+  var sync3 = $("#sync3");
+  var slidesPerPage = 4; //globaly define number of elements per page
+  var syncedSecondary = true;
+
+  sync1
+    .owlCarousel({
+      items: 1,
+      slideSpeed: 2000,
+      nav: true,
+      autoplay: true,
+      dots: false,
+      loop: true,
+      mouseDrag: true,
+      responsiveRefreshRate: 200,
+      navText: [
+        '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+        '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #000;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>',
+      ],
+    })
+    .on("changed.owl.carousel", syncPosition);
+
+  sync2
+    .on("initialized.owl.carousel", function () {
+      sync2.find(".owl-item").eq(0).addClass("current");
+    })
+    .owlCarousel({
+      items: slidesPerPage,
+      dots: false,
+      nav: false,
+      smartSpeed: 200,
+      slideSpeed: 500,
+      responsive: {
+        768: {
+          items: 4,
+        }, //при ширине окна > 992 отображать 3 элемент
+        320: {
+          items: 3,
+        }, //при ширине окна > 992 отображать 3 элемент
+      },
+      slideBy: slidesPerPage, //alternatively you can slide by 1, this way the active slide will stick to the first item in the second carousel
+      responsiveRefreshRate: 100,
+    })
+    .on("changed.owl.carousel", syncPosition2);
+
+  function syncPosition(el) {
+    //if you set loop to false, you have to restore this next line
+    //var current = el.item.index;
+    //if you disable loop you have to comment this block
+    var count = el.item.count - 1;
+    var current = Math.round(el.item.index - el.item.count / 2 - 0.5);
+
+    if (current < 0) {
+      current = count;
+    }
+    if (current > count) {
+      current = 0;
+    }
+
+    //end block
+
+    sync2
+      .find(".owl-item")
+      .removeClass("current")
+      .eq(current)
+      .addClass("current");
+    var onscreen = sync2.find(".owl-item.active").length - 1;
+    var start = sync2.find(".owl-item.active").first().index();
+    var end = sync2.find(".owl-item.active").last().index();
+
+    if (current > end) {
+      sync2.data("owl.carousel").to(current, 100, true);
+    }
+    if (current < start) {
+      sync2.data("owl.carousel").to(current - onscreen, 100, true);
+    }
+  }
+
+  function syncPosition2(el) {
+    if (syncedSecondary) {
+      var number = el.item.index;
+      sync1.data("owl.carousel").to(number, 100, true);
+    }
+  }
+
+  sync2.on("click", ".owl-item", function (e) {
+    e.preventDefault();
+    var number = $(this).index();
+    sync1.data("owl.carousel").to(number, 300, true);
+  });
+
+  var owl = $("#sync3");
+  owl.owlCarousel({
+    loop: true,
+    nav: true,
+    margin: 10,
+    dots: false,
+    mouseDrag: true,
+    navText: [
+      '<svg width="100%" height="100%" viewBox="0 0 11 20"><path style="fill:none;stroke-width: 1px;stroke: #9F9F9F;" d="M9.554,1.001l-8.607,8.607l8.607,8.606"/></svg>',
+      '<svg width="100%" height="100%" viewBox="0 0 11 20" version="1.1"><path style="fill:none;stroke-width: 1px;stroke: #9F9F9F;" d="M1.054,18.214l8.606,-8.606l-8.606,-8.607"/></svg>',
+    ],
+    responsive: {
+      320: {
+        items: 1,
+      },
+      480: {
+        items: 2,
+      },
+      992: {
+        items: 2,
+      },
+      1200: {
+        items: 3,
+      },
+    },
+  });
+
+  (function ($) {
+    $.fn.clickToggle = function (func1, func2) {
+      var funcs = [func1, func2];
+      this.data("toggleclicked", 0);
+      this.click(function () {
+        var data = $(this).data();
+        var tc = data.toggleclicked;
+        $.proxy(funcs[tc], this)();
+        data.toggleclicked = (tc + 1) % 2;
+      });
+      return this;
+    };
+  })(jQuery);
+  $(".unh-currency table tbody tr").each(function () {
+    var count = $(".unh-currency table tbody tr.notActive").length - 1;
+    var currentText = $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").text();
+    var dataText = $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").data("text");
+    if (count > 0) {
+      $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").show();
+    }
+    $(".unh-currency table tbody tr:gt(4)").addClass("notActive");
+    $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").clickToggle(
+      function () {
+        $(".unh-currency table tbody tr").removeClass("notActive");
+        $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").text(dataText);
+      },
+      function () {
+        $("a.kmaStylesSqbNewCredits__TopInfoOrderBtn").text(currentText);
+        $(".unh-currency table tbody tr:gt(4)").addClass("notActive");
+      }
+    );
+  });
+
+  // Filter DatePicker for archive course
+  if ($(".worksheetCredits__form #datepicker").length) {
+    let datepickerEl = $(".worksheetCredits__form #datepicker");
+    datepickerEl.daterangepicker({
+      singleDatePicker: true,
+      minYear: 1998,
+      maxYear: parseInt(moment().format("YYYY"), 10),
+    });
+
+    datepickerEl.change(function () {
+      $.ajax({
+        url: "/api/archive_exchange/",
+        type: "POST",
+        dataType: "html",
+        data: { date: $(this).val() },
+        beforeSend: function () {},
+        success: function (result) {
+          $(".exchange_rates").html(result);
+        },
+      });
+    });
+    // Create template for zoom button
+    $.fancybox.defaults.btnTpl.zoom =
+      '<button class="fancybox-button fancybox-zoom"><div class="zoom"><span class="zoom-inner"></span></div></button>';
+    // Choose what buttons to display by default
+    $.fancybox.defaults.buttons = [
+      "slideShow",
+      "fullScreen",
+      "thumbs",
+      "zoom",
+      "close",
+    ];
+
+    $("[data-fancybox]").fancybox({
+      onInit: function (instance) {
+        // Make zoom icon clickable
+        instance.$refs.toolbar.find(".fancybox-zoom").on("click", function () {
+          if (instance.isScaledDown()) {
+            instance.scaleToActual();
+          } else {
+            instance.scaleToFit();
+          }
+        });
+      },
+    });
+
+    // $.ajax({
+    //     url: '/api/archive_exchange/',
+    //     type: 'POST',
+    //     dataType: "html",
+    //     data: { date: '01.02.2019' },
+    //     beforeSend: function () {
+
+    //     },
+    //     success: function (result) {
+    //         $('.exchange_rates').html(result);
+    //     }
+    // })
+
+    // $( ".worksheetCredits__form #datepicker" ).datepicker({
+    //     changeMonth: true,
+    //     changeYear: true,
+    //     dateFormat: 'dd.mm.yy',
+    //     maxDate: new Date(),
+    //     minDate: new Date('2018/07/05'),
+    //     onSelect: function (date) {
+    //         $.ajax({
+    //             url: '/api/archive_exchange/',
+    //             type: 'POST',
+    //             dataType: 'html',
+    //             data: {date:date},
+    //             beforeSend : function(){
+    //                 $('body').append('<div class="loadingloader">Loading&#8230;</div>');
+    //             },
+    //             success: function(result){
+    //                 $(".exchangeRates__content--wraps-title h2 span").text($( "#datepicker" ).val());
+    //                 $('.datacourse').empty();
+    //                 $('.datacourse').append(result);
+    //                 $('.loadingloader').remove();
+    //                 $('html, body').animate({
+    //                     scrollTop: $(".exchangeRates__content--wraps-title").offset().top
+    //                 }, 1000);
+    //             }
+    //         })
+    //     }
+    // });
+  }
+});

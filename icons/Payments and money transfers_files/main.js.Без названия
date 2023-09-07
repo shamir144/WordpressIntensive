@@ -1,0 +1,255 @@
+$(document).ready(function() {
+    // // tabs
+    // $('#tabs li:first-child').addClass('active');
+    // $('.tab-content').hide();
+    // $('.tab-content:first').show();
+
+    // $('#tabs li').click(function(e) {
+    //     console.log(e.target);
+    //     $('#tabs li').removeClass('active');
+    //     $(this).addClass('active');
+    //     $('.tab-content').hide();
+
+    //     var activeTab = $(this).find('a').attr('href');
+    //     $(activeTab).fadeIn();
+    //     return false;
+    // });
+
+    // calc-tabs
+    // $('#tabs-nav li:first-child').addClass('active');
+    $('.сalc-tab-content').hide();
+    // $('.сalc-tab-content:first').show();
+    $('.сalc-tab-content.active').show();
+
+    $('#tabs-nav li').click(function() {
+        $('#tabs-nav li').removeClass('active');
+        $(this).addClass('active');
+        $('.сalc-tab-content').hide();
+
+        var activeTab = $(this).attr('value');
+        $(activeTab).fadeIn();
+        return false;
+    });
+
+    //news tabs
+    $('#news-tabs-nav li:first-child').addClass('active');
+    $('.news-tab-content').hide();
+    $('.news-tab-content:first').show();
+
+    $('#news-tabs-nav li').click(function() {
+        $('#news-tabs-nav li').removeClass('active');
+        $(this).addClass('active');
+        $('.news-tab-content').hide();
+
+        var activeTab = $(this).attr('value');
+        $(activeTab).fadeIn();
+        return false;
+    });
+
+    // microloans tabs
+    // $('#ml-tabs-nav li:first-child').addClass('active');
+    // $('.tab-content').hide();
+    // $('.tab-content:first').show();
+
+    // $('#ml-tabs-nav li').click(function() {
+    //     $('#ml-tabs-nav li').removeClass('active');
+    //     $(this).addClass('active');
+    //     $('.tab-content').hide();
+
+    //     var activeTab = $(this).attr('value');
+    //     $(activeTab).fadeIn();
+    //     return false;
+    // });
+
+    // auto tab switch
+    $(function() {
+        var tabs = $('.container #tabs li');
+        tabs.click(function() {
+            $(this).addClass('on').siblings('.on').removeClass('on');
+        });
+
+        // setInterval(function() {
+        //     var onTab = tabs.filter('.on');
+        //     var nextTab = onTab.index() < tabs.length - 1 ? onTab.next() : tabs.first();
+        //     nextTab.click();
+        // }, 5000);
+    });
+
+    $(window).on('resize', function() {
+        var win = $(this); //this = window
+        if (win.width() <= 1280) {
+            setInterval(function() {
+                return false;
+            });
+        }
+    });
+
+    //nav dropdown
+    var topMenu = document.querySelectorAll(".topMenu");
+    var dd_menu_a = document.querySelectorAll(".dd_menu_a");
+
+    topMenu.forEach(function(aitem) {
+        aitem.addEventListener("click", function() {
+            topMenu.forEach(function(aitem) {
+                aitem.classList.remove("active");
+            })
+            dd_menu_a.forEach(function(dd_menu_item) {
+                dd_menu_item.classList.remove("active");
+            })
+            aitem.classList.add("active");
+        })
+    })
+
+    dd_menu_a.forEach(function(dd_menu_item) {
+        dd_menu_item.addEventListener("click", function() {
+            dd_menu_a.forEach(function(dd_menu_item) {
+                dd_menu_item.classList.remove("active");
+            })
+            dd_menu_item.classList.add("active");
+        })
+    });
+
+    //slide by hand
+
+    // $(".kai_banner_body a img").swiperight(function() {
+    //     slitslider.next();
+    // });
+    // $(".kai_banner_body a img").swipeleft(function() {
+    //     slitslider.previous();
+    // });
+
+
+    //mobile menu
+    $('.mobile-menu li .mobileBtn').click(function() {
+        if ($(this).parent().hasClass("active")) {
+            $(this).parent().removeClass("active");
+        } else {
+            $(".mobile-menu li.active").removeClass("active");
+            $(this).parent().addClass("active");
+        }
+        $('body').css("overflow", "hidden");
+        $('.section1').css("overflow", "hidden");
+    });
+
+    $(function() {
+        //new Dragdealer(".handle");
+        // $(".handle").draggable();
+    });
+
+    // $('#close-btn').click(function() {
+    //     if ($('.mobile-menu li').hasClass("active")) {
+    //         $(".mobile-menu li.active").removeClass("active");
+    //     }
+    //     console.log(($('.mobile-menu li').hasClass("active")));
+    // });
+
+
+    // $(document).ready(function(closeBtn) {
+    //     if ($('.mobile-menu li').hasClass("active")) {
+    //         $(this).removeClass("active");
+    //     }
+    // });
+
+    // function closeBtn() {
+    //     $('.mobile-menu li').removeClass("active");
+    // };
+
+
+    // $(document).ready(function() {
+    //     $('#close-btn').click(closeNav);
+    // });
+
+
+    function closeNav() {
+        if ($('.mobile-menu li').hasClass("active")) {
+            $(".mobile-menu li.active").removeClass("active");
+        }
+        console.log(($('.mobile-menu li').hasClass("active")));
+
+    }
+
+    function stopScroll() {
+        if ($('.mobile-menu li').hasClass("active")) {
+            $(".wrap").css("overflow", "hidden");
+        }
+    }
+
+
+    // $(function() {
+    //     $("#close-btn").on("click", function() {
+    //         $(".mobile-menu li.active").removeClass("active");
+    //     })
+    // });
+
+    // var draggable = Draggable.create('draggable', {
+    //     type: 'y',
+    //     edgeResistance: 1,
+    //     zIndexBoost: false,
+    //     throwProps: true,
+    //     minimumMovement: 1,
+    //     dragClickables: true,
+    //     bounds: {
+    //         maxX: 0
+    //     },
+    //     snap: {
+    //         y: [-$('draggable').height(), 0]
+    //     },
+    // });
+
+    // $('handle').on('click', function(e) {
+    //     let isThis = $(e.target).is(this);
+
+    //     if (isThis) {
+    //         TweenMax.staggerTo($(this).nextAll(), 0.8, {
+    //             ease: Bounce.easeOut,
+    //             y: -500
+    //         }, -0.3);
+    //     }
+    // });
+
+    // $('handle').on('click', function() {
+    //     let $nav = $(this).closest('nav').next();
+    //     TweenMax.to($nav, 0.8, {
+    //         ease: Bounce.easeOut,
+    //         y: 0
+    //     })
+    // });
+
+});
+
+$(".specialBtns").parent().css("background-color", "white");
+
+$('#credit-card__tabs-nav li:first-child').addClass('active');
+$('.credit-card__tab-content').hide();
+$('.credit-card__tab-content:first').show();
+
+$('#credit-card__tabs-nav li').click(function() {
+    $('#credit-card__tabs-nav li').removeClass('active');
+    $(this).addClass('active');
+    $('.credit-card__tab-content').hide();
+
+    var activeTab = $(this).attr('value');
+    $(activeTab).fadeIn();
+    return false;
+});
+
+
+$('#conditions__tabs-nav li:first-child').addClass('active');
+$('.conditions__tabs-content').hide();
+$('.conditions__tabs-content:first').show();
+
+$('#conditions__tabs-nav li').click(function() {
+    $('#conditions__tabs-nav li').removeClass('active');
+    $(this).addClass('active');
+    $('.conditions__tabs-content').hide();
+
+    var activeTab = $(this).attr('value');
+    $(activeTab).fadeIn();
+    return false;
+});
+
+//table numbers
+$('.num').each(function(i) {
+    var number = i + 1;
+    $(this).prepend(number);
+});

@@ -1,0 +1,376 @@
+jQuery(document).ready(function ($) {
+
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        var i, j, kw, kd, km, minus = '';
+        if (number < 0) {
+            minus = '-';
+            number = number * -1;
+        }
+        if (isNaN(decimals = Math.abs(decimals))) {
+            decimals = 2;
+        }
+        if (dec_point == undefined) {
+            dec_point = ",";
+        }
+        if (thousands_sep == undefined) {
+            thousands_sep = ".";
+        }
+
+        i = parseInt(number = (+number || 0).toFixed(decimals)) + "";
+
+        if ((j = i.length) > 3) {
+            j = j % 3;
+        } else {
+            j = 0;
+        }
+
+        km = (j ? i.substr(0, j) + thousands_sep : "");
+        kw = i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thousands_sep);
+        kd = (decimals ? dec_point + Math.abs(number - i).toFixed(decimals).replace(/-/, 0).slice(2) : "");
+        return minus + km + kw + kd;
+    }
+
+    /*** DEPOSITE CALC ***/
+    function DepositeCalc(element, price, procent, cost_type, days, permonth_el, total_el) {
+        var calc_month = (price * procent * days) / (365 * 100);
+        var total_res = calc_month + price;
+
+        if (cost_type == 'USD') {
+            permonth_el.val(number_format(calc_month, 2, ',', ' ') + ' USD');
+            total_el.val(number_format(total_res, 2, ',', ' ') + ' USD');
+        } else {
+            permonth_el.val(number_format(calc_month, 2, ',', ' ') + ' UZS');
+            total_el.val(number_format(total_res, 2, ',', ' ') + ' UZS');
+        }
+
+    }
+
+    $('.formCalculate form').submit(function (e) {
+        e.preventDefault();
+        var element = $(this).parent().next();
+        var price = parseFloat($(this).find('[name="summCredit"]').val().replace(/\D/g, ''));
+        var procent = parseFloat(element.data('proc'));
+        var cost_type = element.data('cost_type');
+        var days = parseFloat(element.data('days'));
+
+
+        var permonth_el = $(this).find('[name="perMonth"]');
+        var total_el = $(this).find('[name="total"]');
+        DepositeCalc(element, price, procent, cost_type, days, permonth_el, total_el);
+    });
+
+
+    $('.formCalculate .close').click(function (event) {
+        $('.formCalculate__list--item input').val('');
+    });
+
+    /*** END DEPOSITE CALC ***/
+
+    /*** SHOW DEPOSIT FILTER ***/
+    $list_items = $(".vklList .vklList__item");
+    $all_depoBtn = $('.alldepo');
+    $form_depo = $('.vkl-aside__form');
+    $depoNotFound = $('.depoNotFound');
+    
+    function showDeposite(valyuta, srok, procent) {
+        $list_items.hide().filter(function () {
+            var v = $(this).data('cost_type');
+            var s = $(this).data('days');
+            var p = $(this).data('proc');
+
+            if (srok && procent) {
+                return v == valyuta && p == procent && s == srok;
+            }
+            if (srok) {
+                return v == valyuta && s == srok;
+            }
+            if (procent) {
+                return v == valyuta && p == procent;
+            } else {
+                return v == valyuta
+            }
+
+        }).addClass('vklList__item-full').show();
+    }
+
+    $form_depo.submit(function (e) {
+        e.preventDefault();
+        var valyuta = $(this).find('label:eq(0) select').val();
+        var srok = $(this).find('label:eq(1) select').val();
+        var procent = $(this).find('label:eq(2) select').val();
+        showDeposite(valyuta, srok, procent);
+
+        $all_depoBtn.css('display', 'block');
+
+        // Not Found
+        if (!$list_items.is(':visible')) {
+            $depoNotFound.show();
+        }   else {
+            $depoNotFound.hide();
+        }
+
+    });
+
+    $all_depoBtn.click(function (e) {
+        e.preventDefault();
+        $list_items.show();
+        $form_depo[0].reset();
+        $('.customSelect').select2();
+    });
+
+    /*** END SHOW DEPOSIT FILTER ***/
+
+
+    /*** CREDIT CALC ***/
+    /*
+    Средняя сумма в месяц = Остаток по кредиту / срок кредита
+    Сумма всех расходов = Расходы на страхование + Расходы по нотариусу + Расходы по оценке
+    Сумма всех расходов в процентах = (Сумма всех расходов / средняя сумма в месяц / срок кредита) * 100 
+    Полная стоимость кредита = Сумма всех расходов в процентах + Годовая процентная ставка 
+    Комиссионый платеж = (комиссионный платеж / 100)
+    Месячный процентный платеж = годовая процентная ставка / 12
+    */
+
+    $stroxovaniya_input = $('[name="stroxovaniya"]');
+    $natarius_input = $('[name="natarius"]');
+    $zalog_input = $('[name="zalog"]');
+    $proche_input = $('[name="proche"]');
+    $komission = $('[name="komission"]');
+
+    $price_args = {
+        alias: 'currency',
+        prefix: '',
+        groupSeparator: ' ',
+        rightAlign: false,
+        digits: 0,
+        keepStatic: false,
+        showMaskOnHover: false,
+        showMaskOnFocus: false,
+        greedy: false,
+        placeholder: ''
+    }
+
+    $stroxovaniya_input.inputmask($price_args);
+    $natarius_input.inputmask($price_args);
+    $zalog_input.inputmask($price_args);
+    $proche_input.inputmask($price_args);
+    $('.input-thousand').inputmask($price_args);
+
+    // input mask number
+    function to_Num(input) {
+        return input.val().length ? Number(input.val().replace(/\D/g, '')) : 0;
+    }
+
+    $('[type="reset"]').click(function (event) {
+        $('select').val(null).trigger("change");
+    });
+
+
+    $('[name="sumCredit"]').change(function (e) {
+        var value = parseFloat($(this).val().replace(/\D/g, ''));
+        var min = parseFloat($(this).data('minsum'));
+        if (value < min)
+            $(this).val(min);
+        else
+            $(this).val(value);
+    });
+
+    var countermore = 1;
+    $('.more').click(function (e) {
+        e.preventDefault();
+        var table_length = $('.result_calc tr').length - 1;
+        countermore++;
+        var tableactive = 12 * countermore;
+
+        for (var i = 0; i < tableactive; i++) {
+            $('.result_calc tr').eq(i).addClass('activetb')
+        }
+
+        if (table_length == 12) {
+            $(this).hide();
+            countermore = 1;
+        }
+
+        if (table_length == tableactive) {
+            $(this).hide();
+            countermore = 1;
+        }
+
+    });
+
+    /*** END CREDIT CALC ***/
+
+    /*** RATE CALC ***/
+    function rateCalc(inputsum, rate) {
+        var summ = Number(inputsum) * Number(rate);
+        $('.rateval').val(number_format(summ, '', ' ', ' '));
+    }
+
+    $('.converter .converter__text').keyup(function (event) {
+        let sumval = $(this).val();
+        let rate = $('.converter__select').val();
+        rateCalc(sumval, rate);
+    });
+
+    $('.converter__select').change(function (event) {
+        let sumval = $('.converter .converter__text').val();
+        let rate = $(this).val();
+        rateCalc(sumval, rate);
+    });
+
+
+    /*** DEPO CALC ***/
+
+    // ALL TYPES
+    // deposit_combo
+    // deposit_variations
+    // deposit_standart
+    // deposit_noprocent
+    // deposit_daily
+    function calcDepo(sum, month, procent, combo) {
+        let depo_type = depoType;
+        let calc_res = sum * month/12 * procent / 100;
+
+        if(combo) {
+            combo = JSON.parse(combo);
+            let res = 0;
+            for (let index = 0; index < combo.length; index++) {
+                let month_combo = combo[index]['month'];
+                let procent_combo = combo[index]['procent'];
+                res += sum * month_combo/12 * procent_combo / 100;
+            }
+            calc_res = res;
+        }
+        if (depo_type == 'deposit_daily') {
+            calc_res = sum*procent/100/365*Number(daily);
+        }
+
+        // RES
+        $('#depo_result_total').text(number_format(calc_res, ' ', ',', ' ') +' '+ valyuta_code);
+        $('.procent_data').text(procent+'%');
+    }
+
+    if($('#calcdepo').length) {
+        // Default set current vals
+        var d_summ = Number($('.depo-input').val().replace(/\D/g, ''));
+        var d_month = $('.select_mprocent').length ? Number($('.select_mprocent option:selected').text().replace(/\D/g, '')) : depoMonth;
+        var d_procent = $('.select_mprocent').length ? Number($('.select_mprocent').val().replace(/\D/g, '')) : Number($('.procent_data').text().replace(/\D/g, ''));
+        var combo_type = combo.length && combo !== 'null' ? combo : false;
+        calcDepo(d_summ, d_month, d_procent, combo_type);
+
+        $('.depo-input').on('change keyup', function(e) {
+            d_summ = Number($(this).val().replace(/\D/g, ''));
+            calcDepo(d_summ, d_month, d_procent, combo_type);
+        });
+
+        if($('.select_mprocent').length) {
+            $('.select_mprocent').change(function(e) {
+                d_month =  Number($(this).find('option:selected').text().replace(/\D/g, ''));
+                d_procent = Number($(this).val().replace(/\D/g, ''));
+                calcDepo(d_summ, d_month, d_procent, combo_type);
+            });
+        }
+
+
+        var range = $(".depo-range-slider"),
+            input_depo = $(".depo-input"),
+            instance,
+            min = $('.depo-range-slider').length ? $('.depo-range-slider').attr('data-min').replace(/\D/g, '') : 1000000,
+            max = $('.depo-range-slider').length ? $('.depo-range-slider').attr('data-max').replace(/\D/g, '') : 1000000000000;
+			range.ionRangeSlider({
+            skin: "round",
+            type: "single",
+            grid: false,
+            min: min,
+            max: max,
+            hide_min_max: true,
+            hide_from_to: true,
+            from: 100,
+            step: 50,
+            force_edges: true,
+            onStart: function (data) {
+                input_depo.prop("value", number_format(Number(data.from), '', ' ', ' '));
+                if($('#calcdepo').length) {
+                    calcDepo(Number(data.from), d_month, d_procent, combo_type);
+                }
+            },
+            onChange: function (data) {
+                input_depo.prop("value", number_format(Number(data.from), '', ' ', ' '));
+                if($('#calcdepo').length) {
+                    calcDepo(Number(data.from), d_month, d_procent, combo_type);
+                }
+            }
+        });
+        instance = range.data("ionRangeSlider");
+
+        input_depo.change(function () {
+            var val = Number($(this).val().replace(/\D/g, ''));
+            // validate
+            if (val < min) {
+                val = min;
+            } else if (val > max) {
+                val = max;
+            }
+            $(this).val(val);
+            instance.update({
+                from: Number(val)
+            });
+        });
+
+        // PLUS-MINUS BUTTON MONEY TRANSFER
+        $('.detailCredit__minus').on('click', function () {
+            let depval = input_depo.val().replace(/\D/g, '');
+            input_depo.val(Number(depval) - 100).trigger('change');
+        });
+        $('.detailCredit__plus').on('click', function () {
+            let depval = input_depo.val().replace(/\D/g, '');
+            input_depo.val(Number(depval) + 100).trigger('change');
+        });
+
+    }
+
+
+    var $_credit_range = $(".calc-range-slider"),
+    $input_credit = $("#sumCredit"),
+    instance_credit,
+    min = Number($("#sumCredit").attr('data-minsum')),
+    max = Number($("#sumCredit").attr('data-maxsum'));
+
+    $_credit_range.ionRangeSlider({
+        skin: "round",
+        type: "single",
+        grid: false,
+        min: min,
+        max: max,
+        hide_min_max: true,
+        hide_from_to: true,
+        from: min,
+        step: 100000,
+        force_edges: true,
+        onStart: function(data) {
+            $input_credit.prop("value", number_format(data.from, 0, ',', ' '));
+        },
+        onChange: function(data) {
+            $input_credit.prop("value", number_format(data.from, 0, ',', ' '));
+        }
+    });
+
+    instance_credit = $_credit_range.data("ionRangeSlider");
+
+    $input_credit.on("change", function() {
+        let val = Number($(this).val().replace(/\D/g, ''));
+
+        if (val < min) {
+            val = min;
+        } else if (val > max) {
+            val = max;
+        }
+
+        $(this).val(number_format(val, 0, ',', ' '));
+
+        instance_credit.update({
+            from: val
+        });
+    });    
+
+});
